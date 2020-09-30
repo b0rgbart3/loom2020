@@ -1,0 +1,33 @@
+h1 {
+    color:#dddddd;
+}
+
+.homeButton {
+    background-color:#888888;
+    border-radius:4px;
+    padding:10px;
+    display:inline-block;
+    border-left:1px solid white;
+    border-top:1px solid white;
+    user-select: none;
+    cursor:pointer;
+    outline:none;
+}
+
+.homeButton:hover {
+    background-color:#aaaaaa;
+}
+
+.homeButton:active {
+    background-color:rgb(62, 117, 235);
+    position: relative;
+    top:2px;
+    right:1px;
+    outline:none;
+}
+
+.warningMessage {
+    background-color:rgb(138, 0, 85);
+    padding:40px;
+    border-radius:2px;
+}

@@ -1,0 +1,138 @@
+
+<nav-bar></nav-bar>
+
+    <div class="loomContainer group">
+<div class='signupBox'>
+
+<div class='branding'>
+        <h1 *ngIf='!admin'>Create your account on The Reclaiming Loom</h1><br>
+</div>
+<form novalidate [formGroup]="regFormGroup" class='regForm' *ngIf='!success'>
+      
+       
+       
+        <div class='infoBox'>
+      
+        <label for='firstname'>First Name</label>
+        <input class='register' 
+        name="firstname" formControlName='firstname' required maxlength="30">
+        
+       <br>
+  
+       <label for='lastname'>Last Name</label>
+        <input  class='register'
+        name="lastname" formControlName='lastname' required minlength="3" maxlength="30">
+  
+        <br>
+        <label for='email'>email address</label>
+        <input class='register' id="email" name="email" 
+       formControlName='email' required type="email" minlength="7" maxlength="40">
+       <span class='help-block' *ngIf='emailMessage'>
+           {{ emailMessage }}
+       </span>
+       <br clear='all'>
+        <div class='validation-error' 
+        *ngIf='regFormGroup.get("email").errors && regFormGroup.dirty && regFormGroup.get("email").errors.emailExists'>
+                That email address is already associated with an account in our system.
+    </div>
+        <br>
+        <label for='username'>username</label>
+        <input  name="username" class='register'
+        formControlName='username' required type="username" minlength="3" maxlength="40">
+        <div class='hint'>This will be the name that you login with</div>
+        
+        <br clear='all'>
+        <div class='validation-error' 
+        *ngIf='regFormGroup.get("username").errors && regFormGroup.dirty && regFormGroup.get("username").errors.usernameExists'>
+                That username already exists.  Please choose another.
+        </div>
+            <br>
+
+            <label for='password'>password</label>
+        <input class='register'
+        name="password" formControlName='password' type='password'>
+        <br>
+        <div class='validation-error'
+        *ngIf='regFormGroup.get("password").touched && regFormGroup.get("password").dirty && regFormGroup.get("password").errors'>
+       Please include at least 6 letters, and at least 1 number</div>
+    
+        <br clear='all'><br>
+        <br><div *ngIf='admin'>
+                <mat-checkbox formControlName='student'>
+                        Student&nbsp;&nbsp;
+                    </mat-checkbox>
+            <mat-checkbox formControlName='instructor'>
+                Instructor&nbsp;&nbsp;
+            </mat-checkbox>
+            <mat-checkbox formControlName='admin'>
+                    Admin&nbsp;&nbsp;
+                </mat-checkbox></div>
+
+
+<div class='createAccount' 
+(click)='signupUser()' *ngIf='regFormGroup.valid'>Create Account</div>
+<br clear='all'>
+
+
+    </div>
+
+            <!-- <mat-checkbox [(ngModel)]='checkBox' name='checkBox'>Instructor</mat-checkbox>
+         -->
+        <!-- {{user.user_type | json}}<br>
+        {{currentUser.user_type | json }}<br>
+        {{currentUser.id}}, {{user.id}}<br>
+        {{editSelf}} -->
+
+        
+   
+
+
+    <br>
+
+  
+
+</form>
+<!-- <div *ngIf="alreadyConnectedThruFB">
+    You are already registered and connected through FaceBook, as: {{ FBProfile.name }}
+</div> -->
+<!-- <div *ngIf="regChoice === 'facebook'">
+    <h2>Facebook Registration:</h2>
+    <button (click)="fblogout()">LogOut (of facebook)</button>
+
+    <div *ngIf="!connectedThruFB">
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false"
+            data-use-continue-as="false">
+          Log in With Facebook
+          </div>
+
+    <button (click)="loginWithFacebook()">Login using my Facebook account</button>
+    <p>You should see a pop-up window from Facebook, asking you to login.</p>
+    <p>Note:  If you have Pop-up's blocked, you will need to 'allow' this pop-up.</p>
+    </div>
+
+    <div *ngIf="connectedThruFB">
+
+    </div>
+</div> -->
+
+<div *ngIf="FBProfile">
+    <!-- <p>You have chosen to register using your Facebook Profile.</p> -->
+  <p>You are connected through Facebook as: {{ FBProfile.name }}</p>
+  <!-- <form novalidate (ngSubmit)="registerFBUser()" [formGroup]="FBregFormGroup">
+
+
+  </form> -->
+</div>
+
+<div *ngIf="FBUser">
+    <p> {{ FBUser | json }}</p>
+</div>
+
+</div>
+
+<br>
+<div *ngIf="!regChoice">
+        <div class='already' (click)="already()">
+        If you've already signed up, you can simply <span class='just'>LOG IN!</span>
+        </div>
+        </div>

@@ -1,0 +1,83 @@
+.sectionBox {
+    padding:20px;
+    background-color:#eeeeee;
+    border:2px solid black;
+    border-radius:4px;
+}
+
+.container {
+  padding:12px;
+  background-color:rgba(255,255,255,.5);
+  border:2px solid white;
+}
+
+.draggable {
+  padding:4px;
+  background-color:rgba(200,250,255,.5);
+  border:2px solid black;
+  cursor:pointer;
+  user-select: none;
+}
+.courseEditForm {
+
+  border-radius:8px;
+  padding:18px;
+}
+
+.courseDescription {
+  background-color:rgba(255,255,255,.5);
+  padding:30px;
+  border-radius:8px;
+  width:92%;
+  line-height:2em;
+  overflow: auto;
+}
+
+.mat-input-infix {
+  left:20px;
+}
+
+mat-expansion-panel-header h1 {
+  font-weight:bold;
+  font-size:1.2em;
+}
+
+.testDiv {
+  background-color:#ddddff;
+  padding:10px;
+  border:2px solid #555500;
+}
+
+.courseEditSubmit {
+  font-family: 'Roboto';
+  background-color:yellowgreen;
+  padding:20px;
+  text-transform:uppercase;
+  color:rgb(65, 83, 30);
+  font-size:1.1em;
+  display:inline-block;
+  font-weight: 600;
+  float:right;
+  border-radius:8px;
+  border:4px solid rgb(90, 116, 40);
+  box-shadow: 0 0 12px rgb(56, 68, 31);
+  user-select: none;
+  cursor: pointer;
+  margin-right:10px;
+}
+
+.courseEditSubmit:hover {
+  background-color:rgb(174, 231, 59);
+}
+
+.courseEditSubmit:active {
+  background-color:rgb(215, 255, 134);
+  position: relative;
+  left:1px;
+  top:1px;
+
+}
+
+.mat-expansion-panel-header {
+  margin-top:20px;
+}

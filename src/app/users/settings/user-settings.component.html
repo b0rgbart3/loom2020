@@ -1,0 +1,136 @@
+
+<nav-bar></nav-bar>
+    <div class="loomContainer group">
+        <div class='settingsForm' *ngIf="settingsForm">
+        <form [formGroup]="settingsForm" novalidate enctype="multipart/form-data" class='loomForm'>
+        
+            <div class="loomCard"> 
+                                
+            <!-- <flash-messages></flash-messages> -->
+            <div class='closer'
+            (click)="cancel()"></div>
+
+            <h1>{{ user.username }}'s Settings:</h1>
+            <mat-form-field>
+                <input matInput placeholder="Username" 
+                formControlName="username" value="{{user.username}}">
+                </mat-form-field><br clear='all'>
+            <mat-form-field>
+                <input matInput placeholder="First name" 
+                formControlName="firstname" value="{{user.firstname}}">
+                </mat-form-field><br clear='all'>
+            <mat-form-field>
+                    <input matInput placeholder="Last name" 
+                    formControlName="lastname" value="{{user.lastname}}">
+                    </mat-form-field><br clear='all'>
+            <!-- <mat-form-field>
+                    <input matInput placeholder="Email address" 
+                    formControlName="email" value="{{user.email}}">
+                    </mat-form-field> -->
+                    
+                    <p>Your email address:</p>{{ user.email }}
+
+                    <br clear='all'>
+           <mat-form-field>
+            <textarea id="bio" matInput placeholder="Super Short Bio" 
+            formControlName="bio" rows="4" class='bioArea'>{{ user.bio}}</textarea>
+            <div class='hint' *ngIf='!settingsForm.get("bio").valid'>The bio needs to be 400 characters or less. It is currently {{ biolength }} characters.</div>
+            <div class='explanation' *ngIf='!settingsForm.get("bio").valid'>The bio is too long</div>
+            </mat-form-field><br clear='all'>
+<br>
+            <div class="form-group">
+
+                <div *ngIf="!user.facebookRegistration">
+                     <h2>Your Avatar Image:</h2>
+
+                   <!-- <br><img [src]="user.avatar_URL" width='200' height='200' *ngIf="user && user.avatar_URL"><br>
+                   <br><img [src]="localImageUrl" *ngIf="localImageUrl" class='cropTarget'><br> -->
+                   <!-- <img [src]="imageUrl" class="avatar" *ngIf='imageUrl'> -->
+                   
+                   <div *ngIf='imageUrl'>
+                    <img [src]="imageUrl" class='existingAvatar'><br>
+                    </div>
+                   <!-- <div class='progress-bar'></div> -->
+                   <!-- <div *ngIf='imageUploader.queue[0]'>
+                   <div class="progress-bar" role="progressbar" 
+                        [ngStyle]="{ 'width': imageUploader.queue[0].progress + '%' }"></div>
+                    </div> -->
+
+                   
+                        <div>
+     
+                            <div *ngIf='imageUploader.queue[0]'>
+                                <img-cropper [image]="data" [settings]="cropperSettings" #cropper ></img-cropper><br>
+                                <div class='preview' *ngIf='data.image'>
+                                <img [src]="data.image" >
+                            </div>
+                            </div>
+<br>
+                            <!-- <div class='useThis' (click)='useThis()'>Use This</div>
+                        -->
+                            <!-- <div *ngIf='imageUploader.queue[0]'>
+                                Queue progress:
+                                <div class="progress" style="">
+                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': imageUploader.progress + '%' }"></div>
+                                </div>
+                            </div>   -->
+
+                            
+                         </div>
+                         <div class="upload-wrap" *ngIf='!imageUploader.queue[0]'>
+                            Upload New Avatar Image 
+
+                            <div class="file-upload">
+                                <input id="custom-input" type="file" (change)="fileChangeListener($event)" ng2FileSelect [uploader]="imageUploader"
+                                class="upload-btn" id='avatar' name='avatar'>
+                            </div>
+
+                            <!-- <input type="file" ng2FileSelect [uploader]="imageUploader" class="upload-btn" id='avatar' name='avatar' />
+                             <input type="file" class="upload-btn"  name="image"  
+                            ng2FileSelect [uploader]="imageUploader" formControlName="imageUploader"
+                            (change)="imageChange($event)" id="image"> -->
+                        
+                            <!-- {{ imageUploader.queue[0]?.file?.name }} -->
+                            
+                            
+                            <!-- <input type="file" class="upload-btn"  name="avatar"  
+                            ng2FileSelect [uploader]="avatarUploader" formControlName="avatar"
+                            (change)="avatarChange($event)" id="avatar"> -->
+
+            
+                        </div> 
+                        <!-- <div *ngIf='imageUploader.queue[0]' (click)='useThis()'>
+                            <div class='useThis'>Use This Image</div>
+                        </div> -->
+
+                    </div>
+            </div> 
+    
+
+                
+            </div>
+
+
+            
+
+
+                 
+       <br>
+            <div class='loomButton loomSubmit' 
+            (click)='submitSettings()'>Submit changes</div>
+           
+        <br clear='all'><br>
+
+        </form>
+        
+    </div>
+    
+ 
+</div>
+
+<div class='debug'>
+        <!-- Form Dirty: {{ settingsForm.dirty }}<br>
+        Form Touched: {{ settingsForm.touched }}<br>
+        Form valid: {{ settingsForm.valid }}<br> -->
+
+     </div>

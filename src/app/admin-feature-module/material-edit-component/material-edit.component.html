@@ -1,0 +1,112 @@
+<div class='materialEditor'>
+
+    <form [formGroup]="materialForm" novalidate
+    (ngSubmit)="postMaterial()" class='loomForm group'>
+             
+    <div class='loomCard group'>
+        <div class='closer closerdark'
+        (click)="closer()" *ngIf='!modalVersion'></div>
+        <h1 *ngIf='!modalVersion'>{{ type }}</h1>   
+<div class='contentContainer'>
+
+    <mat-form-field>
+            <input matInput placeholder="Title" name='title' id='title' formControlName='title'>
+    </mat-form-field>
+
+    <div *ngIf='descriptionNeeded'>
+    <mat-form-field>
+        <textarea matInput [placeholder]="descriptionPlaceholder" name="description"
+        id='description' formControlName='description' matTextareaAutosize matAutosizeMinRows="2"
+        matAutosizeMaxRows="5"></textarea>
+        </mat-form-field></div>
+   
+        <div *ngIf='contentNeeded'>
+        <mat-form-field>
+                <textarea matInput [placeholder]="contentPlaceholder" name="content" 
+                id='content' formControlName='content' matTextareaAutosize matAutosizeMinRows="2"
+                matAutosizeMaxRows="5" class='content'></textarea>
+                </mat-form-field></div>
+
+    <mat-form-field *ngIf="type==='book' || type==='doc' || type==='quote' || type==='audio' || type==='video'">
+        <input matInput placeholder="Author" name='author' id='author' formControlName='author'>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="lengthNeeded">
+        <input matInput placeholder="Length (minutes or # of pages)" name='length' id='length' formControlName='length'>
+    </mat-form-field>
+    <br clear='all'>
+    <div *ngIf='urlNeeded'>
+            <mat-form-field>
+                <input matInput [placeholder]="urlLabel" name="contenturl" id='contenturl' 
+                formControlName='contenturl'>
+                </mat-form-field>
+        </div>
+</div>
+
+<div class='contentContainer' *ngIf='type!=="quote"'>
+  <!-- Document Content Here -->
+    <div *ngIf='type==="video" && file && !loading'>
+            <video-component [videoObject]="this"></video-component>
+    </div>
+    <div *ngIf='type==="doc" && file && !loading && !displayModal' (click)='openModal()' class='button hotDoc'>
+        preview this document
+    </div>
+    <div *ngIf='type==="doc" && file && !loading && displayModal'>
+        <modal [modalURL]='fileUrl' (closeMe)="closeModal()"></modal>
+    </div>
+    <div *ngIf='type==="audio" && file && !loading'>
+        <audio controls controlsList="nodownload">
+            <source [src]="fileUrl" type="audio/mpeg">
+          Your browser does not support the audio element.
+          </audio>
+    </div>
+    <div *ngIf='file'>File:  {{ file }}</div>
+    <div *ngIf='loading' class='spinner'>
+
+    </div>
+    <div *ngIf='uploaderNeeded'>
+            <div class="upload-wrap">
+                Upload Document
+                <input type="file" class="upload-btn"  name="file"  
+                ng2FileSelect [uploader]="fileUploader" formControlName="fileUploader"
+                (change)="fileChange($event)" id="file">
+            </div>
+          
+    </div>
+<br clear='all'><hr><br>
+    <!-- IMAGE -->
+    <div *ngIf='image' class='associatedImage'>
+        <img [src]="imageUrl"><br>
+        </div>
+        <div class="upload-wrap" *ngIf="type!=='quote'">
+           {{ includeimagestring }}
+            <input type="file" class="upload-btn"  name="image"  
+            ng2FileSelect [uploader]="imageUploader" formControlName="imageUploader"
+            (change)="imageChange($event)" id="image">
+        </div>
+    </div>
+
+</div>  <!-- close of 2nd content Container-->
+
+<br clear='all'>
+<br>
+<div class='bigGreen' 
+(click)='postMaterial()'>Submit changes</div>
+
+<br clear='all'>
+
+
+    <br clear='all'><hr>
+    <div class='loomButton dangerous' (click)="remove()" *ngIf='!modalVersion'>
+        <mat-icon>delete</mat-icon><span class='raise'>
+            Remove This {{ type }}</span></div>
+
+
+</form>    
+</div>
+
+<div class='debug'>
+Dirty:    {{ materialForm.dirty }}<br>
+<br>
+{{materialForm.value | json }}
+</div>

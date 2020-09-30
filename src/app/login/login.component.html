@@ -1,0 +1,66 @@
+﻿<nav-bar></nav-bar>
+<div class='loomContainer'>
+        <flash-messages></flash-messages>
+
+        <div class='redirectMsg' *ngIf='redirect'>{{ redirectMsg }}</div>
+ <div class='loginStuff' *ngIf='!currentUser'>   <br>   
+                <p>New to the Loom? <a [routerLink]="['/signup']">&nbsp; &#10148;&nbsp;Sign up today!</a></p>
+                       
+<div class="loginBox">
+
+<div class='branding'>
+    <h1>Log in</h1>
+  <div class='trouble'>
+  <p>Having trouble signing in?</p>
+  <p><a [routerLink]="['/requestreset']">Request a password reset, via email.</a></p></div>
+</div>
+<div class='credsBox'>
+       
+        <form novalidate [formGroup]="loginForm" class='loginForm' (keydown)="keyDownFunction($event)">
+   
+                <div class='creds'>
+                        <div class='human'></div>
+                        <div class='credField'>
+                    
+                    <input placeholder="USERNAME" 
+                    name="usernane" formControlName='username'>
+</div><br clear='all'>
+        
+                   
+                    <div class='key'></div>
+                    <div class='credField'>
+  
+                    <input type="password" 
+                     placeholder="PASSWORD" 
+                    name="pasword" formControlName='password'>
+               </div><br>
+        
+                <br></div>
+               
+                <br clear='all'><br>
+                    <!-- <button class="bd-full-width-button">LOGIN</button> -->
+
+                <div class='loginButton' (click)='login()' type='submit'>LOG IN</div>
+                
+    </form>
+</div>
+</div>
+<div class='orMessage'></div>
+
+        <div class='fbLoginButton' (click)="StartFBLogin()" > Sign up and Login using Facebook ( instead )</div>
+
+<br clear='all'>
+
+</div>  
+
+
+<div class='loginStuff' *ngIf='currentUser'>  
+<p>    Now that you have signed up, you can register for upcoming classes! </p>
+
+</div>
+
+</div>
+
+<!-- <div class='debug'>
+Form Valid: {{ model.error }}
+</div> -->

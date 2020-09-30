@@ -1,0 +1,40 @@
+.Box {
+    text-align: left;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    padding:0px;
+    margin-top:20px;
+    box-sizing: border-box;
+    border-radius:4px;
+    overflow: hidden;
+    font-family: 'Roboto';
+    margin-top:80px;
+    background-color:#34414e;
+    min-width:640px;
+  }
+
+.contactForm {
+    background-color:#cccccc;
+    margin:20px;
+    padding:20px;
+    border-radius:4px;
+}
+
+.confirmation {
+    text-align: left;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    padding:0px;
+    margin-top:40px;
+    box-sizing: border-box;
+    border-radius:4px;
+    overflow: hidden;
+    font-family: 'Roboto';
+    margin-top:80px;
+    background-color:#506172;
+    min-width:640px;
+    color:white;
+    padding:50px;
+}

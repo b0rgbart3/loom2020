@@ -1,0 +1,203 @@
+
+.discussButton {
+    padding:20px;
+    width:200px;
+    height:100px;
+    margin-bottom:0px;
+    background-color:#4254ae;
+    color:white;
+    text-transform: uppercase;
+    margin-right:10px;
+    outline:none;
+    cursor:pointer;
+    box-shadow:8px -8px 8px rgba(0,0,0,.5);
+}
+
+.discussionIconWrap {
+    width:80%;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    box-sizing: border-box;
+    overflow: visible;
+    height:52px;
+    z-index: 3;
+    position: relative;
+    top:20px;
+    /* border:1px solid blue; */
+}
+.discussionIcon {
+    background-image:url('../../assets/images/discussion.svg');
+    background-size:70%;
+    background-position: 50% 55%;
+    background-repeat: no-repeat;
+    width:110px;
+    height:110px;
+    margin-left:auto;
+    margin-right:auto;
+    padding-left:20px;
+    padding-right:20px;
+    border:1px solid white;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    border-radius:50%;
+    margin-bottom:0;
+}
+
+.discussionIconWrap p {
+    margin-top:4px;
+}
+
+.discussionIcon:hover {
+    opacity:1;
+}
+
+.discussionIcon:active {
+   box-shadow:0 0 20px white;
+}
+.discussionBox {
+    margin-left:0%;
+    margin-right:0%;
+    padding:0;
+    margin-top:0;
+    margin-bottom:0;
+    /* border:2px solid green; */
+}
+
+
+.closeDiscussionIcon {
+    background-image:url('../../assets/images/close.svg');
+    background-repeat: no-repeat;
+    background-size:40% 40%;
+    background-position: center;
+    margin-left:auto;
+    margin-right:auto;
+    width:50px;
+    height:50px;
+    position: relative;
+    border-radius:50%;
+    background-color:rgba(190,190,190,1);
+}
+
+.closeDiscussionIcon:hover {
+    background-color:rgba(150,150,150,1);
+}
+
+.closeDiscussionIcon:active {
+    background-color:rgba(120,120,120,1);
+}
+
+
+
+.largeInput {
+    font-size:1.2em;
+    padding:10px;
+    width:94%;
+    border-radius:6px;
+    border:2px solid white;
+    box-shadow: 0 0 19px rgba(0,0,0,.15);
+}
+table {
+    background-color:rgba(0,0,0,0);
+}
+.deleteThreadButton {
+
+    float:right;
+    margin-right:20px;
+    display:inline-block;
+    font-size:1em;
+    margin-bottom:8px;
+    outline:none;
+    cursor: pointer;
+    user-select: none;
+    text-transform: uppercase;
+    border-radius:50%;
+    font-size:.9em;
+    opacity:.8;
+    letter-spacing:.05em;
+    border:2px solid rgba(0,0,0,0);
+    margin:10px;
+}
+
+.fancyPostButton {
+    background-color:#ce00bd;
+    color:white;
+    outline: none;
+}
+
+.fancyPostButton:hover {
+    background-color:#a00095;
+}
+.fancyPostButton:active {
+    background-color:#e85bf5;
+}
+
+.fancyPostButton:focus {
+    background-color:#bc00d4;
+}
+
+.threadContainer {
+    padding:0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border:1px dashed #888888;
+    /* border:1px solid red; */
+}
+
+.newTopicButton {
+    background-color:#555555;
+    color:white;
+    float:right;
+    margin-left:10px;
+    display:inline-block;
+    padding-top:6px;
+    padding-bottom:6px;
+    padding-left:14px;
+    padding-right:14px;
+    font-size:1em;
+    margin-bottom:8px;
+    outline:none;
+    cursor: pointer;
+    user-select: none;
+    text-transform: uppercase;
+    border-radius:4px;
+    box-shadow:2px 2px 4px rgba(0,0,0,.4);
+    position: relative;
+    top:6px;
+}
+.newTopicButton:hover {
+    background-color:#eeeeee;
+    color:black;
+    border:1px solid #555555;
+}
+
+.discussionFramer {
+    background-color: rgba(255,255,255,.5);
+    border-radius: 6px;
+    box-shadow:0 0 20px rgba(0,0,0,.25);
+    padding-top:20px;
+    padding-bottom:10px;
+    margin-top:0;
+    padding-left:20px;
+    padding-right:20px;
+    margin-left:5%;
+    margin-right:5%;
+    /* border:2px solid red; */
+}
+
+.discussionFramer p {
+    text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+    .discussionBox {
+        margin-left:0%;
+        margin-right:0%;
+        padding:0;
+        margin-top:0;
+        margin-bottom:0;
+    
+    }
+    
+}

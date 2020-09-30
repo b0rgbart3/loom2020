@@ -1,0 +1,47 @@
+
+    <div class='discussionIconWrap'> 
+            <div class='discussionIcon' (click)="openDiscussion()" *ngIf='!settings.discussing'></div>
+            <div class='closeDiscussionIcon' (click)="closeDiscussion()" *ngIf='settings.discussing'></div>
+            <p *ngIf='!settings.discussing'>Join the Discussion</p>
+    </div>
+            <div class='discussionBox group' *ngIf='settings && settings.discussing'>
+
+<div class='discussionFramer group' *ngIf='ready2display'>
+
+<p>What are your thoughts on: {{ section.title }}?</p>
+<div class='group '>
+        
+        <!-- <button [routerLink]="['/classes', thisClass.id ]" class='backButton'>Back to Course Material</button>
+         -->
+        <div *ngIf='thisClass'>
+                <form [formGroup]='discussionFormGroup' (ngSubmit)='newThread()'>
+                <table width='100%' class='showTable'>
+                   <tr>
+                <td width='86%'><input formControlName='subject' id='subject' 
+                 name='subject' type='text' class='largeInput'></td>
+                <td width='1%'>
+                <button type='submit' class='newTopicButton'>post</button></td>
+                <td width='8%'></td>
+                </tr>
+                </table>
+        </form>
+
+        <br clear='all'><br>
+<img src='../../assets/images/divider.svg'><br>
+
+        <div *ngIf='threads'>
+                <div *ngFor='let thread of threads; let i = index' class='threadContainer group'>
+                        <div *ngIf="currentUser.id === thread.user_id" 
+                        class='tinytrash deleteThreadButton' (click)="deleteThread(thread)"></div>
+                       <thread [thread]=thread [collapsed]='settings.folds[i]' (foldChange)="foldChange($event)"
+                        (threadChange)="threadChange($event)" (deleteReply)="deleteReply($event)"
+                       (threadKill)="threadKill($event)"></thread>
+                </div>
+        </div>
+</div>        
+</div>
+
+<!-- <div class='debug'>
+        {{ discussionFormGroup.value | json }}
+</div> -->
+</div>

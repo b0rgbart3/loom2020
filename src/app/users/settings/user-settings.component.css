@@ -1,0 +1,58 @@
+.settingsForm {
+    width:100%;
+    max-width:700px;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:#cccccc;
+
+}
+
+.avatar {
+    width:200px;
+}
+
+.bioArea {
+    background-color:rgba(255,255,255,.5);
+    padding:10px;
+    line-height:1.6em;
+    width:97%;
+    font-size:.95em;
+    border-radius:4px;
+}
+
+.progress-bar {
+    background-color:blue;
+    height:50px;
+
+}
+
+.my-drop-zone { border: dotted 3px lightgray; }
+    .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+    .another-file-over-class { border: dotted 3px green; }
+
+
+.existingAvatar {
+    width:200px;
+    height:200px;
+    border-radius:50%;
+  
+}
+    /* Cropper */
+
+.preview {border-radius:50%;
+
+    width:200px;
+    height:200px;
+    overflow:hidden;
+}
+
+.preview img {
+    width:100%;
+}
+
+.useThis {
+    background-color:white;
+    padding:20px;
+    user-select: none;
+    cursor: pointer;
+}
