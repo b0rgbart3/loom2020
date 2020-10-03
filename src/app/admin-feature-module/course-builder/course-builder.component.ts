@@ -25,7 +25,7 @@ errorMessage: string;
 data: MaterialCollection;
 types: any[];
 
-constructor (
+constructor(
 private courseService: CourseService,
 private materialService: MaterialService,
 private router: Router,
@@ -36,7 +36,7 @@ private globals: Globals
 
 }
 
-ngOnInit() {
+ngOnInit(): void {
   this.getCourses();
 
   this.globals.materialTypes.map( type => this.getAssets(type.type));
@@ -44,37 +44,37 @@ ngOnInit() {
   this.types = this.globals.materialTypes;
 }
 
-getCourses() {
+getCourses(): void {
     this.courseService
     .getCourses().subscribe(
       courses =>  {this.courses = courses;
-      this.courseCount = this.courses.length; },
-      error => this.errorMessage = <any>error);
+                   this.courseCount = this.courses.length; },
+      error => this.errorMessage = error );
     }
 
-  getAssets(type) {
+  getAssets(type): void {
     this.materialService.getDynamicMaterials(0, type).subscribe(
       data => { this.data[type] = data;
         // console.log('');
         // console.log(type + ':');
         // console.log( JSON.stringify( this.data[type]) );
       },
-      error => this.errorMessage = <any> error);
+      error => this.errorMessage = error );
   }
 
-  addAsset(typeIndex) {
+  addAsset(typeIndex): void {
     console.log('Adding an asset of type: ' + this.globals.materialTypes[typeIndex].type);
     const addAssetString = '/' + this.globals.materialTypes[typeIndex].type + '/0/edit';
     console.log('add asset string: ' + addAssetString);
     this.router.navigate( [ addAssetString ] );
   }
-  editAsset(typeIndex, assetID) {
+  editAsset(typeIndex, assetID): void {
     const editAssetString = '/' + this.globals.materialTypes[typeIndex].type + '/' + assetID + '/edit' ;
     this.router.navigate( [ editAssetString]);
   }
 
 
-  checkDataStream() {
+  checkDataStream(): void {
     // make sure we still have a connection to the Database.
     // this.courseService.getCourses()
   }

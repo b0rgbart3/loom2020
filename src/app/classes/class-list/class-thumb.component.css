@@ -109,7 +109,7 @@ p { margin-top:0;
     background-color:#4783b4;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px): void {
 .classThumnailImage {
     display:block;
     width:100%;

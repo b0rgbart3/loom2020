@@ -1,6 +1,6 @@
-import { Injectable, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
+import { Injectable, OnChanges, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 // import { Http, Response, Headers, RequestOptions } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { Announcements } from '../models/announcements.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
+    'Content-Type': 'application/json',
   }),
   responseType: 'text'
 };
@@ -23,25 +23,22 @@ const httpOptions = {
 @Injectable()
 
 
-export class AnnouncementsService implements OnInit {
+export class AnnouncementsService {
 
-    announcementsCount = 0;
-    highestID = 0;
-    announcements: Announcements[];
-    errorMessage: string;
-    announcementsLoaded: boolean;
+  announcementsCount = 0;
+  highestID = 0;
+  announcements: Announcements[];
+  errorMessage: string;
+  announcementsLoaded: boolean;
 
-    constructor (private _http: HttpClient,
-      private globals: Globals) {
+  constructor(
+    private http: HttpClient,
+    private globals: Globals) {
 
-    }
-
-    ngOnInit() {
-     console.log('Initializing the Announcements Service');
   }
 
   getAllAnnouncements(): Observable<any> {
-    return this._http.get <Announcements[]> (this.globals.announcements).do(data => {
+    return this.http.get<Announcements[]>(this.globals.announcements).do(data => {
       this.announcementsCount = data.length;
       this.announcements = data;
       console.log('Got All announcements: ' + JSON.stringify(data));
@@ -50,106 +47,108 @@ export class AnnouncementsService implements OnInit {
     }).catch(this.handleError);
   }
 
-    getObject( id ): Observable<any> {
+  getObject(id): Observable<any> {
 
-        if (id === 0) {
-          // get a list of ALL the announcements
-          console.log('sending get request for announcements');
-           return this._http.get <Announcements[]> (this.globals.announcements).do(data => {
-             this.announcementsCount = data.length;
-             this.announcements = data;
-             console.log('Got Data back for all announcements: ' + JSON.stringify(data));
-             this.updateIDCount();
-             return data;
-           }).catch(this.handleError);
-        } else {
-       return this._http.get <Announcements[]> (this.globals.announcements + '?id=' + id )
-         // debug the flow of data
-         .do(data =>  { // console.log('All: ' + JSON.stringify(data));
-                       const newAnnouncement = data[0];
-                       this.announcements.push(newAnnouncement);
-                       this.updateIDCount();
-                       return data[0];
-               // console.log("Course highest ID: "+ this.highestID);
-                     } )
-         .catch( this.handleError);
-        }
-
-     }
-
-     getObjects( class_id ): Observable<any> {
-
-     return this._http.get <Announcements[]> (this.globals.announcements + '?class_id=' + class_id )
-       // debug the flow of data
-       .do(data => data )
-       .catch( this.handleError);
-
-   }
-
-
-     getNextId() {
-
+    if (id === 0) {
+      // get a list of ALL the announcements
+      console.log('sending get request for announcements');
+      return this.http.get<Announcements[]>(this.globals.announcements).do(data => {
+        this.announcementsCount = data.length;
+        this.announcements = data;
+        console.log('Got Data back for all announcements: ' + JSON.stringify(data));
+        this.updateIDCount();
+        return data;
+      }).catch(this.handleError);
+    } else {
+      return this.http.get<Announcements[]>(this.globals.announcements + '?id=' + id)
+        // debug the flow of data
+        .do(data => { // console.log('All: ' + JSON.stringify(data));
+          const newAnnouncement = data[0];
+          this.announcements.push(newAnnouncement);
           this.updateIDCount();
-           return this.highestID;
+          return data[0];
+          // console.log("Course highest ID: "+ this.highestID);
+        })
+        .catch(this.handleError);
+    }
 
-     }
+  }
+
+  getObjects(classId): Observable<any> {
+
+    return this.http.get<Announcements[]>(this.globals.announcements + '?classId=' + classId)
+      // debug the flow of data
+      .do(data => data)
+      .catch(this.handleError);
+
+  }
 
 
-     updateIDCount() {
-         // Loop through all the Materials to find the highest ID#
-         console.log('upading IDCount');
-         if (this.announcements && this.announcements.length > 0) {
-         for (let i = 0; i < this.announcements.length; i++) {
-         const foundID = Number(this.announcements[i].id);
-          console.log('Found ID: ' + foundID);
-         if (foundID >= this.highestID) {
-           const newHigh = foundID + 1;
-           this.highestID = newHigh;
-            console.log('newHigh == ' + newHigh);
-         }
-       } } else { this.highestID = 1;
+  getNextId(): number {
 
+    this.updateIDCount();
+    return this.highestID;
+
+  }
+
+
+  updateIDCount(): void {
+    // Loop through all the Materials to find the highest ID#
+    console.log('upading IDCount');
+    if (this.announcements && this.announcements.length > 0) {
+      for (let i = 0; i < this.announcements.length; i++) {
+        const foundID = Number(this.announcements[i].id);
+        console.log('Found ID: ' + foundID);
+        if (foundID >= this.highestID) {
+          const newHigh = foundID + 1;
+          this.highestID = newHigh;
+          console.log('newHigh == ' + newHigh);
+        }
       }
-     }
+    } else {
+      this.highestID = 1;
 
-     delete(id: string): Observable<any> {
-       console.log('requestion deletion');
-         return this._http.delete( this.globals.announcements + '?id=' + id);
-     }
+    }
+  }
 
-     create(announcementsObject: Announcements): Observable<any> {
+  delete(id: string): Observable<any> {
+    console.log('requestion deletion');
+    return this.http.delete(this.globals.announcements + '?id=' + id);
+  }
 
-         const myHeaders = new HttpHeaders();
-         this.updateIDCount();
-         if (this.highestID < 1) {
-           this.highestID = 1;
-         }
+  create(announcementsObject: Announcements): Observable<any> {
 
-         announcementsObject.id = this.highestID + '';
-         console.log('creating announcement object: ' + announcementsObject.id);
+    const myHeaders = new HttpHeaders();
+    this.updateIDCount();
+    if (this.highestID < 1) {
+      this.highestID = 1;
+    }
 
-         // courseObject.id = '' + thisID;
-         const body =  JSON.stringify(announcementsObject);
-         // console.log( 'Posting Course: ', body   );
-         return this._http.put(this.globals.announcements + '?id=' + announcementsObject.id, announcementsObject, {headers: myHeaders} );
-      }
+    announcementsObject.id = this.highestID + '';
+    console.log('creating announcement object: ' + announcementsObject.id);
 
-      update(announcementsObject: Announcements): Observable<any> {
+    // courseObject.id = '' + thisID;
+    const body = JSON.stringify(announcementsObject);
+    // console.log( 'Posting Course: ', body   );
+    return this.http.put(this.globals.announcements + '?id=' + announcementsObject.id, announcementsObject, { headers: myHeaders });
+  }
 
-         const myHeaders = new HttpHeaders();
-         myHeaders.append('Content-Type', 'application/json');
-         const body =  JSON.stringify(announcementsObject);
-         // console.log( 'Posting Course: ', body   );
-         return this._http.put(this.globals.announcements + '?id=' + announcementsObject.id, announcementsObject, {headers: myHeaders} );
-      }
+  update(announcementsObject: Announcements): Observable<any> {
+
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
+    const body = JSON.stringify(announcementsObject);
+    // console.log( 'Posting Course: ', body   );
+    return this.http.put(this.globals.announcements + '?id=' + announcementsObject.id, announcementsObject, { headers: myHeaders });
+  }
 
 
-    private handleError (error: HttpErrorResponse) {
-        console.log('ERROR:');
-        console.log( JSON.stringify(error) );
-         return Observable.of(error.message);
+  private handleError(error: HttpErrorResponse): string {
+    console.log('ERROR:');
+    console.log(JSON.stringify(error));
+    return error.message;
 
-       }
+  }
 }
 
 

@@ -7,7 +7,7 @@ import { Material } from '../../models/material.model';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'image-component',
     templateUrl: 'image.component.html',
     styleUrls: ['image.component.css'],
@@ -19,7 +19,7 @@ export class ImageComponent implements OnInit {
 
 constructor( private globals: Globals, private router: Router) {}
 
-ngOnInit() {
+ngOnInit(): void {
 
     this.imageURL = this.globals.materialimages + '/' + this.imageObject.id + '/' + this.imageObject.image;
 

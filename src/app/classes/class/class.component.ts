@@ -29,14 +29,14 @@ import { AnnouncementsService } from '../../services/announcements.service';
 
 @Component({
 
-  templateUrl: './class.component.html',
-  styleUrls: ['./class.component.css', './bios.css'],
-  providers: [CourseService]
+    templateUrl: './class.component.html',
+    styleUrls: ['./class.component.css', './bios.css'],
+    providers: [CourseService]
 })
 
 export class ClassComponent implements OnInit {
 
-   // @Output() sendMsg: EventEmitter<{}> = new EventEmitter<{}>();
+    // @Output() sendMsg: EventEmitter<{}> = new EventEmitter<{}>();
     classID: string;
     thisClass: ClassModel;
     errorMessage: string;
@@ -49,8 +49,8 @@ export class ClassComponent implements OnInit {
     studentIDList: string[];
     students: User[];
     instructorIDList: string[];
-    instructorCount= 0;
-    studentCount= 0;
+    instructorCount = 0;
+    studentCount = 0;
     materials = [];
     sectionNumber: number;
     section: Section;
@@ -75,130 +75,132 @@ export class ClassComponent implements OnInit {
     currentMaterials: MaterialSet[];
     announcements: Announcements[];
     currentAnnouncement: Announcements;
-  
+
     // for the BIO Popup
     bioChosen: User;
     showingBio: boolean;
 
-    constructor( private router: Router,
-    private activated_route: ActivatedRoute,
-    private classService: ClassService,
-    private courseService: CourseService,
-    private userService: UserService,
-    private materialService: MaterialService,
-    private discussionService: DiscussionService,
-    private enrollmentsService: EnrollmentsService,
-    private assignmentsService: AssignmentsService,
-    private messageService: MessageService,
-    private globals: Globals,
-private announcementsService: AnnouncementsService ) {
+    constructor(private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private classService: ClassService,
+                private courseService: CourseService,
+                private userService: UserService,
+                private materialService: MaterialService,
+                private discussionService: DiscussionService,
+                private enrollmentsService: EnrollmentsService,
+                private assignmentsService: AssignmentsService,
+                private messageService: MessageService,
+                private globals: Globals,
+                private announcementsService: AnnouncementsService) {
     }
 
-   clean(thisArray, deleteValue): any[] {
+    clean(thisArray, deleteValue): any[] {
         for (let i = 0; i < thisArray.length; i++) {
-          if (thisArray[i] === deleteValue) {
-            thisArray.splice(i, 1);
-            i--;
-          }
+            if (thisArray[i] === deleteValue) {
+                thisArray.splice(i, 1);
+                i--;
+            }
         }
         return thisArray;
-      }
+    }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.currentMaterials = null;
         this.messaging = false;
         this.currentUser = this.userService.getCurrentUser();
         this.currentUserIsInstructor = false;
 
-        this.activated_route.params.subscribe(params => {
-            this.onSectionChange(params['id2']);
+        this.activatedRoute.params.subscribe(params => {
+            this.onSectionChange(params.id2);
 
-                 // Grab the data from the Route
-            this.classID = this.activated_route.snapshot.params['id'];
-            this.thisClass = this.activated_route.snapshot.data['thisClass'];
-            this.users = this.activated_route.snapshot.data['users'];
-            this.sectionNumber = this.activated_route.snapshot.params['id2'];
-            this.discussionSettings = this.activated_route.snapshot.data['discussionSettings'];
-            this.notesSettings = this.activated_route.snapshot.data['notesSettings'];
-            this.announcements = this.activated_route.snapshot.data['announcements'];
+            // Grab the data from the Route
+            this.classID = this.activatedRoute.snapshot.params.id;
+            this.thisClass = this.activatedRoute.snapshot.data.thisClass;
+            this.users = this.activatedRoute.snapshot.data.users;
+            this.sectionNumber = this.activatedRoute.snapshot.params.id2;
+            this.discussionSettings = this.activatedRoute.snapshot.data.discussionSettings;
+            this.notesSettings = this.activatedRoute.snapshot.data.notesSettings;
+            this.announcements = this.activatedRoute.snapshot.data.announcements;
             console.log('Announcements: ' + this.announcements.length);
             this.currentUser = this.userService.getCurrentUser();
             console.log('This happens next');
         });
 
-        this.activated_route.parent.data.subscribe(
-            data => { this.onDataRetrieved(data['thisClass']); }
+        this.activatedRoute.parent.data.subscribe(
+            data => { this.onDataRetrieved(data.thisClass); }
         );
 
         if (!this.sectionNumber) { this.sectionNumber = 0; }
 
         this.studentIDList = [];
-        this.enrollmentsService.getEnrollmentsInClass( this.thisClass.id ).subscribe (
-            data => { this.enrollments = data;
-                this.students = this.enrollments.map( enrollment => this.userService.getUserFromMemoryById( enrollment.user_id ));
-                this.studentThumbnails = this.students.map( student =>
-                    this.createStudentThumbnail(student) );
-            }, err => { console.log('error getting enrollments'); } );
+        this.enrollmentsService.getEnrollmentsInClass(this.thisClass.id).subscribe(
+            data => {
+                this.enrollments = data;
+               // this.students = this.enrollments.map(enrollment => this.userService.getUserFromMemoryById(enrollment.userId));
+                this.studentThumbnails = this.students.map(student =>
+                    this.createStudentThumbnail(student));
+            }, err => { console.log('error getting enrollments'); });
 
         this.instructorIDList = [];
-        this.assignmentsService.getAssignmentsInClass( this.thisClass.id ).subscribe (
-            data => { this.assignments = data;
-              this.instructors = this.assignments.map( assignment => this.userService.getUserFromMemoryById( assignment.user_id ));
-              this.instructorThumbnails = this.instructors.map(
-                instructor => this.createInstructorThumbnail(instructor) );
-            }, err => { console.log('error getting assignments'); } );
+        this.assignmentsService.getAssignmentsInClass(this.thisClass.id).subscribe(
+            data => {
+                this.assignments = data;
+               // this.instructors = this.assignments.map(assignment => this.userService.getUserFromMemoryById(assignment.userId));
+                this.instructorThumbnails = this.instructors.map(
+                    instructor => this.createInstructorThumbnail(instructor));
+            }, err => { console.log('error getting assignments'); });
 
-        this.currentCourse = this.activated_route.snapshot.data['thisCourse'];
+        this.currentCourse = this.activatedRoute.snapshot.data.thisCourse;
         this.courseimageURL = this.globals.courseimages + '/' + this.currentCourse.id
-        + '/' + this.currentCourse.image;
+            + '/' + this.currentCourse.image;
 
-        this.classMaterials = this.activated_route.snapshot.data['classMaterials'];
+        this.classMaterials = this.activatedRoute.snapshot.data.classMaterials;
 
         this.buildMaterialSets();
         this.currentMaterials = this.materialSets[this.sectionNumber];
 
-        this.activated_route.params.subscribe( params => {
+        this.activatedRoute.params.subscribe(params => {
 
             // We subscribe to the parameters, in case the section # changes,
             // because we'll need to update some of our data accordingly if it does
 
-            if (params['id2']) {
-                this.sectionNumber = params['id2'];
+            if (params.id2) {
+                this.sectionNumber = params.id2;
 
                 if (this.currentCourse && this.currentCourse.sections) {
 
-                this.section = this.currentCourse.sections[this.sectionNumber];
-                this.currentMaterials = this.materialSets[this.sectionNumber];
-            }
+                    this.section = this.currentCourse.sections[this.sectionNumber];
+                    this.currentMaterials = this.materialSets[this.sectionNumber];
+                }
 
             }
         });
 
     }
 
-    gotoEditor() {
+    gotoEditor(): void {
         if (this.currentUser && this.currentUser.admin) {
-            this.router.navigate( ['/admin/courseObjects/' + this.thisClass.course + '/edit'] );
+            this.router.navigate(['/admin/courseObjects/' + this.thisClass.course + '/edit']);
         }
     }
     // This is where we look through ALL the materials - and group them into sets, if need be
     // for books and docs  (The only reason for doing this is that it is more aesthetically pleaseing
     // to have them grouped in clusters when they are displayed on the page ).
-    buildMaterialSets() {
+    buildMaterialSets(): void {
         this.materialSets = [];
         for (let j = 0; j < this.classMaterials.length; j++) {
             this.materialSets[j] = [];
             for (let i = 0; i < +this.classMaterials[j].length; i++) {
                 let material = this.classMaterials[j][i];
                 if (material) {
-                    const aMaterialSet = new MaterialSet( false, material.type, []);
+                    const aMaterialSet = new MaterialSet(false, material.type, []);
 
-                    if ( (material.type === 'book') ) {
+                    if ((material.type === 'book')) {
                         const first = i;
                         // collect books and documents together into sets of up to 4
-                        while (( material && (material.type === 'book' ) )
-                        && (i < first + 4 ) && (i < +this.classMaterials[j].length)) {
+                        while ((material && (material.type === 'book'))
+                            && (i < first + 4) && (i < +this.classMaterials[j].length)) {
                             // its only a group if is more than one - so this only happens after the 2nd time
                             if (i > first) { aMaterialSet.group = true; }
                             aMaterialSet.materials.push(this.classMaterials[j][i]);
@@ -208,141 +210,150 @@ private announcementsService: AnnouncementsService ) {
                         if (i > first) { i--; }
 
                     } else {
-                    if ( (material.type === 'doc') ) {
-                        const first = i;
-                        // collect books and documents together into sets of up to 4
-                        while (( material && (material.type === 'doc') )
-                        && (i < first + 4 ) && (i < +this.classMaterials[j].length)) {
-                            if (i > first) { aMaterialSet.group = true;  }// its only a group if is more than one
-                            aMaterialSet.materials.push(this.classMaterials[j][i]);
-                            i++;
-                            material = this.classMaterials[j][i];
-                        }
-                        if (i > first) { i--; }
+                        if ((material.type === 'doc')) {
+                            const first = i;
+                            // collect books and documents together into sets of up to 4
+                            while ((material && (material.type === 'doc'))
+                                && (i < first + 4) && (i < +this.classMaterials[j].length)) {
+                                if (i > first) { aMaterialSet.group = true; }// its only a group if is more than one
+                                aMaterialSet.materials.push(this.classMaterials[j][i]);
+                                i++;
+                                material = this.classMaterials[j][i];
+                            }
+                            if (i > first) { i--; }
 
-                    } else {
-                    // If it's not a book or a doc - then we don't need to group it
-                    if ( (material.type !== 'doc') && (material.type !== 'book')) {
-                        aMaterialSet.materials.push(material);
-                    } } }
+                        } else {
+                            // If it's not a book or a doc - then we don't need to group it
+                            if ((material.type !== 'doc') && (material.type !== 'book')) {
+                                aMaterialSet.materials.push(material);
+                            }
+                        }
+                    }
                     this.materialSets[j].push(aMaterialSet);
                 }
             }
         }
     }
-    showBio(user) {
+    showBio(user): void {
         if (!this.showingBio) {
-        this.bioChosen = user;
-        this.showingBio = true; }
+            this.bioChosen = user;
+            this.showingBio = true;
+        }
     }
-    closeBio(event) {
+    closeBio(event): void {
         this.showingBio = false;
     }
 
-    message(student) {
-      //  this.hideMenu(student);
+    message(student): void {
+        //  this.hideMenu(student);
         this.messageService.sendMessage(student);
     }
 
-    onSectionChange(newSectionNumber) {
+    onSectionChange(newSectionNumber): void {
         this.sectionNumber = newSectionNumber;
-        this.discussionSettings = this.activated_route.snapshot.data['discussionSettings'];
-        this.notesSettings = this.activated_route.snapshot.data['notesSettings'];
+        this.discussionSettings = this.activatedRoute.snapshot.data.discussionSettings;
+        this.notesSettings = this.activatedRoute.snapshot.data.notesSettings;
     }
 
-    onDataRetrieved(newClassObject) {
+    onDataRetrieved(newClassObject): void {
         this.thisClass = newClassObject;
     }
 
-    showAnnouncementsMenu() {
+    showAnnouncementsMenu(): void{
         this.showingAnnouncementsMenu = !this.showingAnnouncementsMenu;
     }
 
-    hideAnnouncementsMenu() {
+    hideAnnouncementsMenu(): void {
         this.showingAnnouncementsMenu = false;
     }
 
-    hideSectionMenu() {
+    hideSectionMenu(): void {
         this.showingSectionMenu = false;
     }
 
-    showSectionMenu() {
+    showSectionMenu(): void {
         this.showingSectionMenu = !this.showingSectionMenu;
     }
 
-    createInstructorThumbnail(user) {
+    createInstructorThumbnail(user): any {
         if (user.id === this.currentUser.id) {
             this.currentUserIsInstructor = true;
         }
-        const thumbnailObj = { user: user, user_id: user.id, online: false,
-            size: 100,  showUsername: true, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle' };
+        const thumbnailObj = {
+            user, userId: user.id, online: false,
+            size: 100, showUsername: true, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle'
+        };
         return thumbnailObj;
     }
 
-    createStudentThumbnail(user) {
+    createStudentThumbnail(user): any {
         if (user) {
-        const thumbnailObj = { user: user, user_id: user.id, online: false,
-            size: 60,  showUsername: true, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle' };
-        return thumbnailObj; } else {
+            const thumbnailObj = {
+                user, userId: user.id, online: false,
+                size: 60, showUsername: true, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle'
+            };
+            return thumbnailObj;
+        } else {
             return null;
         }
     }
 
-    displayAnnouncement( t ) {
+    displayAnnouncement(t): void {
         this.showingAnnouncements = true;
         this.currentAnnouncement = this.announcements[t];
     }
 
-    hideAnnouncements() {
+    hideAnnouncements(): void {
         this.showingAnnouncements = false;
     }
 
-    nextSection() {
+    nextSection(): void {
         this.sectionNumber++;
         if (this.sectionNumber > (this.currentCourse.sections.length - 1)) {
-            this.sectionNumber = ( this.currentCourse.sections.length - 1);
+            this.sectionNumber = (this.currentCourse.sections.length - 1);
         }
         this.section = this.currentCourse.sections[this.sectionNumber];
         this.currentMaterials = this.materialSets[this.sectionNumber];
         console.log('current Materials' + JSON.stringify(this.currentMaterials));
         const routeString = '/classes/' + this.classID + '/' + this.sectionNumber;
-        this.router.navigate( [routeString] );
+        this.router.navigate([routeString]);
 
     }
 
-    prevSection() {
+    prevSection(): void  {
         this.sectionNumber--;
-        if (this.sectionNumber < 0 ) { this.sectionNumber = 0; }
+        if (this.sectionNumber < 0) { this.sectionNumber = 0; }
         this.section = this.currentCourse.sections[this.sectionNumber];
         this.currentMaterials = this.materialSets[this.sectionNumber];
         const routeString = '/classes/' + this.classID + '/' + this.sectionNumber;
-        this.router.navigate( [routeString] );
+        this.router.navigate([routeString]);
 
     }
 
-    navigateTo(sectionNumber) {
-     this.showingSectionMenu = false;
-     this.sectionNumber = sectionNumber;
-     this.currentMaterials = this.materialSets[this.sectionNumber];
-     this.section = this.currentCourse.sections[this.sectionNumber];
-     const routeString = '/classes/' + this.classID + '/' + this.sectionNumber;
+    navigateTo(sectionNumber): void {
+        this.showingSectionMenu = false;
+        this.sectionNumber = sectionNumber;
+        this.currentMaterials = this.materialSets[this.sectionNumber];
+        this.section = this.currentCourse.sections[this.sectionNumber];
+        const routeString = '/classes/' + this.classID + '/' + this.sectionNumber;
         this.router.navigate([routeString]);
     }
 
-    makeAnnouncement() {
+    makeAnnouncement(): void {
         this.showingAnnouncementsForm = true;
     }
-    closeAnnoucementsForm( event ) {
+    closeAnnoucementsForm(event): void {
         this.showingAnnouncementsForm = false;
         // If we got an Announcments object back, then let's add it to our current list of announcements.
         if (event) {
             console.log('This is the event / Announcment we got back: ' + JSON.stringify(event));
-            this.announcements.push(event); }
+            this.announcements.push(event);
+        }
     }
-    deleteAnnouncement() {
+    deleteAnnouncement(): void {
         console.log('About to deete Announcement with id of: ' + this.currentAnnouncement.id);
 
-        this.announcementsService.delete( this.currentAnnouncement.id ).subscribe(
+        this.announcementsService.delete(this.currentAnnouncement.id).subscribe(
             (data) => {
                 console.log('Got back from the Announcement Service, after deleting.');
                 this.showingAnnouncements = false;
@@ -351,23 +362,24 @@ private announcementsService: AnnouncementsService ) {
                 console.log('index: ' + index);
                 this.announcements.splice(index, 1);
             },
-          error => {
-              this.errorMessage = <any>error;
-              console.log('Got back from the Announcement Service, with error deleting.');
-              // This is a work-around for a HTTP error message I was getting even when the
-              // course was successfully deleted.
-              if (error.status === 200) {
-                console.log('But this is one of those bogus errors');
-                this.showingAnnouncements = false;
-                const index = this.announcements.indexOf(this.currentAnnouncement);
-                console.log('Announcements: ' + JSON.stringify(this.announcements));
-                console.log('index: ' + index);
-                this.announcements.splice(index, 1);
+            error => {
+                this.errorMessage = error;
+                console.log('Got back from the Announcement Service, with error deleting.');
+                // This is a work-around for a HTTP error message I was getting even when the
+                // course was successfully deleted.
+                if (error.status === 200) {
+                    console.log('But this is one of those bogus errors');
+                    this.showingAnnouncements = false;
+                    const index = this.announcements.indexOf(this.currentAnnouncement);
+                    console.log('Announcements: ' + JSON.stringify(this.announcements));
+                    console.log('index: ' + index);
+                    this.announcements.splice(index, 1);
 
-               // this.router.navigate(['/coursebuilder']);
-              } else {
-             console.log('Error: ' + JSON.stringify(error) ); }
-        } );
+                    // this.router.navigate(['/coursebuilder']);
+                } else {
+                    console.log('Error: ' + JSON.stringify(error));
+                }
+            });
 
     }
 

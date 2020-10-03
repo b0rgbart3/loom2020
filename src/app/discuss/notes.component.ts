@@ -28,7 +28,7 @@ export class NotesComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activated_route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private classService: ClassService,
     private userService: UserService,
     private fb: FormBuilder,
@@ -36,22 +36,22 @@ export class NotesComponent implements OnInit {
     private notesService: NotesService,
  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log('In notes component: ');
   }
 
-  openNotes() {
+  openNotes(): void {
     this.settings.reading = true;
     console.log('saving after opening.');
     this.saveNotesSettings();
   }
 
-  closeNotes() {
+  closeNotes(): void {
     this.settings.reading = false;
     this.saveNotesSettings();
   }
 
-  saveNotesSettings() {
+  saveNotesSettings(): void {
 
     this.notesService.storeNotesSettings(this.settings).subscribe(
     data => console.log('done storing notes settings.'), error => {

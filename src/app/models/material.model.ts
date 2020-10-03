@@ -1,10 +1,10 @@
 export class Material {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public description: string,
-      public id: string,
+      public materialId: string,
       public type: string,
       public image: string,
       public file: string,
@@ -13,7 +13,7 @@ export class Material {
       public author: string,
       public length: string, // time based for audio and video -- or # of pages for documents
       public owner: string,   // this is the id of the user who uploaded this
-      public remove_this: boolean
+      public removeThis: boolean
   ) {}
 
 }

@@ -35,58 +35,60 @@ instructorThumbnails: Userthumbnail[];
 showingBio: boolean;
 bioChosen: User;
 
-  constructor(private classService: ClassService, private courseService: CourseService,
+  constructor(
+     private classService: ClassService, private courseService: CourseService,
      private globals: Globals, private assignmentsService: AssignmentsService,
      private userService: UserService, private router: Router ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.showingBio = false;
     this.bioChosen = null;
     this.courseID = this.classObject.course;
     this.assignmentsService.getAssignmentsInClass(this.classObject.id).subscribe(
       assignments => { this.assignments = assignments;
-        this.instructors = [];
-        for (let i = 0; i < this.assignments.length; i++) {
-          this.instructors.push(this.userService.getUserFromMemoryById(this.assignments[i].user_id) );
+                       this.instructors = [];
+
+                       this.assignments.forEach(assignment => {
+                          this.instructors.push(this.userService.getUserFromMemoryById(assignment.userId) );
+                       } );
+
+
+                       if (this.instructors.length > 0) {
+                           this.instructorThumbnails = this.instructors.map(
+                             instructor => this.createInstructorThumbnail(instructor) );
         }
-      //  console.log('instructors length' + this.instructors.length);
-        if (this.instructors.length > 0) {
-          this.instructorThumbnails = this.instructors.map( instructor =>
-             this.createInstructorThumbnail(instructor));
-        }
-        // console.log('# of instructors for this class: ' + this.instructorThumbnails.length);
       }
     );
     this.courseService.getCourse(this.courseID).subscribe(
       course =>  {this.course = course[0];
-        if (this.course && this.course.image) {
+                  if (this.course && this.course.image) {
       this.courseimageURL = this.globals.courseimages + '/' + this.courseID + '/' + this.course.image; }
       // console.log('this.courseimageURL: ' + this.courseimageURL);
-      if (this.course && this.course.description) {
+                  if (this.course && this.course.description) {
         this.description = this.course.description; }
       },
-          error => this.errorMessage = <any>error);
+          error => this.errorMessage = error );
 
   }
-  register() {
+  register(): void {
     const gotoURL = '/register/' + this.classObject.id;
     this.userService.redirectMsg = 'To register for a class on the Reclaiming Loom' +
     ' you first need to log in to your account, or sign up to create your account.';
     this.router.navigate( [gotoURL] );
   }
 
-  showBio(user) {
+  showBio(user): void {
     if (!this.showingBio) {
     this.bioChosen = user;
     this.showingBio = true; }
 }
-closeBio(event) {
+closeBio(event): void {
     this.showingBio = false;
 }
-  createInstructorThumbnail(user) {
+  createInstructorThumbnail(user): Userthumbnail {
   //  console.log('Making thumbnail for user: ' + JSON.stringify(user));
     if (user) {
-    const thumbnailObj = { user: user, user_id: user.id, online: false,
+    const thumbnailObj = { user, userId: user.id, online: false,
         size: 80,  showUsername: true, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle' };
     return thumbnailObj;
     }

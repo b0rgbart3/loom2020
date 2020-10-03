@@ -265,7 +265,7 @@ p {
     
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 600px): void {
       .loginBox {
           width:100%;
           min-width:100%;

@@ -126,7 +126,7 @@ p {
     font-weight:300;
 }
 
-@media (max-width: 740px) {
+@media (max-width: 740px): void {
     .classCourseImageThumnail {
         width:100%;
         display:block;

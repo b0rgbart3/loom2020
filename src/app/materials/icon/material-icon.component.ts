@@ -5,8 +5,8 @@ import { Material } from '../../models/material.model';
 import { Globals } from '../../globals2';
 
 @Component({
-    moduleId: module.id,
-    selector: 'material-icon',
+    // moduleId: module.id,
+    selector: 'comp-material-icon',
     templateUrl: 'material-icon.component.html',
     styleUrls: ['material-icon.component.css']
 })
@@ -19,7 +19,7 @@ export class MaterialIconComponent implements OnInit {
 
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.iconStyle = 'icon icon-' + this.type;
 

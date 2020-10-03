@@ -32,7 +32,7 @@ constructor() {
 }
 
 thumbnail: Userthumbnail;
-    ngOnInit() {
+    ngOnInit(): void {
       this.clicks = 0;
       this.makeThumb();
       if (this.allowMessage !== false) {
@@ -40,26 +40,26 @@ thumbnail: Userthumbnail;
       }
     }
 
-    makeThumb() {
-      this.thumbnail = { user: this.bioUser, user_id: this.bioUser.id, online: false,
+    makeThumb(): void {
+      this.thumbnail = { user: this.bioUser, userId: this.bioUser.id, online: false,
         size: 220,  showUsername: false, showInfo: false, textColor: '#ffffff', border: true, shape: 'circle' };
     }
-    closer() {
+    closer(): void {
       this.closeMe.emit(true);
     }
 
-    checkMe() {
+    checkMe(): void {
       this.clicks++;
       if (this.clicks > 1) {
         this.closer();
       }
     }
-    ngOnChanges() {
+    ngOnChanges(): void {
       this.thumbnail = null;
       this.makeThumb();
 
     }
-    message(thumbnail) {
+    message(thumbnail): void {
       this.messageMe.emit(thumbnail);
     }
   }

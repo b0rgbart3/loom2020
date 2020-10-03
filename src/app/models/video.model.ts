@@ -1,10 +1,10 @@
 export class Video {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public description: string,
-      public id: string,
+      public videoId: string,
       public url: string,
       public image: string,
       public owner: string   // this is the id of the user who uploaded this

@@ -5,10 +5,10 @@ import { Message } from '../models/message.model';
 import { Globals } from '../globals2';
 import { LoomNotificationsService } from './loom.notifications.service';
 @Injectable()
-export class ChatSocketService implements OnInit {
+export class ChatSocketService {
   private socket: SocketIOClient.Socket; // The client instance of socket.io
 
-  constructor(private _notes: LoomNotificationsService, private globals: Globals ) {
+  constructor(private myNotes: LoomNotificationsService, private globals: Globals ) {
     // this.socket = io(globals.chat_server);
     // this.socket.connect('http://localhost:3101');
 
@@ -26,14 +26,12 @@ export class ChatSocketService implements OnInit {
     // });
   }
 
-  ngOnInit() {
 
-  }
   // sendNotice() {
-  //   this._notes.add(<Notification> {type: 'success', message: 'New Client joined the Chat!'});
+  //   this.myNotes.add(<Notification> {type: 'success', message: 'New Client joined the Chat!'});
   // }
   // sendSocketNotice(data) {
-  //   this._notes.add(<Notification> {type: 'info', message: data});
+  //   this.myNotes.add(<Notification> {type: 'info', message: data});
   // }
 
   // introduceMyself(user, classID) {

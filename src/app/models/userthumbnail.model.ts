@@ -1,11 +1,11 @@
 import { User } from './user.model';
 
 export class Userthumbnail {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public user: User,
-      public user_id: string,
+      public userId: string,
       public online: boolean,  // This is not implemented yet
       public size: number,
       public showUsername: boolean,

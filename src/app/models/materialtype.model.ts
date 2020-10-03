@@ -1,7 +1,7 @@
 export class Materialtype {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public type: string,
       public longName: string,
       public pluralName: string

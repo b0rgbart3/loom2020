@@ -5,8 +5,8 @@ import { Globals } from '../../globals2';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-    moduleId: module.id,
-    selector: 'modal',
+    // moduleId: module.id,
+    selector: 'modal-comp',
     templateUrl: 'modal.component.html',
     styleUrls: ['modal.component.css']
 })
@@ -20,12 +20,12 @@ export class ModalComponent implements OnInit {
  
     // 'https://docs.google.com/gview?url=' +
 
-    ngOnInit() {
+    ngOnInit(): void {
         const fullURL = this.modalURL;
-        this.modalURL = <string> this.domSanitizer.bypassSecurityTrustResourceUrl(fullURL);
+        this.modalURL = this.domSanitizer.bypassSecurityTrustResourceUrl(fullURL) as string;
     }
 
-    close() {
+    close(): void {
         console.log('emitting a closeMe truth.');
         this.closeMe.emit(true);
     }

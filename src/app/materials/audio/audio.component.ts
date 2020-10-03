@@ -1,13 +1,10 @@
 import { Component, OnInit, Output, Input, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { Course } from '../../models/course.model';
-import { MaterialService } from '../../services/material.service';
 import { Material } from '../../models/material.model';
 import { Globals } from '../../globals2';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'audio-component',
     templateUrl: 'audio.component.html',
     styleUrls: ['audio.component.css']
@@ -19,7 +16,7 @@ export class AudioComponent implements OnInit {
     imageURL: string;
 
     @Input() audioObject: Material;
-    constructor( private globals: Globals  ) {
+    constructor( private globals: Globals  ): void {
 
     }
 
@@ -29,7 +26,7 @@ export class AudioComponent implements OnInit {
       //  console.log('This image URL: ' + this.imageURL);
     }
 
-    onRightClick() {
+    onRightClick(): boolean {
         return false;
     }
 

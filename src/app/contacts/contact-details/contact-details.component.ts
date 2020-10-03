@@ -27,13 +27,13 @@
 //     });
 //   }
 
-//   updateContact(contact: Contact): void {
+//   updateContact(contact: Contact) {
 //     this.contactService.updateContact(contact).then((updatedContact: Contact) => {
 //       this.updateHandler(updatedContact);
 //     });
 //   }
 
-//   deleteContact(contactId: String): void {
+//   deleteContact(contactId: String) {
 //     this.contactService.deleteContact(contactId).then((deletedContactId: String) => {
 //       this.deleteHandler(deletedContactId);
 //     });

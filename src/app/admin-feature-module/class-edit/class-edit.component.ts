@@ -25,27 +25,28 @@ export class ClassEditComponent implements OnInit {
     id: string;
     errorMessage: string;
     courses: Course[];
-    courseSelections: Object[];
+    courseSelections: {}[];
     showDialog = false;
 
     instructorChoices: FormArray;
 
 
-    constructor( private activated_route: ActivatedRoute, private classService: ClassService,
+    constructor(
+        private activatedRoute: ActivatedRoute, private classService: ClassService,
         private router: Router, private courseService: CourseService,
         private userService: UserService, private fb: FormBuilder,
-        private _location: Location  ) {   }
+        private alocation: Location  ) {   }
 
 
 
     ngOnInit(): void {
 
-        const id = this.activated_route.snapshot.params['id'];
+        const id = this.activatedRoute.snapshot.params.id;
 
         console.log('The ID for this new class is: ' + id);
 
-        this.thisClass = this.activated_route.snapshot.data['thisClass'];
-        this.courses = this.activated_route.snapshot.data['courses'];
+        this.thisClass = this.activatedRoute.snapshot.data.thisClass;
+        this.courses = this.activatedRoute.snapshot.data.courses;
 
         console.log('In Class Edit Component: thisClass = ' + JSON.stringify(this.thisClass));
 
@@ -61,12 +62,13 @@ export class ClassEditComponent implements OnInit {
         this.courseSelections = [];
 
         if (this.courses) {
-            for (let i = 0; i < this.courses.length; i++) {
-                console.log(this.courses[i].title);
-                const newObject = { value: this.courses[i].id , viewValue: this.courses[i].title };
+
+            this.courses.forEach( course => {
+                console.log(course.title);
+                const newObject = { value: course.id , viewValue: course.title };
                 console.log(newObject);
                 this.courseSelections.push( newObject );
-            }
+            });
 
             console.log('course selections: ' + JSON.stringify(this.courseSelections) );
         }
@@ -77,10 +79,10 @@ export class ClassEditComponent implements OnInit {
     }
 
     // buildInstructorChoice( user, isSelected ): FormGroup {
-    //     return this.fb.group({value: isSelected, username: user.username, user_id: <string> user.id });
+    //     return this.fb.group({value: isSelected, username: user.username, userId: <string> user.id });
     // }
     // buildStudentChoice( user, isSelected ): FormGroup {
-    //     return this.fb.group({value: isSelected, username: user.username, user_id: <string> user.id });
+    //     return this.fb.group({value: isSelected, username: user.username, userId: <string> user.id });
     // }
     // buildStudentChoices() {
     //     for (let i = 0; i < this.possibleStudents.length; i++) {
@@ -110,7 +112,7 @@ export class ClassEditComponent implements OnInit {
     //         // If there's a match in the two lists, then we build the control with the value of true.
     //         if (this.instructors) {
     //         for (let j = 0; j < this.instructors.length; j++) {
-    //             if (this.instructors[j].user_id === this.possibleInstructors[i].id) {
+    //             if (this.instructors[j].userId === this.possibleInstructors[i].id) {
     //                 match = true;
     //             }
     //         } }
@@ -118,13 +120,13 @@ export class ClassEditComponent implements OnInit {
     //     }
     // }
 
-    populateForm() {
+    populateForm(): void {
 
         if (this.thisClass) {
             console.log('In Class edit component - about to patch Values to the form: ' + JSON.stringify(this.thisClass));
-            this.classForm.patchValue({'title': this.thisClass.title,
-            'course' : this.thisClass.course, 'start' : new Date(this.thisClass.start), 'end' : new Date(this.thisClass.end),
-            'cost' : this.thisClass.cost, 'costBlurb': this.thisClass.costBlurb });
+            this.classForm.patchValue({title: this.thisClass.title,
+            course : this.thisClass.course, start : new Date(this.thisClass.start), end : new Date(this.thisClass.end),
+            cost : this.thisClass.cost, costBlurb: this.thisClass.costBlurb });
         } else {
             console.log('ERROR in Class Edit -- no thisClass object!');
         }
@@ -137,7 +139,7 @@ export class ClassEditComponent implements OnInit {
             console.log('Form was dirty');
 
             // This is Deborah Korata's way of merging our data model with the form model
-             const combinedClassObject = Object.assign( {}, this.thisClass, this.classForm.value);
+            const combinedClassObject = Object.assign( {}, this.thisClass, this.classForm.value);
 
             // we need to build the "instructors" array from the instructor_choices because
             // we only want to save the ones who are selected
@@ -145,14 +147,14 @@ export class ClassEditComponent implements OnInit {
 
 
             // This sends the newly formed class Object to the API
-            let id_as_number = 0;
+            let idAsNumber = 0;
             if (this.thisClass.id) {
-             id_as_number = parseInt(this.thisClass.id, 10);
+             idAsNumber = parseInt(this.thisClass.id, 10);
             } else {
                 this.thisClass.id = '0';
             }
 
-            if ( id_as_number > 0 ) {
+            if ( idAsNumber > 0 ) {
                 console.log('calling update: ');
                 this.classService
                 .updateClass( combinedClassObject ).subscribe(
@@ -166,16 +168,16 @@ export class ClassEditComponent implements OnInit {
                 this.classService.createClass( combinedClassObject ).subscribe(
                     (val) => { }, (response) => { console.log('continued response');  },
                       () => {console.log('save completed');
-                      this.router.navigate(['/admin/classes']); });
+                             this.router.navigate(['/admin/classes']); });
             }
 
         }
     }
-    closer() {
-        this._location.back();
+    closer(): void {
+        this.alocation.back();
     }
 
-    remove() {
+    remove(): void {
         // wondering if I should combine the form object with the data model here before marking it to be removed....
         this.classService.removeClass( this.thisClass).subscribe( (val) => {
             this.router.navigate(['/admin/classes']);

@@ -1,11 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 // import { Http, Response, Headers, RequestOptions } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
 import { Globals } from '../globals2';
 
 
@@ -15,42 +13,38 @@ import { Assignment } from '../models/assignment.model';
 
 
 @Injectable()
-export class EnrollmentsService implements OnInit {
+export class EnrollmentsService {
 
     enrollmentCount = 0;
     highestID = 0;
     enrollments: Enrollment[];
     errorMessage: string;
 
-    constructor (private _http: HttpClient, private globals: Globals, private userService: UserService) {}
+    constructor(private http: HttpClient, private globals: Globals, private userService: UserService) {}
 
-    ngOnInit() {
-      this.enrollments = [];
-      this.getEnrollmentsNow();
 
-    }
-    getEnrollmentsNow() {
+    getEnrollmentsNow(): void {
       this.getEnrollments().subscribe(
         data => this.enrollments = data,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error );
     }
 
     getEnrollmentsInClass( classID ): Observable<any> {
-      return this._http.get <Enrollment[]> (this.globals.enrollments + '?class_id=' + classID )
+      return this.http.get <Enrollment[]> (this.globals.enrollments + '?classId=' + classID )
       .do (data => data).catch( this.handleError );
     }
     // Get a list of student ID#s that are in this class.
     // getStudentsInClass( classID ): string[] {
     //   const studentIDList = this.enrollments.map( enrollment =>  {
-    //     if ((enrollment.class_id === classID)) {
-    //       return enrollment.user_id;
+    //     if ((enrollment.classId === classID)) {
+    //       return enrollment.userId;
     //     }
     //   });
     //   return studentIDList;
     // }
 
     getAllEnrollments():  Observable<any> {
-      return this._http.get <Enrollment[]> (this.globals.enrollments )
+      return this.http.get <Enrollment[]> (this.globals.enrollments )
       .do (data => {
         this.enrollments = data;
           return data;
@@ -59,7 +53,7 @@ export class EnrollmentsService implements OnInit {
     }
     // Return the list of student enrollments for the current user
     getEnrollments(): Observable<any> {
-      return this._http.get <Enrollment[]> (this.globals.enrollments + '?user_id=' +
+      return this.http.get <Enrollment[]> (this.globals.enrollments + '?userId=' +
        this.userService.getCurrentUser().id )
       .do (data => {
           return data;
@@ -78,7 +72,7 @@ export class EnrollmentsService implements OnInit {
         this.enrollments.push(enrollment);
 
         console.log('About to place put request for: ' + JSON.stringify(enrollment));
-        return this._http.put(this.globals.enrollments + '?id=0', enrollment, {headers: myHeaders}).map(
+        return this.http.put(this.globals.enrollments + '?id=0', enrollment, {headers: myHeaders}).map(
            () => enrollment ).catch( this.handleError );
 
       }
@@ -88,10 +82,10 @@ export class EnrollmentsService implements OnInit {
         // console.log('In the service, calling delete: ' + enrollment_id);
         const urlstring = this.globals.enrollments + '?id=' + enrollment_id;
         // console.log('urlstring: ' + urlstring);
-        return this._http.delete(urlstring).do( data => data);
+        return this.http.delete(urlstring).do( data => data);
       }
 
-  getNextId() {
+  getNextId(): void {
 
         this.updateIDCount();
         return this.highestID.toString();
@@ -99,14 +93,14 @@ export class EnrollmentsService implements OnInit {
   }
 
 
-  private handleError (error: HttpErrorResponse) {
+  private handleError (error: HttpErrorResponse): void {
     console.log('ERROR:');
     console.log( JSON.stringify(error) );
      return Observable.of(error.message);
 
    }
 
-  updateIDCount() {
+  updateIDCount(): void {
       // Loop through all the Materials to find the highest ID#
       if (this.enrollments && this.enrollments.length > 0) {
       for (let i = 0; i < this.enrollments.length; i++) {

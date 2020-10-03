@@ -35,15 +35,16 @@ export class MaterialsAdminComponent implements OnInit {
     reverse: boolean;
 
 
-    constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
-        private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
-    private classService: ClassService, private materialService: MaterialService ) {
+    constructor(
+      private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+      private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
+      private classService: ClassService, private materialService: MaterialService ){
        // this.data = new MaterialCollection([], [], [], [], [], [], []);
 
      }
 
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.data = null;
         // this.globals.materialTypes.map( type => this.getAssets(type.type));
@@ -52,7 +53,7 @@ export class MaterialsAdminComponent implements OnInit {
         this.order = this.types[0];
        // console.log('In Content Component init.');
 
-        this.activated_route.data.subscribe(
+        this.activatedRoute.data.subscribe(
             data => {
 
             this.data = this.materialService.sortMaterials(data.materials);
@@ -63,7 +64,7 @@ export class MaterialsAdminComponent implements OnInit {
         );
     }
 
-    setOrder(value: string) {
+    setOrder(value: string): void {
         if (this.order === value) {
           this.reverse = !this.reverse;
         } else {
@@ -71,26 +72,27 @@ export class MaterialsAdminComponent implements OnInit {
         this.reverse = true;
         }
     }
-    recover(object) {
+    recover(object): void {
         this.materialService.recover(object).subscribe(
-            data => {
-             //  this.materials.push(data);
-               console.log('back from recovering material'); }, error => {
+            data => {console.log('back from recovering material');
+                     this.data = this.materialService.sortMaterials(this.materials);
+                     this.removed = this.materialService.removed;
+          },
+            error => {
                 console.log('error recovering material');
             }, () => { console.log('finished recovering material');
-            this.data = this.materialService.sortMaterials(this.materials);
-            this.removed = this.materialService.removed;
+
                 }
         );
     }
 
-      addAsset(typeIndex) {
+      addAsset(typeIndex): void {
         console.log('Adding an asset of type: ' + this.globals.materialTypes[typeIndex].type);
         const addAssetString = '/admin/' + this.globals.materialTypes[typeIndex].type + '/0/edit';
         console.log('add asset string: ' + addAssetString);
         this.router.navigate( [ addAssetString ] );
       }
-      editAsset(typeIndex, assetID) {
+      editAsset(typeIndex, assetID): void {
         const editAssetString = '/admin/' + this.globals.materialTypes[typeIndex].type + '/' + assetID + '/edit' ;
         this.router.navigate( [ editAssetString]);
       }

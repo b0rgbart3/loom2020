@@ -21,29 +21,29 @@ export class ClassListComponent implements OnInit {
 
   constructor(private classService: ClassService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
      // Let's not display classes that don't yet have enough real data
      this.weedOut();
   }
 
-  weedOut() {
+  weedOut(): void {
     for (let i = 0; i < this.classes.length; i++) {
       if ((!this.classes[i].start) ) {
         this.classes.splice(i, 1);
       }
     }
   }
-  private getIndexOfClass = (classId: String) => {
+  private getIndexOfClass = (classId: string) => {
     return this.classes.findIndex( (classObject ) => {
       return classObject._id === classId;
     });
   }
 
-  selectClass(classObject: ClassModel) {
+  selectClass(classObject: ClassModel): void {
     this.selectedClass = classObject;
   }
 
-  createNewClass() {
+  createNewClass(): void {
     const classObject: ClassModel = {
       id: '0', title: '', course: '', start: new Date(), end: new Date(),
        courseObject: null, courseImageURL: '', cost: '', costBlurb: '', remove_this: false
@@ -53,7 +53,7 @@ export class ClassListComponent implements OnInit {
     this.selectClass( classObject );
   }
 
-  deleteClass = (classId: String) => {
+  deleteClass = (classId: string) => {
     const idx = this.getIndexOfClass(classId);
     if (idx !== -1) {
       this.classes.splice(idx, 1);

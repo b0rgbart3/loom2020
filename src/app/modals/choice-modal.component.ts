@@ -1,10 +1,9 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { User } from '../models/user.model';
-import { FlashMessagesService } from 'angular2-flash-messages';
+
 import { RouterModule, Routes, NavigationExtras, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { LoomsFacebookService } from '../services/loomsfacebook.service';
-import { LoginResponse, FacebookService, InitParams } from 'ngx-facebook';
+
 import { AlertService } from '../services/alert.service';
 import { Globals } from '../globals2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,8 +11,8 @@ import { Subject } from 'rxjs/Subject';
 
 
 @Component({
-    moduleId: module.id,
-    selector: 'choice-modal',
+   // moduleId: module.id,
+    selector: 'comp-choice-modal',
     templateUrl: 'choice-modal.component.html',
     styleUrls: ['choice-modal.component.css']
 })
@@ -32,7 +31,7 @@ export class ChoiceModalComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.display = false;
 
@@ -48,17 +47,17 @@ export class ChoiceModalComponent implements OnInit {
         });
     }
 
-    add() {
+    add(): void {
         this.addNew.emit( this.type );
         this.display = false;
     }
 
-    choose(choice) {
+    choose(choice): void {
         this.onChosen.emit(choice);
         this.display = false;
     }
 
-    closeModal() {
+    closeModal(): void {
         // Here the user pre-maturely chose to Close the Modal - instead of making a selection
         this.display = false;
     }

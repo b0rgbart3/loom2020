@@ -37,5 +37,5 @@
     </div>
 </div>
 
-<choice-modal [openModal]="openModal" (onChosen)='chose($event)' (addNew)='addNew($event)'></choice-modal>
+<comp-choice-modal [openModal]="openModal" (onChosen)='chose($event)' (addNew)='addNew($event)'></comp-choice-modal>
 <new-material-modal [newMateriaModal]="newMaterialModal" (onComplete)='newMaterialAdded($event)'></new-material-modal>

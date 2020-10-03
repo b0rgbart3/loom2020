@@ -6,7 +6,7 @@
     <div *ngIf="materialcollection.videos">
       
         <div *ngFor="let vid of materialcollection.videos; let i = index" class='videoWrap'>
-            <video-component [videoObject]="vid"></video-component>
+            <comp-video-component [videoObject]="vid"></comp-video-component>
         </div>
     </div>
 

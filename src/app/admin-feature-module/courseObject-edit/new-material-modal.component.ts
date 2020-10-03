@@ -32,7 +32,7 @@ export class NewMaterialModalComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.fresh = false;
         this.display = false;
 
@@ -50,7 +50,7 @@ export class NewMaterialModalComponent implements OnInit {
         });
     }
 
-    close() {
+    close(): void {
         this.onClose.emit(true);
         this.closeModal();
     }
@@ -66,7 +66,7 @@ export class NewMaterialModalComponent implements OnInit {
         this.closeModal();
     }
 
-    closeModal() {
+    closeModal(): void {
         // Here the user pre-maturely chose to Close the Modal - instead of making a selection
         this.display = false;
     }

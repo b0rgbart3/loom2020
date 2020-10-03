@@ -1,12 +1,12 @@
 export class Series {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public description: string,
-      public id: string,
+      public seriesId: string,
       public image: string,
-      public remove_this: boolean
+      public removeThis: boolean
 
   ) {}
 

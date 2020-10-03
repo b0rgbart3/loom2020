@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 // import { Http, Response, Headers, RequestOptions } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
@@ -23,8 +23,8 @@ export class SeriesService {
     constructor (private _http: HttpClient, private globals: Globals) {}
 
 
-   getSeries( series_id ): Observable<Series[]> {
-     if (series_id === 0) {
+   getSeries( seriesId ): Observable<Series[]> {
+     if (seriesId === 0) {
        // get a list of ALL the series
        console.log('sending get request for series');
         return this._http.get <Series[]> (this.globals.series).do(data => {
@@ -35,7 +35,7 @@ export class SeriesService {
           this.hideRemovals();
         }).catch(this.handleError);
      } else {
-    return this._http.get <Series[]> (this.globals.series + '?id=' + series_id )
+    return this._http.get <Series[]> (this.globals.series + '?id=' + seriesId )
       // debug the flow of data
       .do(data =>  { // console.log('All: ' + JSON.stringify(data));
                     this.seriesCount = data.length;
@@ -48,7 +48,7 @@ export class SeriesService {
 
   }
 
-  hideRemovals() {
+  hideRemovals(): void {
     // For now I'm just going to remove the class objects that are 'marked for removal'
     // from our main array -- and store them in a separate array
     this.removedSeries = [];
@@ -62,7 +62,7 @@ export class SeriesService {
     }
   }
 
-  getNextId() {
+  getNextId(): void {
 
         this.updateIDCount();
         return this.highestID.toString();
@@ -98,7 +98,7 @@ export class SeriesService {
 
   }
 
-  updateIDCount() {
+  updateIDCount(): void {
       // Loop through all the Materials to find the highest ID#
       if (this.series && this.series.length > 0) {
       for (let i = 0; i < this.series.length; i++) {
@@ -139,7 +139,7 @@ export class SeriesService {
       return this._http.put(this.globals.series + '?id=' + seriesObject.id, seriesObject, {headers: myHeaders} );
    }
 
-    private handleError (error: HttpErrorResponse) {
+    private handleError (error: HttpErrorResponse): void {
       // console.log( error.message );
       return Observable.throw(error.message);
 

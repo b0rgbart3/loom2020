@@ -31,7 +31,7 @@
 
         <div *ngIf='threads'>
                 <div *ngFor='let thread of threads; let i = index' class='threadContainer group'>
-                        <div *ngIf="currentUser.id === thread.user_id" 
+                        <div *ngIf="currentUser.id === thread.userId" 
                         class='tinytrash deleteThreadButton' (click)="deleteThread(thread)"></div>
                        <thread [thread]=thread [collapsed]='settings.folds[i]' (foldChange)="foldChange($event)"
                         (threadChange)="threadChange($event)" (deleteReply)="deleteReply($event)"

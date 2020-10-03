@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -16,29 +16,30 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export class NotesSettingsResolver implements Resolve <NotesSettings> {
 
-    constructor( private notesService: NotesService,
+    constructor(
+        private notesService: NotesService,
         private classService: ClassService, private router: Router,
-    private userService: UserService ) { }
+        private userService: UserService ) { }
 
     resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable <NotesSettings> {
-        const class_id = route.params['id'];
-        const user_id = this.userService.getCurrentUser().id;
-        const section = route.params['id2'] + '';
-   //     console.log('In the notes settings resolver - class: ' + class_id +
-   //         ', section: ' + section + ', user: ' + user_id);
+        const classId = route.params.id;
+        const userId = this.userService.getCurrentUser().id;
+        const section = route.params.id2 + '';
+   //     console.log('In the notes settings resolver - class: ' + classId +
+   //         ', section: ' + section + ', user: ' + userId);
 
-        return this.notesService.getNotesSettings(user_id, class_id, section).
+        return this.notesService.getNotesSettings(userId, classId, section).
         map(nsObject => { if (nsObject) {
          //   console.log('found existing ns object.');
         return nsObject; } else {
-            const newNSObject = new NotesSettings( user_id, class_id, section, true, []);
-                console.log('did not find ns object, so creating one:' + JSON.stringify(newNSObject));
+            const newNSObject = new NotesSettings( userId, classId, section, true, []);
+            console.log('did not find ns object, so creating one:' + JSON.stringify(newNSObject));
 
         // const returnableArray = [];
         // returnableArray.push(newDSObject);
        // console.log('returning: ' + JSON.stringify(returnableArray));
-        return newNSObject;
+            return newNSObject;
             }
          })
     .catch( error => {

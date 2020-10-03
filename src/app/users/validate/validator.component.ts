@@ -15,12 +15,13 @@ export class ValidatorComponent implements OnInit {
   validatedUser: User;
   errorMessage: string;
 
-  constructor( private activated_route: ActivatedRoute, private userService: UserService,
-    private router: Router, private _notes: LoomNotificationsService ) { }
+  constructor(
+    private activatedRoute: ActivatedRoute, private userService: UserService,
+    private router: Router, private myNotes: LoomNotificationsService ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log('In validation component.');
-    this.validationCode = this.activated_route.snapshot.params['vcode'];
+    this.validationCode = this.activatedRoute.snapshot.params.vcode;
     this.userService.validateUser(this.validationCode).subscribe(
 
       (validatedUser) => { this.validatedUser = <User> validatedUser[0];
@@ -44,7 +45,7 @@ export class ValidatorComponent implements OnInit {
                   console.log('User verification now completed.');
 
                   if (this.validatedUser && this.validatedUser.verified !== 'false') {
-                  this._notes.add(new LoomNotification('success', ['Thank you for verifying your account.'], 10000));
+                  this.myNotes.add(new LoomNotification('success', ['Thank you for verifying your account.'], 10000));
                   } else {
 
                   }
@@ -57,7 +58,7 @@ export class ValidatorComponent implements OnInit {
                   }
                 );
         } else {
-          this._notes.add(new LoomNotification('error', ['That validation code was not recognized.'], 10000));
+          this.myNotes.add(new LoomNotification('error', ['That validation code was not recognized.'], 10000));
           this.router.navigate(['/welcome']);
         }
 

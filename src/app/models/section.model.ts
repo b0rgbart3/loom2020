@@ -2,9 +2,9 @@ import { MaterialCollection } from './materialcollection.model';
 import { Materialreference } from './materialreference.model';
 
 export class Section {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public content: string,
       public materials: string[],

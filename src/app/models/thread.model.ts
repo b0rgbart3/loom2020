@@ -1,14 +1,14 @@
 import { Reply } from './reply.model';
 
 export class Thread {
-    _id?: string;
+    id?: string;
 
-    constructor (
-        public id: string,
-        public user_id: string,
-        public class_id: string,
+    constructor(
+        public threadId: string,
+        public userId: string,
+        public classId: string,
         public section: string,
-        public post_date: Date,
+        public postDate: Date,
         public subject: string,
         public replies: Reply [],
         public displayReplyInput: boolean,

@@ -5,7 +5,7 @@
                 <div *ngFor='let assignment of assignments; let i=index'>
 
                   
-                <div *ngIf='assignment.class_id === classGroup.id' class='listItem'>
+                <div *ngIf='assignment.classId === classGroup.id' class='listItem'>
                 <div class='tableRow' *ngIf='assignment.this_user'>
                     <div class='tableCell'>
                         {{ assignment.this_user.username}}
@@ -26,22 +26,22 @@
             
             <div class='selectContainer'>
             <mat-form-field>
-                <mat-select placeholder='Instructor' mdSelect formControlName='user_id'>
+                <mat-select placeholder='Instructor' mdSelect formControlName='userId'>
                      <mat-option *ngFor='let instructor of instructors' mdOption [value]='instructor.id'>
                        {{ instructor.username }}</mat-option>
                  </mat-select></mat-form-field>
-                 <span class='help-block' *ngIf="(form.touched) && form.get('user_id').errors">
-                        <span *ngIf="form.get('user_id').errors">You need to choose the instructor</span>
+                 <span class='help-block' *ngIf="(form.touched) && form.get('userId').errors">
+                        <span *ngIf="form.get('userId').errors">You need to choose the instructor</span>
                      </span>
                 </div>
                 <div class='selectContainer'>
                  <mat-form-field>          
-                <mat-select placeholder='Class' mdSelect formControlName='class_id'>
+                <mat-select placeholder='Class' mdSelect formControlName='classId'>
                      <mat-option *ngFor='let classModel of classes' mdOption [value]='classModel.id'>
                        {{ classModel.title }}</mat-option>
                  </mat-select></mat-form-field>
-                 <span class='help-block' *ngIf="(form.touched) && form.get('class_id').errors">
-                        <span *ngIf="form.get('class_id').errors">You need to choose the class</span>
+                 <span class='help-block' *ngIf="(form.touched) && form.get('classId').errors">
+                        <span *ngIf="form.get('classId').errors">You need to choose the class</span>
                      </span>
                     </div>
                     <div class='loomButton loomSubmit' 
@@ -54,9 +54,9 @@
                 Form touched: {{ form.touched }}<br>
                 Form dirty: {{ form.dirty }}<br>
                 Form valid: {{ form.valid }}<br>
-               touched:        {{ form.get('user_id').touched }}<br>
-               dirty: {{ form.get('user_id').dirty }} <br>
-               errors: {{ form.get('user_id').errors  | json }}<br>
+               touched:        {{ form.get('userId').touched }}<br>
+               dirty: {{ form.get('userId').dirty }} <br>
+               errors: {{ form.get('userId').errors  | json }}<br>
                     {{ form.value | json}}
                  </div>
     </div>

@@ -9,8 +9,8 @@ import { Section } from '../../models/section.model';
 
 
 @Component({
-    moduleId: module.id,
-    selector: 'course',
+   // moduleId: module.id,
+    selector: 'course-comp',
     templateUrl: 'course.component.html',
     styleUrls: ['course.component.css']
 })
@@ -22,12 +22,12 @@ export class CourseComponent {
 //     public currentSection: Section;
 
 //     constructor (private materialService: MaterialService,
-//     private activated_route: ActivatedRoute ) {}
+//     private activatedRoute: ActivatedRoute ) {}
 
 //     ngOnInit() {
 //         if (!this.section) { this.section  = 0; }
-//         // if (this.activated_route.snapshot.params['section']) {
-//         // this.section = this.activated_route.snapshot.params['section']; }
+//         // if (this.activatedRoute.snapshot.params['section']) {
+//         // this.section = this.activatedRoute.snapshot.params['section']; }
 
 //         this.currentSection = this.course.sections[this.section];
 //     }

@@ -13,7 +13,7 @@ export class QuestionBase<T> {
       required?: boolean,
       order?: number,
       controlType?: string
-    } = {}) {
+    } = {}): void {
     this.value = options.value;
     this.key = options.key || '';
     this.label = options.label || '';

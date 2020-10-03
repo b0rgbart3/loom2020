@@ -13,7 +13,7 @@ import { Enrollment } from '../../models/enrollment.model';
 import { EnrollmentsService } from '../../services/enrollments.service';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'register.component.html',
     styleUrls: ['register.component.css']
 })
@@ -33,29 +33,32 @@ export class RegisterComponent implements OnInit {
     classesTakingIDList: any[];
     alreadyRegistered: boolean;
 
-    constructor(private formBuilder: FormBuilder, private courseService: CourseService,
-        private activated_route: ActivatedRoute, private globals: Globals,
+    constructor(
+        private formBuilder: FormBuilder,
+        private courseService: CourseService,
+        private activatedRoute: ActivatedRoute,
+        private globals: Globals,
         private classService: ClassService,
-    private userService: UserService,
-    private router: Router,
-private enrollmentService: EnrollmentsService ) {
+        private userService: UserService,
+        private router: Router,
+        private enrollmentService: EnrollmentsService ): void {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.alreadyRegistered = false;
-        this.requestedClassID = this.activated_route.snapshot.params['id'];
-        this.requestedClass = this.activated_route.snapshot.data['requestedClass'];
+        this.requestedClassID = this.activatedRoute.snapshot.params.id;
+        this.requestedClass = this.activatedRoute.snapshot.data.requestedClass;
         this.courseID = +this.requestedClass.course;
         this.currentUser = this.userService.currentUser;
 
         this.courseService.getCourse(this.courseID).subscribe(
             course =>  {this.course = course[0];
-            this.courseimageURL = this.globals.courseimages + '/' + this.courseID + '/' + this.course.image;
-             console.log('this.courseimageURL: ' + this.courseimageURL);
-              this.description = this.course.description;
+                        this.courseimageURL = this.globals.courseimages + '/' + this.courseID + '/' + this.course.image;
+                        console.log('this.courseimageURL: ' + this.courseimageURL);
+                        this.description = this.course.description;
             },
-                error => this.errorMessage = <any>error);
+                error => this.errorMessage = error);
 
         this.RegisterFormGroup = this.formBuilder.group({
             // firstname: [ '' , []],
@@ -66,11 +69,11 @@ private enrollmentService: EnrollmentsService ) {
         });
 
         // Get the student enrollment objects for the current user
-        this.enrollments = this.activated_route.snapshot.data['enrollments'];
+        this.enrollments = this.activatedRoute.snapshot.data.enrollments;
 
         // extract out just the ID's into an array
         if (this.enrollments) {
-        this.classesTakingIDList = this.enrollments.map( enrollment => enrollment.class_id); }
+        this.classesTakingIDList = this.enrollments.map( enrollment => enrollment.classId); }
 
         if ( this.classesTakingIDList.indexOf(this.requestedClassID) !== -1) {
             // apparently this user has already registered for this class
@@ -79,11 +82,11 @@ private enrollmentService: EnrollmentsService ) {
 
     }
 
-    gotoClassPage() {
+    gotoClassPage(): void {
         const routeString = 'classes/' + this.requestedClassID + '/0';
         this.router.navigate([routeString]);
     }
-    registerSubmit() {
+    registerSubmit(): void {
         // OK!  I'm going to go for it and let user's register themselves.
         // In other words - this Registration Form will automatically enter a student Enrollment into the DB
 

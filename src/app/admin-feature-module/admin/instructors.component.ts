@@ -22,21 +22,22 @@ export class InstructorsComponent implements OnInit {
     instructors: User[];
     instructorFormGroup: FormGroup;
 
-    constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
+    constructor(
+        private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
         private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
-    private classService: ClassService ) { }
+        private classService: ClassService ) { }
 
 
-    ngOnInit() {
+    ngOnInit(): void {
 
-        this.activated_route.data.subscribe(
+        this.activatedRoute.data.subscribe(
             data => {
-            this.instructors = data['instructors'];
+            this.instructors = data.instructors;
             }
         );
 
         this.instructorFormGroup =  this.fb.group({
-            user_id: [ '', []],
+            userId: [ '', []],
             });
     }
 

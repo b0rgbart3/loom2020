@@ -4,12 +4,12 @@ import { Material } from './material.model';
 // as full material objects -- rather than just references (as it is in the database)
 
 export class ContentChart {
-  _id?: string;
+  id?: string;
 
-  constructor (
-    public course_id: string,
+  constructor(
+    public courseId: string,
     public title: string,
-    public id: string,
+    public contentChartId: string,
     public content: string,
     public materials: Material[],
 

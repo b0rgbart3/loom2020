@@ -1,20 +1,17 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ClassService } from '../services/class.service';
-import { User } from '../models/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { Course } from '../models/course.model';
 import { ClassModel } from '../models/class.model';
 import { Globals } from '../globals2';
 import { CourseService } from '../services/course.service';
 import { Enrollment } from '../models/enrollment.model';
 import { Assignment } from '../models/assignment.model';
-import { LoomNotificationsService } from '../services/loom.notifications.service';
+// import { LoomNotificationsService } from '../services/loom.notifications.service';
 import { LoomNotification } from '../models/loom.notification.model';
 
 
 @Component({
-    moduleId: module.id,
     templateUrl: 'home.component.html',
     styleUrls: ['home.component.css']
 })
@@ -34,17 +31,18 @@ export class HomeComponent implements OnInit {
     enrollments: Enrollment[];
     assignments: Assignment[];
 
-    constructor (
+    constructor(
         private userService: UserService,
         private classService: ClassService,
-        private _router: Router,
+        private myRouter: Router,
         private globals: Globals,
         private courseService: CourseService,
-        private activated_route: ActivatedRoute,
-        private _notes: LoomNotificationsService ) {
+        private activatedRoute: ActivatedRoute,
+      //  private myNotes: LoomNotificationsService
+        ) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         console.log('In Home Component Init');
         this.showTabs = true;
@@ -54,36 +52,39 @@ export class HomeComponent implements OnInit {
         this.teachingLabel = 'tabLabel';
 
         // Get the student enrollment objects for the current user
-        this.enrollments = this.activated_route.snapshot.data['enrollments'];
+      //  this.enrollments = this.activatedRoute.snapshot.data['enrollments'];
 
         // extract out just the ID's into an array
         if (this.enrollments) {
-        this.classesTakingIDList = this.enrollments.map( enrollment => enrollment.class_id); }
+            this.classesTakingIDList = this.enrollments.map(enrollment => enrollment.classId);
+        }
 
-     //   console.log('Classes Taking ID List: ' + JSON.stringify(this.classesTakingIDList));
+        //   console.log('Classes Taking ID List: ' + JSON.stringify(this.classesTakingIDList));
 
         // Ask the class service for a class object for each id in that array
-        if (this.classesTakingIDList && this.classesTakingIDList.length > 0) {
-        this.classesTaking = this.classesTakingIDList.map( classID => this.classService.getClassFromMemory(classID) );
-        } else {
-            this.classesTaking = null;
-        }
-     //   console.log('TAKING: ' + JSON.stringify(this.classesTaking));
+        // if (this.classesTakingIDList && this.classesTakingIDList.length > 0) {
+        //     this.classesTaking = this.classesTakingIDList.map(classID => this.classService.getClassFromMemory(classID));
+        // } else {
+        //     this.classesTaking = null;
+        // }
+        //   console.log('TAKING: ' + JSON.stringify(this.classesTaking));
 
-        this.assignments = this.activated_route.snapshot.data['assignments'];
+        const assignmentString = 'assignments';
+        this.assignments = this.activatedRoute.snapshot.data[assignmentString];
 
         if (this.assignments) {
-        this.classesTeachingIDList = this.assignments.map( assignment => assignment.class_id); }
-
-        if (this.classesTeachingIDList && this.classesTeachingIDList.length > 0 ) {
-        this.classesTeaching = this.classesTeachingIDList.map( classID => this.classService.getClassFromMemory(classID));
-        } else {
-            this.classesTeaching = null;
+            this.classesTeachingIDList = this.assignments.map(assignment => assignment.classId);
         }
 
+        // if (this.classesTeachingIDList && this.classesTeachingIDList.length > 0) {
+        //     this.classesTeaching = this.classesTeachingIDList.map(classID => this.classService.getClassFromMemory(classID));
+        // } else {
+        //     this.classesTeaching = null;
+        // }
 
 
-        if ((this.classesTaking === null) && ( this.classesTeaching !== null) ) {
+
+        if ((this.classesTaking === null) && (this.classesTeaching !== null)) {
             this.showTeaching = true;
             this.showTabs = false;
         }
@@ -101,22 +102,22 @@ export class HomeComponent implements OnInit {
         }
 
         if (!this.showTeaching && !this.showTaking) {
-            this._router.navigate(['/']);
+            this.myRouter.navigate(['/']);
             const thisNotification = new LoomNotification('success',
-            ['You are not yet registered for classes'], 3000);
-            this._notes.add( thisNotification );
+                ['You are not yet registered for classes'], 3000);
+           // this.myNotes.add(thisNotification);
         }
     }
 
 
-    taking() {
+    taking(): void {
         // console.log('change to taking.');
         this.showTaking = true;
         this.showTeaching = false;
         this.takingLabel = 'tabLabelChosen';
         this.teachingLabel = 'tabLabel';
     }
-    teaching() {
+    teaching(): void {
         // console.log('change to teaching.');
         this.showTaking = false;
         this.showTeaching = true;
@@ -125,9 +126,9 @@ export class HomeComponent implements OnInit {
     }
 
 
-      goto( queryID ) {
-          const queryString = '/classes/' + queryID + '/0';
-   //       console.log('Routing to: ' + queryString );
-        this._router.navigate( [queryString] );
-      }
+    goto(queryID): void {
+        const queryString = '/classes/' + queryID + '/0';
+        //       console.log('Routing to: ' + queryString );
+        this.myRouter.navigate([queryString]);
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -17,7 +17,7 @@ export class SeriesResolver implements Resolve <Series> {
         return this.seriesService.getSeries(0).
         map(series => { if (series) {
             return series; }
-        return null; })
+                        return null; })
     .catch(error => {
         return Observable.of(null);
     });

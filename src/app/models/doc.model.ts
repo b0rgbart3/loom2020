@@ -1,11 +1,11 @@
 export class Doc {
-    _id?: string;
+    id?: string;
 
-    constructor (
+    constructor(
         public title: string,
         public description: string,
         public author: string,
-        public id: string,
+        public docId: string,
         public image: string,
         public imageURL: string,
         public file: string,

@@ -25,17 +25,17 @@ export class EnrollmentsComponent implements OnInit {
     @Input() classes: ClassModel[];
 
 
-    constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
+    constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
         private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
     private classService: ClassService ) { }
 
         // The form control names match the Enrollment Data Model.  Nice!
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.feedback = '';
         this.enrollmentForm = this.fb.group({
-            user_id: [ '', Validators.required ],
-            class_id: [ '', Validators.required ],
+            userId: [ '', Validators.required ],
+            classId: [ '', Validators.required ],
             });
 
     }
@@ -44,8 +44,8 @@ export class EnrollmentsComponent implements OnInit {
 // We don't want to have a duplicate in the DB
         let unique = true;
         for (let i = 0; i < this.enrollments.length; i++) {
-            if (object.user_id === this.enrollments[i].user_id) {
-                if ( object.class_id === this.enrollments[i].class_id) {
+            if (object.userId === this.enrollments[i].userId) {
+                if ( object.classId === this.enrollments[i].classId) {
                         unique = false;
 
                 }
@@ -54,10 +54,10 @@ export class EnrollmentsComponent implements OnInit {
         return unique;
     }
 
-    trash(index) {
+    trash(index): void {
         console.log('about to delete: ' + JSON.stringify(this.enrollments[index]));
         const result = confirm('Are you sure you want to un-enroll ' + this.enrollments[index].this_user.username + ' from ' +
-    this.classService.getClassFromMemory(this.enrollments[index].class_id).title + '?');
+    this.classService.getClassFromMemory(this.enrollments[index].classId).title + '?');
     if (result) {
         this.enrollmentsService.remove(this.enrollments[index].id).subscribe(
         data =>  {},
@@ -72,12 +72,12 @@ export class EnrollmentsComponent implements OnInit {
     }
     }
 
-    postEnrollment() {
+    postEnrollment(): void {
         if (this.enrollmentForm.dirty &&  this.enrollmentForm.valid) {
         // This is Deborah Korata's way of merging our data model with the form model
      const comboObject = Object.assign( {}, {}, this.enrollmentForm.value);
-    const chosenUser = this.userService.getUserFromMemoryById(comboObject.user_id);
-    const chosenClass = this.classService.getClassFromMemory(comboObject.class_id);
+    const chosenUser = this.userService.getUserFromMemoryById(comboObject.userId);
+    const chosenClass = this.classService.getClassFromMemory(comboObject.classId);
 
     if (!this.unique(comboObject)) {
         console.log('NOT unique: ' + JSON.stringify(comboObject));

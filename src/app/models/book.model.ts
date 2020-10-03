@@ -1,11 +1,11 @@
 export class Book {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public description: string,
       public author: string,
-      public id: string,
+      public bookId: string,
       public purchaseURL: string,
       public image: string,
       public imageURL: string,

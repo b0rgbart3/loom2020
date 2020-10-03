@@ -6,7 +6,7 @@
 <user-thumb [thumbnail]=userThumbnail></user-thumb>
 </div>
 
-<div class='subject'> <div class='dateString'>  {{ thread.post_date | date }}</div>
+<div class='subject'> <div class='dateString'>  {{ thread.postDate | date }}</div>
 {{ thread.subject }}</div>
 </div>
  <div *ngIf="thread.replies && replyThumbnails && !thread.collapsed" class='threadReplies group'>
@@ -19,9 +19,9 @@
                 </div>
 
                  <div class='buttonBox group'>
-                        <div *ngIf='reply.user_id===currentUser.id' class='tinytrash deleteReplyButton'
+                        <div *ngIf='reply.userId===currentUser.id' class='tinytrash deleteReplyButton'
                   (click)='killReply(r)'></div><br>
-                    <!-- <button *ngIf='reply.user_id===currentUser.id' class='tinyEdit'>Edit</button> -->
+                    <!-- <button *ngIf='reply.userId===currentUser.id' class='tinyEdit'>Edit</button> -->
                 </div>
                  
          </div><br clear='all'>

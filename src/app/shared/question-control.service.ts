@@ -7,7 +7,7 @@ import { QuestionBase } from './question-base';
 export class QuestionControlService {
   constructor(private fb: FormBuilder) { }
 
-  toFormGroup(questions: QuestionBase<any>[][] ) {
+  toFormGroup(questions: QuestionBase<any>[][] ): void {
     const group: any = [];
     let indexer = 0;
 

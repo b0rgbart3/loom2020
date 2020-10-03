@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor,
     HttpRequest, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
@@ -20,9 +20,6 @@ export class EmptyResponseBodyInterceptor implements HttpInterceptor {
      * BUG: https://github.com/angular/angular/issues/18680
      * As of 2018-01-11 it is closed and reported fixed in Angular 5, however people are still reporting it not working.
      *
-     * @param {HttpRequest<any>} req
-     * @param {HttpHandler} next
-     * @return {Observable<HttpEvent<any>>}
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         /* istanbul ignore next */

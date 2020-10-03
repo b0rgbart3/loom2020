@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-// import { Http, Response, Headers, RequestOptions } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
 import { Globals } from '../globals2';
-
 import { Material } from '../models/material.model';
 import { MaterialCollection } from '../models/materialcollection.model';
-import { Course } from '../models/course.model';
 import _ from 'lodash';
 
 @Injectable()
@@ -41,22 +36,22 @@ export class MaterialService {
      updateMaterial(courseObject: Material):
     */
 
-    constructor (private _http: HttpClient, private globals: Globals) {}
+    constructor(private http: HttpClient, private globals: Globals) {}
 
-    getAllMaterialsByType (): Observable<any> {
+    getAllMaterialsByType(): Observable<any> {
 
-       return this._http.get <Material[][]>
+       return this.http.get <Material[][]>
               (this.globals.allmaterialsbytype).do(data => {
                 this.allMaterialsByType = data;
         }).catch(this.handleError);
 
     }
-  
+
     getDynamicMaterials( id, type ): Observable<any> {
       if (id === 0) {
         // get all the objects for this type
       //  console.log('\nIn material service / getDM: ' + type + '\n');
-        return this._http.get <Material[]>
+        return this.http.get <Material[]>
               (this.globals.materials + '?type=' + type).do(data => {
 
                // console.log('docs:');
@@ -67,12 +62,12 @@ export class MaterialService {
                 // console.log('sorted docs: ');
                 // sortedObjs.map( doc => console.log(doc.title));
 
-                const activeMaterials = this.hideRemovalsFromBatch( data );
-                return activeMaterials;
+            //    const activeMaterials = this.hideRemovalsFromBatch( data );
+                return data;
         }).catch(this.handleError);
       } else {
         // pass back a single object of this type
-        return this._http.get <Material>
+        return this.http.get <Material>
               (this.globals.materials + '?id=' + id + '&type=' + type).do(data => {
           // keeping a local copy of the data object
           // -- though I don't think we do anything with it
@@ -93,55 +88,30 @@ export class MaterialService {
 
       if (this.materials) {
         // console.log('looking: ' + this.classes.length);
-        for (let i = 0; i < this.materials.length; i++) {
-
-          if (this.materials[i].id === queryID ) {
-            return this.materials[i];
+        this.materials.forEach( material => {
+          if (material.id === queryID ) {
+            return material;
           }
-        }
-      }
-      return null;
+        });
+        return null;
     }
+  }
 
-    getBatchMaterials( list ): Observable<any> {
-
+    getBatchMaterials(list: []): Observable<any> {
       const queryString = '?materials=';
       const serialized = list.toString();
-     //  console.log('In Material Service, getting Batch Materials, serialized =' + serialized);
-      return this._http.get <any> ( this.globals.batchmaterials + queryString + serialized ).do (
-        data => {
-          return data;
-        }).catch(this.handleError);
+      return this.http.get <Material[]> ( this.globals.batchmaterials + queryString + serialized);
 
     }
     // We want to get all the material objects for the entire course -- but
     // not all the material objects in the entire database -- so we'll grab
     // them using the corresponding course_id.
-   getMaterials( course_id ): Observable<any> {
-     if (course_id === 0) {
-       // get a list of ALL the materials for ALL courses
-   //   console.log('sending get request for materials');
-        return this._http.get <Material[]> (this.globals.materials).do(data => {
-          this.materialCount = data.length;
-          this.materials = data;
-          this.updateIDCount();
-          this.hideRemovals();
-        }).catch(this.handleError);
-     } else {
-    return this._http.get <Material[]> (this.globals.materials + '?id=' + course_id )
-      // debug the flow of data
-      .do(data =>  {
-        // console.log('All materials for course: ' + course_id + ': ' + JSON.stringify(data));
-                    this.materialCount = data.length;
-                   // this.materials = data;
-                    this.updateIDCount();
-            // console.log("Course highest ID: "+ this.highestID);
-                  } )
-      .catch( this.handleError );
-     }
-
+   getMaterials(): Observable <Material[]> {
+    return this.http.get <Material[]> (this.globals.materials);
   }
-  hideRemovalsFromBatch( batch ) {
+
+
+  hideRemovalsFromBatch( batch ): [] {
     // For now I'm just going to remove the class objects that are 'marked for removal'
     // from our main array -- and store them in a separate array
     this.removed = [];
@@ -154,7 +124,7 @@ export class MaterialService {
       }
     }
    // console.log('after hiding materials: ' + JSON.stringify(this.removed));
-   return batch;
+    return batch;
   }
 
   hideRemovals() {
@@ -172,7 +142,7 @@ export class MaterialService {
    // console.log('after hiding materials: ' + JSON.stringify(this.removed));
   }
 
-  getNextId() {
+  getNextId(): string {
 
         this.updateIDCount();
         return this.highestID.toString();
@@ -180,28 +150,26 @@ export class MaterialService {
   }
 
 
-
-
-  updateIDCount() {
+  updateIDCount(): void {
       // Loop through all the Materials to find the highest ID#
    //   console.log('UPDATING ID COUNT: ' + this.highestID);
     //  console.log( 'length' + this.materials.length);
       if (this.materials && this.materials.length > 0) {
-      for (let i = 0; i < this.materials.length; i++) {
-      const foundID = +this.materials[i].id;
-   //   console.log('Found ID: ' + foundID);
-      if (foundID >= this.highestID) {
-        const newHigh = foundID + 1;
-        this.highestID = newHigh;
-    //     console.log('newHigh == ' + newHigh);
-      }
-    } } else { this.highestID = 1; }
+
+        this.materials.map( material => {
+          const foundID = parseInt( material.id, 10);
+          if (foundID >= this.highestID) {
+            const newHigh = foundID + 1;
+            this.highestID = newHigh;
+          }
+        });
+     } else { this.highestID = 1; }
  //   console.log('highest ID: ' + this.highestID);
   }
 
 
   getMaterial(id): Observable<any> {
-    return this._http.get<Material> ( this.globals.materials + '?id=' + id )
+    return this.http.get<Material> ( this.globals.materials + '?id=' + id )
       .do(data => {
          // console.log( 'found: ' + JSON.stringify(data) );
       return data; })
@@ -213,7 +181,7 @@ export class MaterialService {
     const myHeaders = new HttpHeaders();
     myHeaders.append('Content-Type', 'application/json');
 
-    return this._http.put(this.globals.materials + '?id=' + object.id, object, {headers: myHeaders});
+    return this.http.put(this.globals.materials + '?id=' + object.id, object, {headers: myHeaders});
 
   }
 
@@ -236,10 +204,10 @@ export class MaterialService {
 
   }
   deleteMaterial(id: string): Observable<any> {
-      return this._http.delete( this.globals.materials + '?id=' + id);
+      return this.http.delete( this.globals.materials + '?id=' + id);
   }
 
-  private extractData(res: Response) {
+  private extractData(res: Response): {} {
     const body = res.json();
     return body || {};
   }
@@ -259,7 +227,7 @@ export class MaterialService {
    //   console.log( 'Posting Material: ');
       this.materials.push(object);
       this.updateIDCount();
-      return this._http.put(this.globals.materials + '?id=' +
+      return this.http.put(this.globals.materials + '?id=' +
       object.id, object, {headers: myHeaders} );
    }
 
@@ -268,11 +236,11 @@ export class MaterialService {
       myHeaders.append('Content-Type', 'application/json');
       const body =  JSON.stringify(courseObject);
       // console.log( 'Posting Course: ', body   );
-      return this._http.put(this.globals.materials + '?id=' +
+      return this.http.put(this.globals.materials + '?id=' +
        courseObject.id, courseObject, {headers: myHeaders} );
    }
 
-    private handleError (error: HttpErrorResponse) {
+    private handleError(error: HttpErrorResponse): any {
       // console.log( error.message );
       return Observable.of(error.message);
 
@@ -290,43 +258,40 @@ export class MaterialService {
 
     //  console.log('Material Array length = ' + materialsArray.length);
 
-      for (let i = 0; i < materialsArray.length; i++) {
-
-        if (materialsArray[i]) {
-         // console.log('through the loop: ' + i);
-          switch (materialsArray[i].type) {
-            case 'video':
-              videos.push(materialsArray[i]);
-              break;
-            case 'image':
-              materialsArray[i].imageURL = this.globals.materialimages + '/' + materialsArray[i].id + '/' + materialsArray[i].image;
-            //  console.log('Processing image: ' + JSON.stringify( materialsArray[i] ) );
-              images.push(materialsArray[i]);
-              break;
-            case 'book':
-              books.push(materialsArray[i]);
-              // console.log(materialsArray[i]);
-              // console.log('Found a book: ' + i);
-              break;
-            case 'doc':
-              materialsArray[i].imageURL = this.globals.materialimages + '/' + materialsArray[i].id + '/' + materialsArray[i].image;
-              materialsArray[i].fileURL = this.globals.materialfiles + '/' + materialsArray[i].id + '/' + materialsArray[i].file;
-              docs.push(materialsArray[i]);
-              break;
-            case 'audio':
-              audios.push(materialsArray[i]);
-              break;
-            case 'quote':
-              // console.log('found a quote.');
-              quotes.push(materialsArray[i]);
-              break;
-            case 'block':
-              blocks.push(materialsArray[i]);
-              break;
-            default:
-              break;
-          }
+      materialsArray.forEach( material => {
+        switch (material.type) {
+          case 'video':
+            videos.push(material);
+            break;
+          case 'image':
+            material.imageURL = this.globals.materialimages + '/' + material.id + '/' + material.image;
+          //  console.log('Processing image: ' + JSON.stringify( materialsArray[i] ) );
+            images.push(material);
+            break;
+          case 'book':
+            books.push(material);
+            // console.log(materialsArray[i]);
+            // console.log('Found a book: ' + i);
+            break;
+          case 'doc':
+            material.imageURL = this.globals.materialimages + '/' + material.id + '/' + material.image;
+            material.fileURL = this.globals.materialfiles + '/' + material.id + '/' + material.file;
+            docs.push(material);
+            break;
+          case 'audio':
+            audios.push(material);
+            break;
+          case 'quote':
+            // console.log('found a quote.');
+            quotes.push(material);
+            break;
+          case 'block':
+            blocks.push(material);
+            break;
+          default:
+            break;
         }
+      });
 
         // { 'type': 'image',   'longName' : 'Images',          'pluralName' : 'images' },
         // { 'type': 'video',   'longName' : 'Videos',          'pluralName' : 'videos' },
@@ -337,24 +302,6 @@ export class MaterialService {
         // { 'type': 'book',    'longName' : 'Book References', 'pluralName' : 'books' }   ];
 
 
-
-        // const newMaterialsArray = new MaterialCollection( images, videos, audios, docs, quotes, blocks, books);
-        // return newMaterialsArray;
-        // if (materialsArray[i]) {
-        // if (materialsArray[i].type === 'video') {
-        //   videos.push(materialsArray[i]);
-        // } else {
-        //   if (materialsArray[i].type === 'book') {
-        //     books.push(materialsArray[i]);
-        //   }  else {
-        //     if (materialsArray[i].type === 'doc') {
-        //       docs.push(materialsArray[i]);
-        //     }
-        //   }
-        // }
-//      }
-
-      }
       audios = this.sort(audios);
       blocks = this.sort(blocks);
       books = this.sort(books);
@@ -364,7 +311,7 @@ export class MaterialService {
       videos = this.sort(videos);
 
      // const sortedMaterials = new MaterialCollection(images, videos, docs, books, audios, blocks, quotes);
-     const sortedMaterials = new MaterialCollection( audios, blocks, books, docs, images, quotes, videos );
+      const sortedMaterials = new MaterialCollection( audios, blocks, books, docs, images, quotes, videos );
      // console.log('quotes: ' + JSON.stringify(quotes));
       // console.log('Sorted Mats: ' + JSON.stringify(sortedMaterials.quotes));
       return sortedMaterials;
@@ -405,9 +352,9 @@ export class MaterialService {
     }
 
     // I don't quite understand how this method works for sorting an array alphabetically, but it seems to work
-    sort(materials) {
+    sort(materials): [] {
       const copy = materials;
-      copy.sort( function(a, b) {
+      copy.sort( (a, b) => {
         const textA = a.title.toLocaleLowerCase();
         const textB = b.title.toLocaleLowerCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;

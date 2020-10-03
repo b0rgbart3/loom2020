@@ -42,12 +42,13 @@ export class CourseObjectEditComponent implements OnInit {
    // sectionPointers: FormGroup[];
 
 
-    constructor( private router: Router, private activated_route: ActivatedRoute,
+    constructor(
+        private router: Router, private activatedRoute: ActivatedRoute,
         private courseService: CourseService, private fb: FormBuilder,
         private materialService: MaterialService, private globals: Globals,
         private dragulaService: DragulaService,
-    private _sanitizer: DomSanitizer,
-    private _location: Location  ) {
+        private sanitizer: DomSanitizer,
+        private alocation: Location  ) {
         const bag: any = this.dragulaService.find('section-bag');
         if (bag !== undefined ) {this.dragulaService.destroy('section-bag'); }
 
@@ -64,13 +65,13 @@ export class CourseObjectEditComponent implements OnInit {
           });
     }
 
-    onDrop() {
+    onDrop(): void {
         // Here the user rearranged the sections - so we just need to update their individual sectionNumbers to reflect the new order
         // for (let i = 0; i < this.course.sections.length; i++ ) {
         //     this.course.sections[i].sectionNumber = i;
         // }
     }
-    ngOnInit() {
+    ngOnInit(): void {
 
         // this.router.events.subscribe((evt) => {
         //     if (!(evt instanceof NavigationEnd)) {
@@ -79,20 +80,20 @@ export class CourseObjectEditComponent implements OnInit {
         //     window.scrollTo(0, 0);
         // });
 
-        this.items = [{'title': 'Mary'},
-        {'title': 'joe'},
-        {'title': 'little bob'},
+        this.items = [{title: 'Mary'},
+        {title: 'joe'},
+        {title: 'little bob'},
     ];
-        this.id = this.activated_route.snapshot.params['id'];
+        this.id = this.activatedRoute.snapshot.params.id;
 
-        this.course = this.activated_route.snapshot.data['course'];
+        this.course = this.activatedRoute.snapshot.data.course;
         this.originalMaterialArrays = [];
         this.originalCourse = _.cloneDeep(this.course);  // Deep Clone the object - otherwise it's just another pointer
         // for (let i = 0; i < this.course.sections.length; i++) {
         //     this.originalMaterialArrays[i] = _.cloneDeep(this.course.sections[i].materials);
         //     // Object.assign({}, this.course.sections[i].materials);
         // }
-        this.materials = this.activated_route.snapshot.data['materials'];
+        this.materials = this.activatedRoute.snapshot.data.materials;
 
         this.uploadedCourseImage = false;
         if (this.id !== 0 && ( this.course.image !== '' )) {
@@ -110,13 +111,13 @@ export class CourseObjectEditComponent implements OnInit {
 
         if (!this.course.sections) {
             this.course.sections = [];
-        this.course.sections[0] = new Section('Welcome, Syllabus & Calendar', '', [], null, 0);
+            this.course.sections[0] = new Section('Welcome, Syllabus & Calendar', '', [], null, 0);
         }
         this.buildSectionForms();
         this.populateForm();
     }
 
-    isDirty() {
+    isDirty(): boolean {
         if (this.courseFormGroup.dirty) {
             console.log('courseFormGroup was dirty');
             return true;
@@ -153,10 +154,10 @@ export class CourseObjectEditComponent implements OnInit {
         return false;
     }
 
-    checkDiff( section, index) {
+    checkDiff( section, index): void {
 
     }
-    addSectionForm() {
+    addSectionForm(): void {
         // const sectionFormGroup = this.fb.group( {
         //     title: [''],
         //     content: [''],
@@ -164,13 +165,13 @@ export class CourseObjectEditComponent implements OnInit {
         // this.sectionControls.push(sectionFormGroup);
 //           this.sectionPointers.push(sectionFormGroup);
     }
-    buildSectionForms() {
+    buildSectionForms(): void {
         // for (let i = 0; i < this.course.sections.length; i++) {
         //     this.addSectionForm();
 
         // }
     }
-    addSection() {
+    addSection(): void {
         // this variable needs to exist before we start working with it
         if (this.course.sections) {
 
@@ -184,12 +185,12 @@ export class CourseObjectEditComponent implements OnInit {
         this.course.sections.push( new Section( 'Section' + this.course.sections.length, '', [], null, this.course.sections.length) );
         }
     }
-    destroySection(index: number) {
+    destroySection(index: number): void {
         console.log('Index passed: ' + index);
        this.course.sections.splice(index, 1);
     //   this.sectionControls.removeAt( index );
     }
-    changeSection(section: Section) {
+    changeSection(section: Section): void {
         // update the model in the course edit component to match the one passed by an event from
         // the section edit component
         console.log('Got notified of a change in one of the sections: ' + section.sectionNumber);
@@ -197,7 +198,7 @@ export class CourseObjectEditComponent implements OnInit {
      //   this.onDrop();
     }
 
-    postCourse() {
+    postCourse(): void {
         if (this.uploadedCourseImage) {
             this.course.image = this.image; }
              // This is Deborah Korata's way of merging our data model with the form model
@@ -273,13 +274,13 @@ export class CourseObjectEditComponent implements OnInit {
         return lintedModel;
     }
 
-    lintString (string) {
-        if (string) {
-            return string.replace(/\n/g, '<br>');
+    lintString( lstring: string): any {
+        if (lstring) {
+            return lstring.replace(/\n/g, '<br>');
         } else {return null; }
     }
     // call this method before posting the course
-    lintSectionContent ( section ) {
+    lintSectionContent( section ): any{
 
         const sectionContent = section.content;
 
@@ -289,10 +290,10 @@ export class CourseObjectEditComponent implements OnInit {
         section.content = LintedSectionContent;
         return section;
     }
-    closer() {
+    closer(): void {
         this.router.navigate(['/admin/classes']);
     }
-    reset() {
+    reset(): void {
         this.courseFormGroup.reset();
 
         // Since I didn't build angular Form Controls -- to match these data objects, I have to re-synch them
@@ -311,7 +312,7 @@ export class CourseObjectEditComponent implements OnInit {
         // }
     }
 
-    removeCourse() {
+    removeCourse(): void {
         const result = confirm( 'Are you sure you want to remove this course,' +
     ' and ALL of it\'s related sections, with ID: ' + this.course.id + '? ');
 
@@ -323,7 +324,7 @@ export class CourseObjectEditComponent implements OnInit {
       }
     }
 
-    deleteCourse(courseId) {
+    deleteCourse(courseId): void {
         const result = confirm( 'Are you sure you want to delete this course,' +
         ' and All of it\'s related sections, width ID: ' + courseId + '? ');
         if (result) {
@@ -335,7 +336,7 @@ export class CourseObjectEditComponent implements OnInit {
                 this.router.navigate(['/coursebuilder']);
             },
           error => {
-              this.errorMessage = <any>error;
+              this.errorMessage = error ;
               // This is a work-around for a HTTP error message I was getting even when the
               // course was successfully deleted.
               if (error.status === 200) {

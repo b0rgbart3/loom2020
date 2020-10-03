@@ -1,9 +1,6 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { Enrollment } from '../models/enrollment.model';
 import { EnrollmentsService } from '../services/enrollments.service';
 import { UserService } from '../services/user.service';
@@ -18,7 +15,8 @@ import { AnnouncementsService } from '../services/announcements.service';
 export class AllAnnouncementsResolver implements Resolve <Announcements[]> {
 
     announcements: Announcements[];
-    constructor( private router: Router, private announcementsService: AnnouncementsService,
+    constructor(
+        private router: Router, private announcementsService: AnnouncementsService,
         private classService: ClassService, private userService: UserService ) { }
 
     resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable <Announcements[]> {
@@ -26,7 +24,7 @@ export class AllAnnouncementsResolver implements Resolve <Announcements[]> {
        // console.log('IN STUDENT ENROLLMENTS RESOLVER');
         return this.announcementsService.getAllAnnouncements().map( data => { this.announcements = data;
         // console.log('got data back from the API for enrollments: ' + JSON.stringify(data));
-    return this.announcements; })
+                                                                              return this.announcements; })
     .catch(error => {
         // this.router.navigate(['/welcome']);
         return Observable.of(null);

@@ -12,7 +12,7 @@ import { Assignment } from '../../models/assignment.model';
 
 
 @Component({
-    moduleId: module.id,
+    // moduleId: module.id,
     selector: 'assignments',
     templateUrl: 'assignments.component.html',
     styleUrls: ['assignments.component.css']
@@ -28,28 +28,29 @@ export class AssignmentsComponent implements OnInit {
 
 
 
-    constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
+    constructor(
+        private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
         private globals: Globals, private userService: UserService, private assignmentsService: AssignmentsService,
-    private classService: ClassService ) { }
+        private classService: ClassService ) { }
 
         // The form control names match the Enrollment Data Model.  Nice!
 
-    ngOnInit() {
+    ngOnInit(): void {
 
-        this.activated_route.data.subscribe(
+        this.activatedRoute.data.subscribe(
             data => {
           //  console.log('Got new data!');
-            this.assignments = data['assignments'];
+            this.assignments = data.assignments;
            // console.log(' Assignments: ' + JSON.stringify(data));
-            this.classes = data['classes'];
-            this.users = data['users'];
-            this.instructors = data['instructors'];
+            this.classes = data.classes;
+            this.users = data.users;
+            this.instructors = data.instructors;
             }
         );
 
         this.form = this.fb.group({
-            user_id: [ '', Validators.required ],
-            class_id: [ '', Validators.required ],
+            userId: [ '', Validators.required ],
+            classId: [ '', Validators.required ],
             });
 
     }
@@ -59,8 +60,8 @@ export class AssignmentsComponent implements OnInit {
         // We don't want to have a duplicate in the DB
                 let unique = true;
                 for (let i = 0; i < this.assignments.length; i++) {
-                    if (object.user_id === this.assignments[i].user_id) {
-                        if ( object.class_id === this.assignments[i].class_id) {
+                    if (object.userId === this.assignments[i].userId) {
+                        if ( object.classId === this.assignments[i].classId) {
 
                                 unique = false;
 
@@ -104,8 +105,8 @@ export class AssignmentsComponent implements OnInit {
                     data => { this.assignments = data;
                         if (this.assignments) {
                             this.assignments.map( enrollment => {
-                                enrollment.this_user = this.userService.getUserFromMemoryById(enrollment.user_id);
-                                 enrollment.this_class = this.classService.getClassFromMemory(enrollment.class_id);
+                                enrollment.this_user = this.userService.getUserFromMemoryById(enrollment.userId);
+                                 enrollment.this_class = this.classService.getClassFromMemory(enrollment.classId);
                             });
                         }
                     console.log(' Enrollments: ' + JSON.stringify(data)); },
@@ -120,13 +121,13 @@ export class AssignmentsComponent implements OnInit {
                 );
             }
 
-    postAssignment() {
+    postAssignment(): void {
         if (this.form.dirty && this.form.valid) {
 
         // This is Deborah Korata's way of merging our data model with the form model
      const comboObject = Object.assign( {}, {}, this.form.value);
-    const chosenUser = this.userService.getUserFromMemoryById(comboObject.user_id);
-    const chosenClass = this.classService.getClassFromMemory(comboObject.class_id);
+    const chosenUser = this.userService.getUserFromMemoryById(comboObject.userId);
+    const chosenClass = this.classService.getClassFromMemory(comboObject.classId);
 
     if (!this.unique(comboObject)) {
         this.form.reset();

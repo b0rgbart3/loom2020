@@ -20,7 +20,7 @@ export class MaterialCollectionComponent implements OnInit {
 
     constructor( private globals: Globals) {    }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
       this.displayModal = false;
       this.modalURL = '';
@@ -34,7 +34,7 @@ export class MaterialCollectionComponent implements OnInit {
               //  this.materialcollection.docs[i].imageURL = this.globals.materialimages + '/' +
                 //  this.materialcollection.docs[i].id + '/' + encodeURI(this.materialcollection.docs[i].image);
                }
-                if (this.materialcollection.docs[i].file && ( this.materialcollection.docs[i].file !== undefined)) {
+                if (this.materialcollection.docs[i].file && ( this.materialcollection.docs[i].file !== undefined)): void {
                // this.materialcollection.docs[i].fileURL = this.globals.materialfiles + '/' +
                 //  this.materialcollection.docs[i].id + '/' + this.materialcollection.docs[i].file;
                }
@@ -43,7 +43,7 @@ export class MaterialCollectionComponent implements OnInit {
     }
 
 
-  open_modal( object ) {
+  open_modal( object ): void {
      // window.open(URL, '_blank');
 
      console.log('Opening modal: ' + JSON.stringify( object ));
@@ -51,7 +51,7 @@ export class MaterialCollectionComponent implements OnInit {
      this.modalURL = object.fileURL;
   }
 
-  closeModal( truth ) {
+  closeModal( truth ): void {
     this.displayModal = false;
   }
 }

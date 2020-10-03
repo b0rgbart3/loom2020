@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.model';
 import { NgForm, FormGroup, FormBuilder } from '@angular/forms';
-
 import { UserService } from '../../services/user.service';
 import { AlertService } from '../../services/alert.service';
-import { FlashMessagesService } from 'angular2-flash-messages';
+
 
 
 @Component({
@@ -19,11 +18,13 @@ export class InstructorAssignmentsComponent implements OnInit {
     form: FormGroup;
     users: User[];
 
-    constructor( private fb: FormBuilder, private activated_route: ActivatedRoute  ) {
+    constructor(
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute  ) {
     }
 
-    ngOnInit() {
-        this.users = this.activated_route.snapshot.data['users'];
+    ngOnInit(): void {
+        this.users = this.activatedRoute.snapshot.data.users;
         console.log('Users: ' + JSON.stringify(this.users));
 
         this.form = this.fb.group({

@@ -26,19 +26,19 @@ export class UserThumbComponent implements OnInit {
 
   constructor ( private userService: UserService, private globals: Globals) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     if (this.thumbnail) {
       if (!this.thumbnail.user) {
 
-      this.userService.getUser(this.thumbnail.user_id).subscribe(
+      this.userService.getUser(this.thumbnail.userId).subscribe(
           user =>  {this.thumbnail.user = user[0];
           },
-          error => this.errorMessage = <any>error);
+          error => this.errorMessage = error );
         }
 
-        this.avatarImageURL = this.globals.avatars + '/' +
-          this.thumbnail.user_id + '/' + this.thumbnail.user.avatar_filename;
+      this.avatarImageURL = this.globals.avatars + '/' +
+          this.thumbnail.userId + '/' + this.thumbnail.user.avatar_filename;
 
       if (this.thumbnail.user && this.thumbnail.user.facebookRegistration) {
         console.log('fb user: ' + JSON.stringify( this.thumbnail.user ) );
@@ -51,7 +51,7 @@ export class UserThumbComponent implements OnInit {
       }
       if (this.thumbnail.user.avatar_filename === undefined) {
         this.thumbnail.user.avatar_URL = this.globals.avatars + '/placeholder.png';
-          this.avatarImageURL = this.thumbnail.user.avatar_URL;
+        this.avatarImageURL = this.thumbnail.user.avatar_URL;
       }
     }
 

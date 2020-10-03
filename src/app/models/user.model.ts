@@ -2,9 +2,9 @@ import { Enrollment } from './enrollment.model';
 import { BoardSettings } from './boardsettings.model';
 
 export class User {
-    _id?: string;
+    id?: string;
 
-    constructor (
+    constructor(
         public id: string,
         public username: string,
         public firstname: string,
@@ -21,12 +21,12 @@ export class User {
         public admin: boolean,
         public suspended: boolean,
         public favoritecolor: string,
-        public avatar_filename: string,
-        public avatar_URL: string,
-        public created_date: string,
-        public verified_date: string,
-        public completed_classes: string[],
-        public completed_series: string[],
+        public avatarFilename: string,
+        public avatarURL: string,
+        public createdDate: string,
+        public verifiedDate: string,
+        public completedClasses: string[],
+        public completedSeries: string[],
 
 
     ) {}

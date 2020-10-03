@@ -19,21 +19,22 @@ export class SeriesEditComponent implements OnInit {
    seriesForm: FormGroup;
    series: Series;
 
-    constructor( private activated_route: ActivatedRoute,
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private seriesService: SeriesService,
-         private fb: FormBuilder,
+        private fb: FormBuilder,
         private router: Router,
-        private _location: Location ) {
+        private alocation: Location ) {
 
     }
 
-    ngOnInit() {
-        const id = this.activated_route.snapshot.params['id'];
+    ngOnInit(): void {
+        const id = this.activatedRoute.snapshot.params.id;
 
-       console.log('The ID for this new series is: ' + id);
+        console.log('The ID for this new series is: ' + id);
 
         if (id !== '0') {
-          this.series = this.activated_route.snapshot.data['series'];
+          this.series = this.activatedRoute.snapshot.data.series;
         } else {
             this.series = new Series ( '', '', '0', null, false );
         }
@@ -46,21 +47,21 @@ export class SeriesEditComponent implements OnInit {
         this.populateForm();
     }
 
-    populateForm() {
+    populateForm(): void {
         if (this.series) {
          //   console.log('In Series edit component - about to patch Values to the form: ' + JSON.stringify(this.series));
-        this.seriesForm.patchValue({'title': this.series.title,
-            'description' : this.series.description });
+        this.seriesForm.patchValue({title: this.series.title,
+            description : this.series.description });
         } else {
             console.log('in Series Edit -- no series object!');
         }
 
     }
-    closer() {
-        this._location.back();
+    closer(): void {
+        this.alocation.back();
     }
 
-    remove() {
+    remove(): void {
         this.seriesService.remove( this.series ).subscribe( (val) => {
             this.router.navigate(['/admin/classes']);
         }, response => { this.router.navigate(['/admin/classes']); },
@@ -68,7 +69,7 @@ export class SeriesEditComponent implements OnInit {
 
     }
 
-    save() {
+    save(): void {
        // console.log('In Class-Edit component, about to savemodel: ' + JSON.stringify(this.seriesForm.value)  );
         if (this.seriesForm.dirty && this.seriesForm.valid) {
 
@@ -79,9 +80,9 @@ export class SeriesEditComponent implements OnInit {
 
 
              // This sends the newly formed class Object to the API
-             const id_as_number = parseInt(this.series.id, 10);
+             const idAsNumber = parseInt(this.series.id, 10);
 
-             if ( id_as_number > 0 ) {
+             if ( idAsNumber > 0 ) {
              //    console.log('calling update: ');
                  this.seriesService
                  .updateSeries( combinedClassObject ).subscribe(
@@ -89,7 +90,7 @@ export class SeriesEditComponent implements OnInit {
                   this.router.navigate(['/admin/classes']);
              }, response => { this.router.navigate(['/admin/classes']); },
                  () => { });
- 
+
              } else {
             //     console.log('calling createClass');
                  this.seriesService.createSeries( combinedClassObject ).subscribe(

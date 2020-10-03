@@ -22,7 +22,7 @@ export class MaterialLineItemComponent implements OnInit {
 
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.materialService.getMaterials( this.id ).subscribe(
             material => { this.material = material[0];

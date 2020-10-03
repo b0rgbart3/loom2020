@@ -1,11 +1,11 @@
 export class Announcements {
-    _id?: string;
+    id?: string;
 
-    constructor (
+    constructor(
 
-        public id: string,
-        public class_id: string,
-        public insstructor_id: string,
+        public announcementId: string,
+        public classId: string,
+        public insstructorId: string,
         public title: string,
         public announcement: string
     ) {}

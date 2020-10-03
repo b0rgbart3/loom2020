@@ -16,7 +16,7 @@ Notes Settings: Reading {{ notesSettings.reading }} -->
     <div *ngIf='materialSets && +materialSets.length > 0'>
         <div class='materials group'>
         <!-- <material-collection [materialcollection]="materialCollection"></material-collection> -->
-        <display-materials [materialSets]="materialSets"></display-materials>
+        <comp-display-materials [materialSets]="materialSets"></comp-display-materials>
        
         </div>
     </div>

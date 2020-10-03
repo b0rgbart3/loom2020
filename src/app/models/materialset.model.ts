@@ -2,9 +2,9 @@ import { Course } from './course.model';
 import { Material } from './material.model';
 
 export class MaterialSet {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public group: boolean,
       public type: string,
       public materials: Material[]

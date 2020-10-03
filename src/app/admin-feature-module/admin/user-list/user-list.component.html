@@ -9,7 +9,7 @@
 
       <div *ngFor="let user of sortedThumbnails" class='userLine' 
        >
-          <div class='thumbnailAdmin' [routerLink]="['/usersettings/' + user.user_id + '/edit']">
+          <div class='thumbnailAdmin' [routerLink]="['/usersettings/' + user.userId + '/edit']">
               <user-thumb [thumbnail]='user' class='listThumb'></user-thumb>
             <div class='userInfo'>
               <h1>{{ user.user.username }}  {{ user.user.id }}</h1>
@@ -31,7 +31,7 @@
        
           
           <!-- <div class='remover' 
-          (click)="deleteUser(user.user.username, user.user_id)">Delete</div> -->
+          (click)="deleteUser(user.user.username, user.userId)">Delete</div> -->
           <div *ngIf='showInstructorChoice' class='choice'>
             <div class='notinstructor' (click)='toggleInstructorStatus(user.user)' *ngIf='!user.user.instructor'>Instructor</div>
             <div class='instructor' (click)='toggleInstructorStatus(user.user)' *ngIf='user.user.instructor'>Instructor</div>
@@ -59,7 +59,7 @@
     <tr *ngFor='let user of sortedThumbnails'>
 
         <td [routerLink]=
-        "['/usersettings/' + user.user_id + '/edit']" class='clickableCell'>
+        "['/usersettings/' + user.userId + '/edit']" class='clickableCell'>
              <user-thumb [thumbnail]=user ></user-thumb>
         </td>
         <td class='username'>
@@ -91,7 +91,7 @@
 <table class='cleanTable' *ngIf='sortedThumbnails' cellpadding='0' cellspacing='0' width='100%'>
         <tr *ngFor='let user of sortedThumbnails' class='cleanRow'>
 
-                <td [routerLink]="['/usersettings/' + user.user_id + '/edit']" width='90%'>
+                <td [routerLink]="['/usersettings/' + user.userId + '/edit']" width='90%'>
                 <user-thumb [thumbnail]='user' class='listThumb'></user-thumb>
                 <div class='userInfo'>
                   <h1>{{ user.user.username }}</h1>

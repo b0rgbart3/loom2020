@@ -20,38 +20,40 @@ export class CourseListComponent implements OnInit {
   currentUser: User;
   admin: boolean;
 
-  constructor(private courseService: CourseService, private userService: UserService,
-    private _router: Router) { }
+  constructor(
+    private courseService: CourseService, private userService: UserService,
+    private myRouter: Router) { }
 
-  ngOnInit() {
-     this.currentUser = <User> JSON.parse(localStorage.getItem('currentUser') );
-      if ( this.currentUser && this.currentUser.admin ) { this.admin = true; }
+  ngOnInit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser && this.currentUser.admin) { this.admin = true; }
 
-      this.courseService
-       .getCourses().subscribe(
-         courses =>  {this.courses = courses;
-        console.log('got courses');
+    this.courseService
+      .getCourses().subscribe(
+        courses => {
+          this.courses = courses;
+          console.log('got courses');
         },
-         error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     console.log('end of init');
   }
 
-  private getIndexOfCourse = (courseId: String) => {
+  private getIndexOfCourse = (courseId: string) => {
     return this.courses.findIndex((course) => {
       return course._id === courseId;
     });
   }
 
-  selectCourse(course: Course) {
+  selectCourse(course: Course): void {
     this.selectedCourse = course;
   }
 
-  createNewCourse() {
-   this._router.navigate( ['/course/id:0'] );
+  createNewCourse(): void {
+    this.myRouter.navigate(['/course/id:0']);
   }
 
-  deleteCourse = (courseId: String) => {
+  deleteCourse = (courseId: string) => {
     const idx = this.getIndexOfCourse(courseId);
     if (idx !== -1) {
       this.courses.splice(idx, 1);

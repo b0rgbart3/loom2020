@@ -11,7 +11,7 @@ import { EnrollmentsService } from '../../services/enrollments.service';
 
 
 @Component({
-    moduleId: module.id,
+  //  moduleId: module.id,
     templateUrl: 'students.component.html',
     styleUrls: ['students.component.css']
 })
@@ -22,18 +22,18 @@ export class StudentsComponent implements OnInit {
     users: User[];
     enrollments: Enrollment[];
     classes: ClassModel[];
-    constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
-        private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
-    private classService: ClassService ) { }
+    constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+                private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
+                private classService: ClassService ) { }
 
 
-    ngOnInit() {
-        this.activated_route.data.subscribe(
+    ngOnInit(): void {
+        this.activatedRoute.data.subscribe(
             data => {
              //   console.log('Got new data!');
-            this.users = data['users'];
-            this.enrollments = data['enrollments'];
-            this.classes = data['classes'];
+            this.users = data.users;
+            this.enrollments = data.enrollments;
+            this.classes = data.classes;
              //   console.log('Users: ' + JSON.stringify(this.users));
             }
 

@@ -7,8 +7,8 @@ import { Material } from '../../models/material.model';
 
 
 @Component({
-    moduleId: module.id,
-    selector: 'block',
+  //  moduleId: module.id,
+    selector: 'block-comp',
     templateUrl: 'block.component.html',
     styleUrls: ['block.component.css'],
 })
@@ -20,14 +20,14 @@ export class BlockComponent implements OnInit {
     big: boolean;
 constructor( private globals: Globals, private router: Router) {}
 
-ngOnInit() {
+ngOnInit(): void {
  // console.log('In book component: book = ' + JSON.stringify(this.book));
   this.imageURL = this.globals.materialimages +
      '/' + this.block.id + '/' + this.block.image;
   this.display = false;
 }
 
-toggleDisplay() {
+toggleDisplay(): void {
     this.display = !this.display;
 }
 

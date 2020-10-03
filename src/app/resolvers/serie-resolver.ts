@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -14,7 +14,7 @@ export class SerieResolver implements Resolve <Series> {
     constructor( private seriesService: SeriesService, private router: Router ) { }
 
     resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable <Series> {
-        const id = route.params['id'];
+        const id = route.params.id;
         console.log('Series Resolver: id: ' + id);
         // if (isNaN(id)) {
         //    // this.router.navigate(['/welcome']);
@@ -30,8 +30,8 @@ export class SerieResolver implements Resolve <Series> {
             console.log(' Resolver got a series. ' + id);
             console.log(JSON.stringify(series[0]));
             return series[0]; }
-        this.router.navigate(['/welcome']);
-        return null; })
+                        this.router.navigate(['/welcome']);
+                        return null; })
     .catch(error => {
         this.router.navigate(['/welcome']);
         return Observable.of(null);

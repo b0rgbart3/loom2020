@@ -7,11 +7,8 @@ import { AppRoutingModule } from '../app-routing.module';
 import { CustomMaterialModule } from '../custom-material/custom-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-//import { VgCoreModule } from 'videogular2/src/core/core';
 import {VgCoreModule } from '@videogular/ngx-videogular/core';
-// import { VgControlsModule } from 'videogular2/src/controls/controls';
 import {VgControlsModule } from '@videogular/ngx-videogular/controls';
-//import { VgOverlayPlayModule } from 'videogular2/src/overlay-play/overlay-play';
 import {VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 // import { VgBufferingModule } from 'videogular2/src/buffering/buffering';
 import {VgBufferingModule } from '@videogular/ngx-videogular/buffering';
@@ -24,7 +21,7 @@ import { ClassThumbComponent } from '../classes/class-list/class-thumb.component
 import { ClassResolver } from '../resolvers/class-resolver.service';
 import { ClickOutsideDirective } from '../_directives/clickOutside.directive';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
-import { FlashMessagesModule } from 'angular2-flash-messages';
+
 import { MessageService } from '../services/message.service';
 import { ConnectionComponent } from './connection.component';
 import { NavBarComponent } from '../navbar/nav-bar.component';
@@ -35,7 +32,7 @@ import { ContactComponent } from '../welcome/contact/contact.component';
 import { ContactService } from '../services/contact.service';
 import { VideoComponent } from '../materials/video/video.component';
 import { Video } from '../models/video.model';
-//import { DragulaModule } from 'ng2-dragula';
+
 import { ChoiceModalComponent } from '../modals/choice-modal.component';
 
 import { MaterialIconComponent } from '../materials/icon/material-icon.component';
@@ -69,9 +66,7 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         VgControlsModule,
         VgOverlayPlayModule,
         VgBufferingModule,
-        CustomMaterialModule,
-        FlashMessagesModule
-
+        CustomMaterialModule
 
     ],
     declarations: [
@@ -134,7 +129,6 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         ClassThumbComponent,
         // ImageUploaderComponent,
         ClickOutsideDirective,
-        FlashMessagesModule,
         ConnectionComponent,
         NavBarComponent,
         BioPopComponent,

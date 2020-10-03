@@ -4,10 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Activated
 import { ContentChart } from '../models/contentchart.model';
 import { CourseService } from '../services/course.service';
 import { ClassService } from '../services/class.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { ClassModel } from '../models/class.model';
 
 /*
@@ -19,26 +16,30 @@ import { ClassModel } from '../models/class.model';
  */
 
 @Injectable()
-export class ClassCourseResolver implements Resolve <any> {
+export class ClassCourseResolver implements Resolve<any> {
 
-    thisClass: ClassModel;
-    thisCourse: Course;
+  thisClass: ClassModel;
+  thisCourse: Course;
 
-    constructor( private courseService: CourseService, private classService: ClassService, private router: Router,
-    private activatedRoute: ActivatedRoute ) { }
+  constructor(
+    private courseService: CourseService, private classService: ClassService, private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
-    resolve( route: ActivatedRouteSnapshot): Observable <any> {
+  resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
-       // console.log('In the class-course resolver.');
-        const thisClass = route.parent.data['thisClass'];
-       // console.log('Activated route snapshot ClassObject: ' + JSON.stringify(thisClass));
-        return this.courseService.getCourse(thisClass.course).map( thisCourse => { if (thisCourse[0]) {
-          this.thisCourse = thisCourse[0];
-      //  console.log('Loaded course Info in the resolver: ' + JSON.stringify(this.thisCourse));
+    // console.log('In the class-course resolver.');
+    const thisClass = route.parent.data.thisClass;
+    // console.log('Activated route snapshot ClassObject: ' + JSON.stringify(thisClass));
+    return this.courseService.getCourse(thisClass.course).map(thisCourse => {
+      if (thisCourse[0]) {
+        this.thisCourse = thisCourse[0];
+        //  console.log('Loaded course Info in the resolver: ' + JSON.stringify(this.thisCourse));
         return thisCourse[0];
-        }   } ).catch( error => {
-       // console.log( ' Retrieval error: course reslover. ');
-    return error; });
+      }
+    }).catch(error => {
+      // console.log( ' Retrieval error: course reslover. ');
+      return error;
+    });
 
 
   }

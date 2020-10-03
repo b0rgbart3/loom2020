@@ -16,8 +16,8 @@ import { NotesSettings } from '../../models/notessettings.model';
 import { MaterialSet } from '../../models/materialset.model';
 
 @Component({
-    moduleId: module.id,
-    selector: 'section',
+   // moduleId: module.id,
+    selector: 'section-comp',
     templateUrl: 'section.component.html',
     styleUrls: ['section.component.css'],
 })
@@ -40,18 +40,19 @@ export class SectionComponent implements OnInit, OnChanges {
     public books: Material [];
     public docs: Material [];
     errorMessage: string;
-    constructor (private materialService: MaterialService,
+    constructor(
+        private materialService: MaterialService,
         private discussionService: DiscussionService,
         private userService: UserService,
         ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
 
        // console.log('In Section INit: ' + JSON.stringify(this.materialSets));
       //  this.initMe();
     }
 
-    initMe() {
+    initMe(): void {
 
      //   console.log('In section init: discussionSettings: ' +
        //  JSON.stringify(this.discussionSettings));
@@ -63,7 +64,7 @@ export class SectionComponent implements OnInit, OnChanges {
 
     }
 
-    ngOnChanges() {
+    ngOnChanges(): void {
       //  console.log('In Section Init: Materials: ' + JSON.stringify(this.materials));
         // console.log('somethign changeD: ' + this.sectionNumber);
         // this.discussionService.getDiscussionSettings(this.userService.currentUser.id,

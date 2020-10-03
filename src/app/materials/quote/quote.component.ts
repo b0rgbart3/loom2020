@@ -6,7 +6,7 @@ import { RouterLinkWithHref } from '@angular/router';
 import { Material } from '../../models/material.model';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'quote-component',
     templateUrl: 'quote.component.html',
     styleUrls: ['quote.component.css']
@@ -19,7 +19,7 @@ export class QuoteComponent implements OnInit {
 
     constructor( private globals: Globals) {    }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
        //  console.log('mat collection: ' + JSON.stringify( this.materialcollection['quotes'] ));
 

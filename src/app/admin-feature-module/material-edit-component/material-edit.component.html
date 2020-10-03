@@ -46,7 +46,7 @@
 <div class='contentContainer' *ngIf='type!=="quote"'>
   <!-- Document Content Here -->
     <div *ngIf='type==="video" && file && !loading'>
-            <video-component [videoObject]="this"></video-component>
+            <comp-video-component [videoObject]="this"></comp-video-component>
     </div>
     <div *ngIf='type==="doc" && file && !loading && !displayModal' (click)='openModal()' class='button hotDoc'>
         preview this document

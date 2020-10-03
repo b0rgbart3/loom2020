@@ -1,7 +1,7 @@
 export class LoomNotification {
-    _id?: string;
+    id?: string;
 
-    constructor (
+    constructor(
         public type: string,
         public message: string[],
         public delay: number

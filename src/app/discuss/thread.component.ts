@@ -11,7 +11,7 @@ import { Userthumbnail } from '../models/userthumbnail.model';
 
 
 @Component({
-  selector: 'thread',
+  selector: 'thread-comp',
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.css'],
   providers: [ClassService]
@@ -21,12 +21,12 @@ export class ThreadComponent implements OnInit, OnChanges {
 
   user: User;
   subject: string;
-  user_id: string;
+  userId: string;
   errorMessage: string;
   replyFormGroup: FormGroup;
   currentUser: User;
-  post_date: Date;
-  display_date: string;
+  postDate: Date;
+  displayDate: string;
   public userThumbnail: Userthumbnail;
   public replyThumbnails: Userthumbnail[];
   threadSubjectClass: string;
@@ -37,13 +37,14 @@ export class ThreadComponent implements OnInit, OnChanges {
   @Output() deleteReply = new EventEmitter<Thread>();
   @Output() foldChange = new EventEmitter<Thread>();
 
-  constructor( private activated_route: ActivatedRoute,
+  constructor(
+    private activatedRoute: ActivatedRoute,
     private classService: ClassService,
     private userService: UserService,
     private fb: FormBuilder,
     private ds: DiscussionService ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     // console.log('In the INIT of the thread component.');
    // console.log('My collapsed value == ' + this.collapsed);
@@ -52,48 +53,48 @@ export class ThreadComponent implements OnInit, OnChanges {
     // but let's at least get them in sync
     this.thread.collapsed = this.collapsed;
 
-    this.post_date = this.thread.post_date;
-    if (this.post_date) {
-    this.display_date = this.post_date.toString(); }
+    this.postDate = this.thread.postDate;
+    if (this.postDate) {
+    this.displayDate = this.postDate.toString(); }
     this.currentUser = this.userService.getCurrentUser();
     // console.log('Current User: ' + JSON.stringify(this.currentUser));
     // console.log('thread: ' + JSON.stringify(this.thread));
     this.thread.displayReplyInput = false;
-    this.user = this.userService.getUserFromMemoryById(this.thread.user_id);
+    this.user = this.userService.getUserFromMemoryById(this.thread.userId);
     this.createReplyThumbnails();
-    this.userThumbnail = this.createLiveThumbnail( this.thread.user_id );
+    this.userThumbnail = this.createLiveThumbnail( this.thread.userId );
     this.threadSubjectClass = 'threadSubjectClass group';
 
     if (this.thread.replies && this.thread.replies.length > 0) {
       this.threadSubjectClass = 'threadSubject threadSubjectCollapseable group';
     }
-        this.replyFormGroup = this.fb.group( { reply : '' } );
+    this.replyFormGroup = this.fb.group( { reply : '' } );
       // console.log('current state: ' + this.thread.displayReplyInput);
     }
-  ngOnChanges() {
+  ngOnChanges(): void {
    // console.log('thread changed.');
   }
 
-  createReplyThumbnails() {
+  createReplyThumbnails(): void {
     this.replyThumbnails = [];
     if (this.thread.replies) {
     this.replyThumbnails = this.thread.replies.map(
-      reply => { return { user: this.userService.getUserFromMemoryById(reply.user_id),
-         user_id: reply.user_id, online: false,
+      reply => { return { user: this.userService.getUserFromMemoryById(reply.userId),
+         userId: reply.userId, online: false,
       size: 40, showUsername: false, showInfo: false, textColor: '#000000', border: false, shape: 'circle' };  }); }
    // console.log('thread.replies:' + JSON.stringify(this.thread.replies));
    // console.log('replyThumbnails: ' + JSON.stringify(this.replyThumbnails));
   }
 
   // createThumbnail(reply) {
-  //   const thumbnailObj = { user: null, user_id: reply.user_id, editable: false, inRoom: true,
+  //   const thumbnailObj = { user: null, userId: reply.userId, editable: false, inRoom: true,
   //     size: 40, showUsername: false, showInfo: false, textColor: '#000000' };
   //   return thumbnailObj;
   // }
 
-  createLiveThumbnail(user_id) {
-    const thisUser = this.userService.getUserFromMemoryById(user_id);
-    const thumbnailObj = { user: thisUser, user_id: user_id, online: false,
+  createLiveThumbnail(userId): Userthumbnail {
+    const thisUser = this.userService.getUserFromMemoryById(userId);
+    const thumbnailObj = { user: thisUser, userId, online: false,
       size: 40, showUsername: false, showInfo: false, textColor: '#000000', border: false, shape: 'circle' };
     return thumbnailObj;
   }
@@ -108,11 +109,11 @@ export class ThreadComponent implements OnInit, OnChanges {
   //  // this.threadChange.emit(this.thread);
   // }
 
-  cancel(thread) {
+  cancel(thread): void {
     this.thread.displayReplyInput = false;
   }
 
-  toggleThread() {
+  toggleThread(): void {
     console.log('toggle Thread.');
     this.thread.collapsed = !this.thread.collapsed;
 
@@ -129,7 +130,7 @@ export class ThreadComponent implements OnInit, OnChanges {
     }
   }
 
-  killReply(r) {
+  killReply(r): void {
     if (r > -1) {
       const cd = confirm('Are you sure you want to delete this reply?');
       if (cd) {
@@ -141,7 +142,7 @@ export class ThreadComponent implements OnInit, OnChanges {
 
 
 
-  submitReply(thread) {
+  submitReply(thread): void {
     // console.log(this.replyFormGroup.get('reply').value);
     const reply = this.replyFormGroup.get('reply').value;
 
@@ -156,7 +157,7 @@ export class ThreadComponent implements OnInit, OnChanges {
       thread.replies = [];
     }
     if (this.currentUser) {
-      const replyObject = { user_id: this.currentUser.id, reply: reply };
+      const replyObject = { userId: this.currentUser.id, reply };
 
       thread.replies.push(replyObject);
       this.replyThumbnails.push(this.createLiveThumbnail(this.currentUser.id));
@@ -178,7 +179,7 @@ export class ThreadComponent implements OnInit, OnChanges {
           () => {
 
           this.replyFormGroup.reset();
-        thread.displayReplyInput = false;
+          thread.displayReplyInput = false;
         // this.createReplyThumbnails();
        });
 

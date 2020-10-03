@@ -1,7 +1,7 @@
 export class Materialreference {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public reference: string,
   ) {}
 

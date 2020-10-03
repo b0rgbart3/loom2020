@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
 
 
     constructor( private formBuilder: FormBuilder, private announcementsService: AnnouncementsService, private router: Router ) { }
-    ngOnInit() {
+    ngOnInit(): void {
         this.announcement = new Announcements('0', this.classID, this.instructorID, '', '' );
         this.form = this.formBuilder.group( {
             title: ['',  Validators.required],
@@ -32,11 +32,11 @@ import { Router } from '@angular/router';
         });
     }
 
-    closeMe() {
+    closeMe(): void {
         this.close.emit( null );
     }
 
-    submitForm() {
+    submitForm(): void {
         if (this.form.dirty) {
 
             console.log('Form was dirty');
@@ -44,7 +44,7 @@ import { Router } from '@angular/router';
             // This is Deborah Korata's way of merging our data model with the form model
              const combinedObject = Object.assign( {}, this.announcement, this.form.value);
 
-             combinedObject.class_id = +this.classID;
+             combinedObject.classId = +this.classID;
              combinedObject.instructor_id = +this.instructorID;
 
              if ( +this.announcement.id > 0 ) {

@@ -19,9 +19,9 @@ export class CourseImageComponent implements OnInit {
   courseImageURL: string;
 
 
-  constructor(private courseService: CourseService, private globals: Globals ) { }
+  constructor(private courseService: CourseService, private globals: Globals ): void { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.courseID && ( this.courseID !== 0 ) ) {
       this.courseService.getCourse(this.courseID).subscribe(
       course => {
@@ -31,7 +31,7 @@ export class CourseImageComponent implements OnInit {
           this.courseImageURL = this.globals.courseimages + '/' + this.courseID + '/' + this.course.image;
 
       },
-      error => this.errorMessage = <any>error);
+      error => this.errorMessage = error );
     }
   }
 }

@@ -1,9 +1,9 @@
 import { Course } from './course.model';
 
 export class ChoiceList {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public headline: string,
       public type: string,
       public choices: string[],

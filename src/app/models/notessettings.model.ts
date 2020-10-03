@@ -1,9 +1,9 @@
 export class NotesSettings {
-    _id?: string;
+    id?: string;
 
-    constructor (
-        public user_id: string,
-        public class_id: string,
+    constructor(
+        public userId: string,
+        public classId: string,
         public section: string,
         public reading: boolean,
         public folds: boolean[]

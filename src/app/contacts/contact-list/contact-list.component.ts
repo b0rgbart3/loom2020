@@ -15,9 +15,9 @@
 //   contacts: Contact[]
 //   selectedContact: Contact
 
-//   constructor(private contactService: ContactService) { }
+//   constructor(private contactService: ContactService): void { }
 
-//   ngOnInit() {
+//   ngOnInit(): void {
 //      this.contactService
 //       .getContacts()
 //       .then((contacts: Contact[]) => {

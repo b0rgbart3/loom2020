@@ -6,13 +6,13 @@ import { CourseService } from '../../services/course.service';
 import { Course } from '../../models/course.model';
 import { Material } from '../../models/material.model';
 import { MaterialService } from '../../services/material.service';
-//import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload/ng2-file-upload';
+// import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload/ng2-file-upload';
 import { FileUploader } from 'ng2-file-upload';
 import { Globals } from '../../globals2';
 import {Location} from '@angular/common';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'material-edit',
     templateUrl: 'material-edit.component.html',
     styleUrls: ['material-edit.component.css']
@@ -21,7 +21,7 @@ import {Location} from '@angular/common';
 export class MaterialEditComponent implements OnInit {
     @Input() newType: string;
     @Input() passedMaterialObject: Material;
-    @Output() onComplete= new EventEmitter <Material>();
+    @Output() onComplete = new EventEmitter <Material> ();
     modalVersion: boolean;
     material: Material = new Material ( '', '', '0', '', '', '', '', '', '', '', '', false);
     materialForm: FormGroup;
@@ -53,14 +53,15 @@ export class MaterialEditComponent implements OnInit {
     loading: boolean;
     displayModal: boolean;
 
-    constructor(private fb: FormBuilder,
-    private activated_route: ActivatedRoute,
-    private materialService: MaterialService,
-    private router: Router,
-    private globals: Globals,
-    private _location: Location  ) {    }
+    constructor(
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private materialService: MaterialService,
+        private router: Router,
+        private globals: Globals,
+        private alocation: Location  ): void {    }
 
-    isDirty() {
+    isDirty(): boolean {
 // console.log('checking dirty status');
         if (this.imageUploaded) {
    //         console.log('image was uploaded.');
@@ -83,7 +84,7 @@ export class MaterialEditComponent implements OnInit {
         return false;
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.displayModal = false;
         this.loading = false;
         this.includeimagestring = 'Include Image';
@@ -105,7 +106,7 @@ export class MaterialEditComponent implements OnInit {
             }
         } else {
                 this.modalVersion = false;
-        this.type = this.activated_route.snapshot.data['type'];
+                this.type = this.activatedRoute.snapshot.data.type;
         }
         switch (this.type) {
             case 'book':
@@ -137,18 +138,18 @@ export class MaterialEditComponent implements OnInit {
             this.lengthNeeded = false;
             break;
             default: this.urlLabel = 'URL';
-            this.uploaderNeeded = true;
-            this.descriptionNeeded = true;
-            this.lengthNeeded = true;
-            this.descriptionPlaceholder = 'Description';
-            break;
+                     this.uploaderNeeded = true;
+                     this.descriptionNeeded = true;
+                     this.lengthNeeded = true;
+                     this.descriptionPlaceholder = 'Description';
+                     break;
         }
 
         if (this.modalVersion) {// this.id = '0';
         // this.material.id = this.id;
         this.id = this.material.id;
        } else {
-        this.id = this.activated_route.snapshot.params['id'];
+        this.id = this.activatedRoute.snapshot.params.id;
         this.material.id = this.id;
         }
 
@@ -162,21 +163,21 @@ export class MaterialEditComponent implements OnInit {
             //  this.material.id = this.id;
             //  console.log('the ID we got was: ' + this.id);
          }
-         this.buildForm();
+        this.buildForm();
 
 
     }
 
-    private formatBytes(bytes, decimals?) {
+    private formatBytes(bytes, decimals?): any{
         if (bytes === 0) { return '0 Bytes'; }
-        const k = 1024,
-          dm = decimals || 2,
-          sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-          i = Math.floor(Math.log(bytes) / Math.log(k));
+        const k = 1024;
+        const dm = decimals || 2;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-          }
+    }
 
-    buildForm() {
+    buildForm(): void {
         const urlWithQuery = this.globals.postmaterialimages + '?id=' + this.id;
         this.imageUploader = new FileUploader({url: urlWithQuery, maxFileSize: this.maxFileSize});
 
@@ -193,11 +194,11 @@ export class MaterialEditComponent implements OnInit {
         this.imageUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                         this.tempName = this.imageUploader.queue[0].file.name;
                      //    console.log('Response from the server: ' + this.tempName);
-                         this.image = this.tempName;
-                         this.imageUrl = this.globals.materialimages + '/' +
-                          this.material.id + '/' + this.image;
+                        this.image = this.tempName;
+                        this.imageUrl = this.globals.materialimages + '/' +
+                        this.material.id + '/' + this.image;
                       //   console.log('Image url: ' + this.imageUrl);
-                         this.imageUploader.queue[0].remove();
+                        this.imageUploader.queue[0].remove();
 
                      };
         this.imageUploader.onWhenAddingFileFailed = (item, filter) => {
@@ -242,7 +243,7 @@ export class MaterialEditComponent implements OnInit {
             // const url = (window.URL) ? window.URL.createObjectURL(fileItem._file)
             //     : (window as any).webkitURL.createObjectURL(fileItem._file);
             // console.log('About to upload');
-             this.fileUploader.queue[0].upload();
+            this.fileUploader.queue[0].upload();
             // console.log('Upload request sent');
         };
 
@@ -254,32 +255,47 @@ export class MaterialEditComponent implements OnInit {
                         this.loading = false;
                         this.fileUrl = this.globals.materialfiles + '/' + this.material.id + '/' + this.file;
                    //     console.log('File url: ' + this.fileUrl);
-                         this.fileUploader.queue[0].remove();
+                        this.fileUploader.queue[0].remove();
 
                      };
     }
 
     getMaterial(id: string) {
         this.materialService.getMaterial(id).subscribe(
-            material => { this.material = <Material>material[0];
-           //     console.log('got material ' + id + ' info :' + JSON.stringify(material) );
-                this.image = this.material.image;
-                if (this.material.image !== '') {
-                    this.includeimagestring = 'Change Image';
-                }
-                if (this.image) {
-                //    console.log('including an image with this material');
-                  this.imageUrl = this.globals.materialimages + '/' + this.material.id + '/' + this.image;
-                } else { this.imageUrl = null; }
-                this.file = this.material.file;
-                this.fileUrl = this.globals.materialfiles + '/' + this.material.id + '/' + this.file;
-                this.populateForm();
-             },
-            error => this.errorMessage = <any> error
+            (data: Material) => {this.material = data[0];
+                                 this.image = this.material.image;
+                                 if (this.material.image !== '') {
+                                    this.includeimagestring = 'Change Image';
+                                }
+                                 if (this.image) {
+                                    this.imageUrl = this.globals.materialimages + '/' + this.material.id + '/' + this.image;
+                                } else { this.imageUrl = null; }
+                                 this.file = this.material.file;
+                                 this.fileUrl = this.globals.materialfiles + '/' + this.material.id + '/' + this.file;
+                                 this.populateForm();
+                                },
+            (err: any) => console.log(err),
+            () => console.log('done getting material')
         );
+        //     material => { this.material = <Material>material[0];
+        //    //     console.log('got material ' + id + ' info :' + JSON.stringify(material) );
+        //         this.image = this.material.image;
+        //         if (this.material.image !== '') {
+        //             this.includeimagestring = 'Change Image';
+        //         }
+        //         if (this.image) {
+        //         //    console.log('including an image with this material');
+        //           this.imageUrl = this.globals.materialimages + '/' + this.material.id + '/' + this.image;
+        //         } else { this.imageUrl = null; }
+        //         this.file = this.material.file;
+        //         this.fileUrl = this.globals.materialfiles + '/' + this.material.id + '/' + this.file;
+        //         this.populateForm();
+        //      },
+        //     error => this.errorMessage = <any> error
+        // );
     }
 
-    imageChange(event) {
+    imageChange(event): void {
         const fileList: FileList = event.target.files;
         if ( fileList.length > 0) {
             const file: File = fileList[0];
@@ -301,22 +317,22 @@ export class MaterialEditComponent implements OnInit {
         }
     }
 
-    populateForm() {
+    populateForm(): void {
         this.materialForm.patchValue({
-        'title': this.material.title,
-        'description': this.material.description,
-        'contenturl': this.material.contenturl,
-        'type': this.material.type,
-        'content': this.material.content,
-        'author': this.material.author,
-        'length': this.material.length
+            title: this.material.title,
+            description: this.material.description,
+            contenturl: this.material.contenturl,
+            type: this.material.type,
+            content: this.material.content,
+            author: this.material.author,
+            length: this.material.length
      });
 
         this.file = this.material.file;
         this.image = this.material.image;
     }
 
-    postMaterial() {
+    postMaterial(): void {
         // this.material.image = this.image;
         this.material.image = this.image;
         this.material.file = this.file;
@@ -331,8 +347,8 @@ export class MaterialEditComponent implements OnInit {
        // console.log( 'Posting material: ' + JSON.stringify( combinedObject ) );
 
        // I don't need to store these in the database
-       delete combinedObject.imageUploader;
-       delete combinedObject.fileUploader;
+        delete combinedObject.imageUploader;
+        delete combinedObject.fileUploader;
 
         if (this.material.id === '0') {
            // console.log('Creating material');
@@ -348,9 +364,9 @@ export class MaterialEditComponent implements OnInit {
                           this.materialForm.reset();
                           this.imageUploaded = false; // just to reset it
                           this.fileUploaded = false;
-                    this.router.navigate(['/admin/materials']); } else {
-                        this.material = combinedObject;
-                        this.complete();
+                          this.router.navigate(['/admin/materials']); } else {
+                           this.material = combinedObject;
+                           this.complete();
                     }
                   }
             );
@@ -383,7 +399,7 @@ export class MaterialEditComponent implements OnInit {
     }
 
 
-    deleteMaterial() {
+    deleteMaterial(): void {
         const result = confirm( 'Warning! \n\nAre you sure you want to delete this' +
         this.type + ' : ' + this.material.title + ', and all of it\'s related data from the database?' +
         ' width ID: ' + this.material.id + '? ');
@@ -396,12 +412,12 @@ export class MaterialEditComponent implements OnInit {
                 this.router.navigate(['/admin/materials']);
             },
           error => {
-              this.errorMessage = <any>error;
+              this.errorMessage = error;
               // This is a work-around for a HTTP error message I was getting even when the
               // course was successfully deleted.
               if (error.status === 200) {
         //        console.log('Got back from the Course Service.');
-                this._location.back();
+                this.alocation.back();
                // this.router.navigate(['/coursebuilder']);
               } else {
              console.log('Error: ' + JSON.stringify(error) ); }
@@ -409,31 +425,32 @@ export class MaterialEditComponent implements OnInit {
        }
       }
 
-      remove() {
+      remove(): void {
         const result = confirm( 'Are you sure you want to remove this ,' +
-    this.material.type + ' and ALL of it\'s data, with ID: ' + this.material.id + '? ');
+            this.material.type + ' and ALL of it\'s data, with ID: ' + this.material.id + '? ');
 
-    if (result) {
-        this.materialService.remove( this.material).subscribe( (val) => {
-            this.router.navigate(['/admin/materials']);
-        }, response => { this.router.navigate(['/admin/materials']); },
-            () => { });
-      }
-    }
+        if (result) {
+    //     this.materialService.remove( this.material).subscribe( (val) => {
+    //         this.router.navigate(['/admin/materials']);
+    //     }, response => { this.router.navigate(['/admin/materials']); },
+    //         () => { });
+    //   }
+         }
+        }
 
-    closer() {
+    closer(): void {
         this.router.navigate(['/admin/materials']);
     }
 
-    complete() {
+    complete(): void {
         console.log('onComplete in Material edit, Im emitting this material: ' + JSON.stringify(this.material));
         this.onComplete.emit(this.material);
     }
 
-    openModal() {
+    openModal(): void {
         this.displayModal = true;
     }
-    closeModal() {
+    closeModal(): void {
         this.displayModal = false;
     }
 

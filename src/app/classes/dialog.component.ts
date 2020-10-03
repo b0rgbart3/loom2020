@@ -24,9 +24,9 @@ export class DialogComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit(): void { }
 
-  close() {
+  close(): void {
     this.visible = false;
     this.visibleChange.emit(this.visible);
   }

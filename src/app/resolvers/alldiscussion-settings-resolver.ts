@@ -14,9 +14,10 @@ import { UserService } from '../services/user.service';
 
 export class AllDiscussionSettingsResolver implements Resolve <DiscussionSettings[]> {
 
-    constructor( private ds: DiscussionService,
+    constructor(
+        private ds: DiscussionService,
         private classService: ClassService, private router: Router,
-    private userService: UserService ) { }
+        private userService: UserService ) { }
 
     resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable <DiscussionSettings[]> {

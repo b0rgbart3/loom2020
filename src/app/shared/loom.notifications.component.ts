@@ -8,7 +8,7 @@ import { LoomNotification } from '../models/loom.notification.model';
     selector: 'notifications',
     styleUrls: ['./loom.notifications.component.css'],
     template: `
-    <div class="notifications" *ngFor='let note of _notes'>
+    <div class="notifications" *ngFor='let note of myNotes'>
         <div (click)="hide(note)" class="{{ note.type }}" [@noteState]="state"
         (@noteState.done)='handleDone(note)'>
             <p *ngFor='let line of note.message'>{{ line }}</p>
@@ -36,12 +36,12 @@ import { LoomNotification } from '../models/loom.notification.model';
       ]
 })
 export class LoomNotificationsComponent implements OnInit {
-    public _notes: LoomNotification[];
+    public myNotes: LoomNotification[];
     public state = 'first';
     constructor(private _notifications: LoomNotificationsService) {
-        this._notes = new Array<LoomNotification>();
+        this.myNotes = new Array<LoomNotification>();
         _notifications.noteAdded.subscribe(note => {
-            this._notes.push( note );
+            this.myNotes.push( note );
             this.state = 'first';
             setTimeout(() => { this.state = 'active'; }, 10);
 
@@ -50,13 +50,13 @@ export class LoomNotificationsComponent implements OnInit {
            this.state = 'inactive'; }, note.delay);
         });
     }
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
-    hide(note) {
-        const index = this._notes.indexOf(note);
+    hide(note): void {
+        const index = this.myNotes.indexOf(note);
         if (index >= 0) {
-            this._notes.splice(index, 1);
+            this.myNotes.splice(index, 1);
         }
     }
     handleDone(note): void {

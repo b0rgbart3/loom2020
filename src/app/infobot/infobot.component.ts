@@ -38,11 +38,11 @@ public state= 'inactive';
   constructor() {
  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.state = 'active';
       }
 
-  toggleState() {
+  toggleState(): void {
 
         this.state = this.state === 'active' ? 'inactive' : 'active';
         console.log(this.state);

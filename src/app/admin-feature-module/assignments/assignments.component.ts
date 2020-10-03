@@ -21,17 +21,17 @@
 //     form: FormGroup;
 
 
-//     constructor(private router: Router, private activated_route: ActivatedRoute, private fb: FormBuilder,
+//     constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
 //         private globals: Globals, private userService: UserService, private assignmentsService: AssignmentsService,
 //     private classService: ClassService ) { }
 
 
-//     ngOnInit() {
+//     ngOnInit(): void {
 
 
 //         this.form = this.fb.group({
-//             user_id: [ '', Validators.required ],
-//             class_id: [ '', Validators.required ],
+//             userId: [ '', Validators.required ],
+//             classId: [ '', Validators.required ],
 //             });
 
 //     }

@@ -15,14 +15,14 @@ export class DynamicFormComponent implements OnInit {
   form: FormGroup;
   payLoad = '';
 
-  constructor(private qcs: QuestionControlService) {  }
+  constructor(private qcs: QuestionControlService): void {  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.qcs.toFormGroup(this.questions);
     console.log('in d-formcomp init');
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.payLoad = JSON.stringify(this.form.value);
   }
 }

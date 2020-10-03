@@ -1,11 +1,11 @@
 export class Student {
-  _id?: string;
+  id?: string;
 
-  constructor (
-      public user_id: string,
+  constructor(
+      public userId: string,
       public status: any[],
-      public sections_completed: any[],
-      public materials_completed: any[]
+      public sectionsCompleted: any[],
+      public materialsCompleted: any[]
   ) {}
 
 }

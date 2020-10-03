@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /* This authGuard is built for the user settings edit url
    It checks to see if the current user is editing their own settings --
@@ -13,7 +13,7 @@ export class UserAuthGuard implements CanActivate {
     constructor(private router: Router, private userService: UserService) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable <boolean> {
-        const id = route.params['id'];
+        const id = route.params.id;
         console.log('In user-auth: id: ' + id);
 
         if (id !== this.userService.currentUser.id) {
@@ -31,8 +31,8 @@ export class UserAuthGuard implements CanActivate {
                     console.log('We found that user.');
                     return true;
                 } else {  console.log('We did not find that user.');
-                this.router.navigate(['/']);
-                    return false; }
+                          this.router.navigate(['/']);
+                          return false; }
             }
         );
 

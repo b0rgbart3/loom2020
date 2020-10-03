@@ -1,6 +1,6 @@
 import { Injectable, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 //import { Http, Response, Headers, RequestOptions } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
@@ -47,14 +47,14 @@ export class MessageService implements OnInit {
 
     public msgAdded = this._message.asObservable();
 
-    public sendMessage(message: Message) {
+    public sendMessage(message: Message): void {
      // console.log('got request to send a message: ' + JSON.stringify(message));
         this._message.next(message);
     }
 
     constructor (private _http: HttpClient,
       private notes: LoomNotificationsService,
-      private globals: Globals) {
+      private globals: Globals): void {
         this.msgChanged = new EventEmitter();
         this.highestID = 0;
 
@@ -66,7 +66,7 @@ export class MessageService implements OnInit {
       });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
       // console.log('getting messages');
       this.getMessages();
@@ -79,9 +79,9 @@ export class MessageService implements OnInit {
       return this.highestID + '';
     }
 
-    getFreshList(user_id): Observable<any> {
-      const userString = '?users=' + user_id + '&fresh=true';
-      // console.log('getting fresh list for: ' + user_id + ', at: ' + this.globals.freshmessages + '' + userString);
+    getFreshList(userId): Observable<any> {
+      const userString = '?users=' + userId + '&fresh=true';
+      // console.log('getting fresh list for: ' + userId + ', at: ' + this.globals.freshmessages + '' + userString);
 
       return this._http.get <Message[]> (this.globals.messages + userString).
       do( data => { // console.log('got data back for fresh list: ' + JSON.stringify(data) );
@@ -101,10 +101,10 @@ export class MessageService implements OnInit {
       console.log('Getting conversation: ' + urlString);
       return this._http.get <Message[]> ( urlString );
     }
-    getMessagesForUser(user_id): Observable<any> {
-     // console.log('In message service, getting messages for user: ' + user_id );
+    getMessagesForUser(userId): Observable<any> {
+     // console.log('In message service, getting messages for user: ' + userId );
       return this._http.get <Message[]> (this.globals.messages + '?users=' +
-       user_id).do( data =>  { // console.log('Got messages for user: ' + JSON.stringify(data));
+       userId).do( data =>  { // console.log('Got messages for user: ' + JSON.stringify(data));
        return data; }
       ).catch (this.handleError );
     }
@@ -126,7 +126,7 @@ export class MessageService implements OnInit {
      }
 
 
-     updateIDCount() {
+     updateIDCount(): void {
       // Loop through all the Materials to find the highest ID#
       if (this.messages && this.messages.length > 0) {
       for (let i = 0; i < this.messages.length; i++) {
@@ -184,7 +184,7 @@ export class MessageService implements OnInit {
   }
 
 
-  private handleError (error: HttpErrorResponse) {
+  private handleError (error: HttpErrorResponse): void {
     // console.log( error.message );
     return Observable.of(error.message);
 

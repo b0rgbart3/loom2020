@@ -1,9 +1,9 @@
 export class Image {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
-      public id: string,
+      public objId: string,
       public image: string,
       public owner: string   // this is the id of the user who uploaded this
   ) {}

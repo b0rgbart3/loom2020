@@ -12,10 +12,10 @@
     scrollable (click)='scrollMe()'>
 
         <div class='msgReplies' *ngFor='let reply of currentMessage.msgList'>
-            <div class='bubbleLine' *ngIf='reply.user_id === currentUserID' >
+            <div class='bubbleLine' *ngIf='reply.userId === currentUserID' >
             <div class='bubble speaker'>{{ reply.message }}</div><br clear='all'>
             <div class='speaker_tail'></div></div>
-            <div class='bubbleLine' *ngIf='reply.user_id !== currentUserID'>
+            <div class='bubbleLine' *ngIf='reply.userId !== currentUserID'>
             <div class='bubble other'>{{ reply.message }}</div><br clear='all'>
             <div class='bubble other_tail'></div></div>
         </div>

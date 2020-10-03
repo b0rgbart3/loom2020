@@ -1,10 +1,10 @@
 import { MessageReply } from './messagereply.model';
 
 export class Freshness {
-    _id?: string;
+    id?: string;
 
-    constructor (
-        public user_id: string,
+    constructor(
+        public userId: string,
         public fresh: boolean
     ) {}
   }

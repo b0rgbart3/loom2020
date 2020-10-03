@@ -1,6 +1,6 @@
 import { Injectable, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 // import { Http, Response, Headers, RequestOptions } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
@@ -73,7 +73,7 @@ export class DiscussionService implements OnInit, OnChanges {
 
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
       this.headerOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
@@ -83,7 +83,7 @@ export class DiscussionService implements OnInit, OnChanges {
 
     }
 
-    ngOnChanges() {
+    ngOnChanges(): void {
 
     }
 
@@ -92,10 +92,10 @@ export class DiscussionService implements OnInit, OnChanges {
       return this.highestID;
     }
 
-    getDiscussionSettingsNow() {
+    getDiscussionSettingsNow(): void {
       this.getAllDiscussionSettings().subscribe(
         discussionSettings => this.discussionSettings = discussionSettings,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error );
     }
 
     getAllDiscussionSettings(): Observable<any> {
@@ -124,7 +124,7 @@ export class DiscussionService implements OnInit, OnChanges {
         .catch( this.handleError );
     }
 
-    updateIDCount() {
+    updateIDCount(): void {
       // Loop through all the Materials to find the highest ID#
       if (this.discussionSettings && this.discussionSettings.length > 0) {
       for (let i = 0; i < this.discussionSettings.length; i++) {
@@ -143,8 +143,8 @@ export class DiscussionService implements OnInit, OnChanges {
     }
   }
 
-  createNewDSObject(user_id, class_id, section) {
-    const newDSObject = new DiscussionSettings ('', user_id, class_id, section, false, []);
+  createNewDSObject(userId, classId, section): void {
+    const newDSObject = new DiscussionSettings ('', userId, classId, section, false, []);
     newDSObject.id = this.getHighestID() + '';
     this.discussionSettings.push(newDSObject); // keep track of the newly created objects
     return newDSObject;
@@ -168,12 +168,12 @@ export class DiscussionService implements OnInit, OnChanges {
 
 
     }
-    getDiscussionSettings( user_id, class_id, section): Observable <any> {
+    getDiscussionSettings( userId, classId, section): Observable <any> {
       const myHeaders = new HttpHeaders();
       myHeaders.append('Content-Type', 'application/json');
 
        return this._http.get <DiscussionSettings> (this.globals.discussionsettings +
-          '?user_id=' + user_id + '&class_id=' + class_id + '&section=' + section, {headers: myHeaders} )
+          '?userId=' + userId + '&classId=' + classId + '&section=' + section, {headers: myHeaders} )
       .do (data => {
         // console.log('Got Discussion Settings back from the API' + JSON.stringify(data));
          return data;
@@ -181,7 +181,7 @@ export class DiscussionService implements OnInit, OnChanges {
       .catch ( this.handleError );
     }
 
-    updatehighestID() {
+    updatehighestID(): void {
            // Loop through all the Classes to find the highest ID#
            for (let i = 0; i < this.threads.length; i++) {
             const foundID = Number(this.threads[i].id);
@@ -196,12 +196,12 @@ export class DiscussionService implements OnInit, OnChanges {
           }
     }
 
-   getThreads( class_id, section ): Observable<any> {
+   getThreads( classId, section ): Observable<any> {
      const myHeaders = new HttpHeaders();
      myHeaders.append('Content-Type', 'application/json');
 
-  //   console.log('Looking to load threads for class: ' + class_id + ', and section: ' + section);
-    return this._http.get <Thread[]> (this.globals.threads + '?class_id=' + class_id + '&section=' +
+  //   console.log('Looking to load threads for class: ' + classId + ', and section: ' + section);
+    return this._http.get <Thread[]> (this.globals.threads + '?classId=' + classId + '&section=' +
      section, {headers: myHeaders})
       // debug the flow of data
       .do(data => {
@@ -275,14 +275,14 @@ export class DiscussionService implements OnInit, OnChanges {
 
       }
 
-    private handleError (error: HttpErrorResponse) {
+    private handleError (error: HttpErrorResponse): void {
      console.log('ERROR:');
      console.log( JSON.stringify(error) );
       return Observable.of(error.message);
 
     }
 
-    private handleErrors(error: HttpErrorResponse) {
+    private handleErrors(error: HttpErrorResponse): void {
       if (error.error instanceof ErrorEvent) {
         // A client-side or network error occurred. Handle it accordingly.
         console.error('An error occurred:', error.error.message);
@@ -322,13 +322,13 @@ export class DiscussionService implements OnInit, OnChanges {
   //    // console.log('got the whosin data: ' + JSON.stringify( data ) );
   //    }).catch(this.handleError );
   // }
-  sendNotice(data) {
+  sendNotice(data): void {
   //  console.log('In Discussion service, about to send notice.');
       this.loomNotificationService.add( new LoomNotification( data.type, data.message, data.delay ) );
 
     }
 
-  introduceMyself(user, classID, section) {
+  introduceMyself(user, classID, section): void {
       this.sendNotice( {type: 'info', message: ['Welcome to the discussion, ' + user.username ], delay: 2000} );
 
       this.socket.emit('enter', user, classID, section);

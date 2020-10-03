@@ -6,8 +6,8 @@ import { Material } from '../../models/material.model';
 import { MaterialSet } from '../../models/materialset.model';
 
 @Component({
-    moduleId: module.id,
-    selector: 'display-materials',
+   // moduleId: module.id,
+    selector: 'comp-display-materials',
     templateUrl: 'display-materials.component.html',
     styleUrls: ['display-materials.component.css']
 })
@@ -21,9 +21,9 @@ export class DisplayMaterialsComponent implements OnInit {
     // materialSets: MaterialSet[];
 
 
-    constructor( private globals: Globals) {    }
+    constructor( private globals: Globals): void {    }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
       this.displayModal = false;
       this.modalURL = '';

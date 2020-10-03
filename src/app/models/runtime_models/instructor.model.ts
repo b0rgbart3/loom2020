@@ -1,8 +1,8 @@
 export class Instructor {
-  _id?: string;
+  id?: string;
 
-  constructor (
-      public user_id: string,
+  constructor(
+      public userId: string,
 
 
   ) {}

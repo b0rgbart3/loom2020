@@ -1,15 +1,15 @@
 import { Section } from './section.model';
 
 export class Course {
-  _id?: string;
+  id?: string;
 
-  constructor (
+  constructor(
       public title: string,
       public description: string,
-      public id: string,
+      public courseId: string,
       public sections: Section[],
       public image: string,
-      public remove_this: boolean
+      public removeThis: boolean
   ) {}
 
 }

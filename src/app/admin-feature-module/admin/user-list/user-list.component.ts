@@ -29,7 +29,7 @@ export class UserListComponent implements OnInit {
 
   constructor(private userService: UserService, private fb: FormBuilder ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.order = 'username';
     this.reverse = false;
 
@@ -47,7 +47,7 @@ export class UserListComponent implements OnInit {
 // let the user choose which parameter to sort the list by
 // note the reverse order gets toggled - if the user clicks
 // on the same parameter item again
- setOrder(value: string) {
+ setOrder(value: string): void {
   if (this.order === value) {
     this.reverse = !this.reverse;
   } else {
@@ -75,7 +75,7 @@ export class UserListComponent implements OnInit {
 }
 
  createThumbnail(user) {
-  const thumbnailObj = { user: user, user_id: user.id, online: false,
+  const thumbnailObj = { user: user, userId: user.id, online: false,
       size: 50,  showUsername: false, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle' };
   return thumbnailObj;
 }
@@ -92,7 +92,7 @@ thumbnailSort(criteria: string) {
   }
 
 
-  thumbnailSortReverse(criteria: string) {
+  thumbnailSortReverse(criteria: string): void {
     const copy = this.thumbnails;
     copy.sort( function(a, b) {
       console.log('User A: ' + a.user[criteria]);
@@ -103,7 +103,7 @@ thumbnailSort(criteria: string) {
     this.sortedThumbnails = copy;
   }
 
-  suspend(user) {
+  suspend(user): void {
     if (!user.suspended) {
       console.log('suspending');
     this.userService.suspendUser(user); } else {
@@ -112,7 +112,7 @@ thumbnailSort(criteria: string) {
     }
   }
 
-  toggleInstructorStatus(user) {
+  toggleInstructorStatus(user): void {
    this.userService.toggleInstructorStatus(user);
   }
 

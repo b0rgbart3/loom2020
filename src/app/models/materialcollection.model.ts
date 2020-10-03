@@ -1,10 +1,10 @@
 import { Material } from './material.model';
 
 export class MaterialCollection {
-  _id?: string;
+  myId?: string;
 
   // This model is just used internally to organize our list of Materials for each section
-  constructor (
+  constructor(
     public audios: Material[],
     public blocks: Material[],
     public books: Material[],
@@ -23,7 +23,7 @@ export class MaterialCollection {
     this.videos = videos;
   }
 
-  addToCollection(type, materials) {
+  addToCollection(type, materials): void {
     this[type] = materials;
   }
 

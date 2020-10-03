@@ -7,7 +7,7 @@ import { Material } from '../../models/material.model';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'doc-component',
     templateUrl: 'doc.component.html',
     styleUrls: ['doc.component.css'],
@@ -23,7 +23,7 @@ export class DocComponent implements OnInit {
     fileURL: string;
 constructor( private globals: Globals, private router: Router) {}
 
-ngOnInit() {
+ngOnInit(): void {
  // console.log('In book component: book = ' + JSON.stringify(this.book));
   this.imageURL = this.globals.materialimages +
      '/' + this.docObject.id + '/' + this.docObject.image;
@@ -31,18 +31,18 @@ ngOnInit() {
   this.fileURL = this.globals.materialfiles + '/' + this.docObject.id + '/' + this.docObject.file;
 }
 
-toggleDisplay() {
+toggleDisplay(): void {
     this.display = !this.display;
 }
 
-open_modal( ) {
+open_modal( ): void {
 
     console.log('Opening modal: ' );
     this.displayModal = true;
     this.modalURL = this.fileURL;
  }
 
- closeModal( truth ) {
+ closeModal( truth ): void {
    this.displayModal = false;
  }
 }
