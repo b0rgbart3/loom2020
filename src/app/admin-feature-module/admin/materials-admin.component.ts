@@ -16,7 +16,7 @@ import { Material } from '../../models/material.model';
 import {Location} from '@angular/common';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'materials-admin.component.html',
     styleUrls: ['materials-admin.component.css']
 })

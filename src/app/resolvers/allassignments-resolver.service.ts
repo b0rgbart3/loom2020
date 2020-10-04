@@ -27,8 +27,8 @@ export class AllAssignmentsResolver implements Resolve<Assignment[]> {
       //    console.log('got data back from the service into the resolver for all instructor assignments : ' + JSON.stringify(data));
       if (this.assignments) {
         //      console.log('mapping the user objects to the assignment objects');
-        this.assignments.map(assignment => { assignment.this_user = this.userService.getUserFromMemoryById(assignment.userId); });
-        this.assignments.map(assignment => { assignment.this_class = this.classService.getClassFromMemory(assignment.classId); });
+        this.assignments.map(assignment => { assignment.thisUser = this.userService.getUserFromMemoryById(assignment.userId); });
+        this.assignments.map(assignment => { assignment.thisClass = this.classService.getClassFromMemory(assignment.classId); });
         // console.log('Assignments now: ');
         // console.log(JSON.stringify(this.assignments));
       }

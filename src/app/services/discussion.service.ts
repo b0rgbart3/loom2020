@@ -22,7 +22,7 @@ import { throwError } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
+    'Content-Type': 'application/json',
   }),
   responseType: 'text'
 };
@@ -30,112 +30,105 @@ const httpOptions = {
 @Injectable()
 
 
-export class DiscussionService implements OnInit, OnChanges {
+export class DiscussionService {
 
-    private dsCount = 0;
-    private highestID = 0;
-    threads: Thread[];
-    errorMessage: string;
+  private dsCount = 0;
+  private highestID = 0;
+  threads: Thread[];
+  errorMessage: string;
 
 
-    discussionSettings: DiscussionSettings[];
-    public entered: EventEmitter <User>;
-    private socket: SocketIOClient.Socket;
-    threadAdded: EventEmitter <Thread>;
-    threadDeleted: EventEmitter <Thread>;
-    userEntered: EventEmitter <Thread>;
-    threadUpdated: EventEmitter <Thread>;
-    headerOptions: {};
+  discussionSettings: DiscussionSettings[];
+  public entered: EventEmitter<User>;
+  private socket: SocketIOClient.Socket;
+  threadAdded: EventEmitter<Thread>;
+  threadDeleted: EventEmitter<Thread>;
+  userEntered: EventEmitter<Thread>;
+  threadUpdated: EventEmitter<Thread>;
+  headerOptions: {};
 
-    constructor (private _http: HttpClient,
-      private loomNotificationService: LoomNotificationsService,
-      private globals: Globals) {
-      this.threadAdded = new EventEmitter();
-      this.threadDeleted = new EventEmitter();
-      this.userEntered = new EventEmitter();
-      this.threadUpdated = new EventEmitter();
+  constructor(
+    private http: HttpClient,
+    private loomNotificationService: LoomNotificationsService,
+    private globals: Globals) {
+    this.threadAdded = new EventEmitter();
+    this.threadDeleted = new EventEmitter();
+    this.userEntered = new EventEmitter();
+    this.threadUpdated = new EventEmitter();
 
-     this.socket = io(this.globals.basepath);
+    this.socket = io(this.globals.basepath);
 
     this.socket.on('updatethread', (data) => {
       console.log('GOT A THREAD UPDATE');
-      console.log( JSON.stringify(data));
+      console.log(JSON.stringify(data));
 
       this.threadUpdated.emit(data);
     });
 
-      this.socket.on('newthread', (data) => {
-        this.threadAdded.emit(data);    });
+    this.socket.on('newthread', (data) => {
+      this.threadAdded.emit(data);
+    });
 
-      this.socket.on('deletethread', (data) => {
-        this.threadDeleted.emit(data);   });
+    this.socket.on('deletethread', (data) => {
+      this.threadDeleted.emit(data);
+    });
 
 
-    }
+  }
 
-    ngOnInit(): void {
-      this.headerOptions = {
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-        }),
-        responseType: 'text'
-      };
 
-    }
+  getHighestID(): number {
+    this.updateIDCount();
+    return this.highestID;
+  }
 
-    ngOnChanges(): void {
+  getDiscussionSettingsNow(): void {
+    this.getAllDiscussionSettings().subscribe(
+      discussionSettings => this.discussionSettings = discussionSettings,
+      error => this.errorMessage = error);
+  }
 
-    }
+  getAllDiscussionSettings(): Observable<any> {
+    //  console.log('In discussion service, getAllDiscussionSettings.');
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
 
-    getHighestID(): number {
-      this.updateIDCount();
-      return this.highestID;
-    }
-
-    getDiscussionSettingsNow(): void {
-      this.getAllDiscussionSettings().subscribe(
-        discussionSettings => this.discussionSettings = discussionSettings,
-        error => this.errorMessage = error );
-    }
-
-    getAllDiscussionSettings(): Observable<any> {
-  //  console.log('In discussion service, getAllDiscussionSettings.');
-       const myHeaders = new HttpHeaders();
-       myHeaders.append('Content-Type', 'application/json');
-
-      return this._http.get <DiscussionSettings[]> (this.globals.discussionsettings, {headers: myHeaders})
-        // debug the flow of data
-        .do(data => {
-      //    console.log('Got All ths dsObjects: ' + JSON.stringify(data));
+    return this.http.get<DiscussionSettings[]>(this.globals.discussionsettings, { headers: myHeaders })
+      // debug the flow of data
+      .do(data => {
+        //    console.log('Got All ths dsObjects: ' + JSON.stringify(data));
         this.discussionSettings = data;
         this.dsCount = data.length;
 
         // Loop through all the Classes to find the highest ID#
-        for (let i = 0; i < data.length; i++) {
-          const foundID = Number(data[i].id);
+        data.forEach( datum => {
+          const foundID = Number(datum.discussionSettingsId);
 
           if (foundID >= this.highestID) {
             const newHigh = foundID + 1;
             this.highestID = newHigh;
           }
+        });
+
+      })
+      .catch(this.handleError);
+  }
+
+  updateIDCount(): void {
+    // Loop through all the Materials to find the highest ID#
+    if (this.discussionSettings && this.discussionSettings.length > 0) {
+
+      this.discussionSettings.forEach( ds => {
+        const foundID = Number(ds.discussionSettingsId);
+        // console.log('Found ID: ' + foundID);
+        if (foundID >= this.highestID) {
+          const newHigh = foundID + 1;
+          this.highestID = newHigh;
+          // console.log('newHigh == ' + newHigh);
         }
+      });
 
-      } )
-        .catch( this.handleError );
-    }
-
-    updateIDCount(): void {
-      // Loop through all the Materials to find the highest ID#
-      if (this.discussionSettings && this.discussionSettings.length > 0) {
-      for (let i = 0; i < this.discussionSettings.length; i++) {
-      const foundID = Number(this.discussionSettings[i].id);
-      // console.log('Found ID: ' + foundID);
-      if (foundID >= this.highestID) {
-        const newHigh = foundID + 1;
-        this.highestID = newHigh;
-        // console.log('newHigh == ' + newHigh);
-      }
-    } } else {
+    } else {
       this.getDiscussionSettingsNow();
       if (this.highestID < 1) {
         this.highestID = 1;
@@ -143,99 +136,100 @@ export class DiscussionService implements OnInit, OnChanges {
     }
   }
 
-  createNewDSObject(userId, classId, section): void {
-    const newDSObject = new DiscussionSettings ('', userId, classId, section, false, []);
+  createNewDSObject(userId, classId, section): {} {
+    const newDSObject = new DiscussionSettings('', userId, classId, section, false, []);
     newDSObject.id = this.getHighestID() + '';
     this.discussionSettings.push(newDSObject); // keep track of the newly created objects
     return newDSObject;
   }
 
-    storeDiscussionSettings( discussionSettingsObject ): Observable <any> {
-      const myHeaders = new HttpHeaders();
-      myHeaders.append('Content-Type', 'application/json');
+  storeDiscussionSettings(discussionSettingsObject): Observable<any> {
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
 
-   //   console.log('About to store DS Object: ' + JSON.stringify(discussionSettingsObject) );
-      // console.log('Storing settings: ' + JSON.stringify(discussionSettingsObject));
-      // return this._http.put <DiscussionSettings> (this.globals.discusssettings, {headers: myHeaders} )
-      //  .do (data => { console.log('Got Discussion Settings back from the API' + JSON.stringify(data)); })
-      //  .catch ( this.handleError );
+    //   console.log('About to store DS Object: ' + JSON.stringify(discussionSettingsObject) );
+    // console.log('Storing settings: ' + JSON.stringify(discussionSettingsObject));
+    // return this._http.put <DiscussionSettings> (this.globals.discusssettings, {headers: myHeaders} )
+    //  .do (data => { console.log('Got Discussion Settings back from the API' + JSON.stringify(data)); })
+    //  .catch ( this.handleError );
 
-      if (!discussionSettingsObject.folds) {
-        discussionSettingsObject.folds = [];
-      }
-       return this._http.put(this.globals.discussionsettings + '?id=' + discussionSettingsObject.id, discussionSettingsObject,
-       {headers: myHeaders}).map( () => console.log('DONE') );
-
-
+    if (!discussionSettingsObject.folds) {
+      discussionSettingsObject.folds = [];
     }
-    getDiscussionSettings( userId, classId, section): Observable <any> {
-      const myHeaders = new HttpHeaders();
-      myHeaders.append('Content-Type', 'application/json');
+    return this.http.put(this.globals.discussionsettings + '?id=' + discussionSettingsObject.id, discussionSettingsObject,
+      { headers: myHeaders }).map(() => console.log('DONE'));
 
-       return this._http.get <DiscussionSettings> (this.globals.discussionsettings +
-          '?userId=' + userId + '&classId=' + classId + '&section=' + section, {headers: myHeaders} )
-      .do (data => {
+
+  }
+  getDiscussionSettings(userId, classId, section): Observable<any> {
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
+
+    return this.http.get<DiscussionSettings>(this.globals.discussionsettings +
+      '?userId=' + userId + '&classId=' + classId + '&section=' + section, { headers: myHeaders })
+      .do(data => {
         // console.log('Got Discussion Settings back from the API' + JSON.stringify(data));
-         return data;
-    })
-      .catch ( this.handleError );
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  updatehighestID(): void {
+    // Loop through all the Classes to find the highest ID#
+
+    this.threads.forEach( thread => {
+      const foundID = Number(thread.threadId);
+
+      if (foundID >= this.highestID) {
+        const newHigh = foundID + 1;
+        this.highestID = newHigh;
+      }
+    });
+    if (this.highestID <= 0) {
+      this.highestID = 1;
     }
+  }
 
-    updatehighestID(): void {
-           // Loop through all the Classes to find the highest ID#
-           for (let i = 0; i < this.threads.length; i++) {
-            const foundID = Number(this.threads[i].id);
+  getThreads(classId, section): Observable<any> {
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
 
-            if (foundID >= this.highestID) {
-              const newHigh = foundID + 1;
-              this.highestID = newHigh;
-            }
-          }
-          if (this.highestID <= 0 ) {
-              this.highestID = 1;
-          }
-    }
-
-   getThreads( classId, section ): Observable<any> {
-     const myHeaders = new HttpHeaders();
-     myHeaders.append('Content-Type', 'application/json');
-
-  //   console.log('Looking to load threads for class: ' + classId + ', and section: ' + section);
-    return this._http.get <Thread[]> (this.globals.threads + '?classId=' + classId + '&section=' +
-     section, {headers: myHeaders})
+    //   console.log('Looking to load threads for class: ' + classId + ', and section: ' + section);
+    return this.http.get<Thread[]>(this.globals.threads + '?classId=' + classId + '&section=' +
+      section, { headers: myHeaders })
       // debug the flow of data
       .do(data => {
-       // console.log('All: ' + JSON.stringify(data));
+        // console.log('All: ' + JSON.stringify(data));
 
         // Is there any point in keeping a local copy of the threads?
-       this.threads = data;
+        this.threads = data;
 
         this.updatehighestID();
-     // console.log('Thread\'s highest ID: ' + this.highestID);
+        // console.log('Thread\'s highest ID: ' + this.highestID);
 
-    } )
-      .catch( this.handleError );
+      })
+      .catch(this.handleError);
   }
 
 
 
   getThread(id): Observable<any> {
-    return this._http.get<Thread[]> ( this.globals.threads + '?id=' + id )
+    return this.http.get<Thread[]>(this.globals.threads + '?id=' + id)
       .do(data => {
         // console.log( JSON.stringify(data));  this.threadAdded.emit( data[0] );
-       } )
-      .catch (this.handleError);
+      })
+      .catch(this.handleError);
   }
 
   deleteThread(thread): Observable<any> {
-   // console.log('Deleting thread: ' + JSON.stringify(thread));
+    // console.log('Deleting thread: ' + JSON.stringify(thread));
 
     this.socket.emit('deletethread', thread);
-    return this._http.delete( this.globals.threads + '?id=' + thread.id);
+    return this.http.delete(this.globals.threads + '?id=' + thread.threadId);
   }
 
 
- newThread(thread): Observable<Thread> {
+  newThread(thread): Observable<Thread> {
 
     thread.id = this.highestID.toString();
     this.highestID++;
@@ -248,67 +242,67 @@ export class DiscussionService implements OnInit, OnChanges {
 
     // this.sendNotice( {type: 'info', message: ['Welcome to the discussion, ' + thread ], delay: 2000} );
 
-    this.socket.emit('newthread', thread );
+    this.socket.emit('newthread', thread);
 
     // Note: I'm using post instead of put - so I can trigger the API to double-check the id#
     // and if it exists already, then determine what it should be
 
-    return this._http.put(this.globals.threads + '?id=' + thread.id, thread,
-     {headers: myHeaders}).map( () => thread );
+    return this.http.put(this.globals.threads + '?id=' + thread.id, thread,
+      { headers: myHeaders }).map(() => thread);
 
   }
 
   updateThread(thread): Observable<any> {
 
-        const myHeaders = new HttpHeaders();
-        myHeaders.append('Content-Type', 'application/json');
-
-
-        // Note: I'm not passing the id as part of the url -- because it's inside the classObject
-        const url = this.globals.threads;
-        return this._http.put(url + '?id=' + thread.id,
-        thread, {headers: myHeaders}).do( data => {
-          console.log('Successfully Put the UPDATE to the thread: ' + JSON.stringify(thread));
-
-          this.socket.emit('updatethread', thread );
-          } ).catch(this.handleError );
-
-      }
-
-    private handleError (error: HttpErrorResponse): void {
-     console.log('ERROR:');
-     console.log( JSON.stringify(error) );
-      return Observable.of(error.message);
-
-    }
-
-    private handleErrors(error: HttpErrorResponse): void {
-      if (error.error instanceof ErrorEvent) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.error('An error occurred:', error.error.message);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.error(
-          `Backend returned code ${error.status}, ` +
-          `body was: ${ JSON.stringify(error.error)}`);
-      }
-      // return an ErrorObservable with a user-facing error message
-      // return new ErrorObservable(
-      //   'Something bad happened; please try again later.');
-
-        return throwError('Something bad happened; please try again later');
-
-    }
-
-    enterDiscussion( user: User , thisClass: ClassModel, section: string): Observable <any> {
-     // return Observable.of(null);
- //  console.log('entering the discussion: ');
     const myHeaders = new HttpHeaders();
     myHeaders.append('Content-Type', 'application/json');
-      const enterDiscussionObject = new DiscussionSettings( '', user.id,  thisClass.id,  section, true, [] );
-      enterDiscussionObject.id = this.getHighestID() + '';
-      return this._http.put ( this.globals.discussionsettings, enterDiscussionObject, this.headerOptions );
+
+
+    // Note: I'm not passing the id as part of the url -- because it's inside the classObject
+    const url = this.globals.threads;
+    return this.http.put(url + '?id=' + thread.id,
+      thread, { headers: myHeaders }).do(data => {
+        console.log('Successfully Put the UPDATE to the thread: ' + JSON.stringify(thread));
+
+        this.socket.emit('updatethread', thread);
+      }).catch(this.handleError);
+
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<any> {
+    console.log('ERROR:');
+    console.log(JSON.stringify(error));
+    return Observable.of(error.message);
+
+  }
+
+  private handleErrors(error: HttpErrorResponse): Observable<any> {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${JSON.stringify(error.error)}`);
+    }
+    // return an ErrorObservable with a user-facing error message
+    // return new ErrorObservable(
+    //   'Something bad happened; please try again later.');
+
+    return throwError('Something bad happened; please try again later');
+
+  }
+
+  enterDiscussion(user: User, thisClass: ClassModel, section: string): Observable<any> {
+    // return Observable.of(null);
+    //  console.log('entering the discussion: ');
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
+    const enterDiscussionObject = new DiscussionSettings('', user.id, thisClass.id, section, true, []);
+    enterDiscussionObject.id = this.getHighestID() + '';
+    return this.http.put(this.globals.discussionsettings, enterDiscussionObject, this.headerOptions);
   }
 
   // return an array of ID's of who's currently in the chatroom
@@ -323,17 +317,17 @@ export class DiscussionService implements OnInit, OnChanges {
   //    }).catch(this.handleError );
   // }
   sendNotice(data): void {
-  //  console.log('In Discussion service, about to send notice.');
-      this.loomNotificationService.add( new LoomNotification( data.type, data.message, data.delay ) );
+    //  console.log('In Discussion service, about to send notice.');
+    this.loomNotificationService.add(new LoomNotification(data.type, data.message, data.delay));
 
-    }
+  }
 
   introduceMyself(user, classID, section): void {
-      this.sendNotice( {type: 'info', message: ['Welcome to the discussion, ' + user.username ], delay: 2000} );
+    this.sendNotice({ type: 'info', message: ['Welcome to the discussion, ' + user.username], delay: 2000 });
 
-      this.socket.emit('enter', user, classID, section);
+    this.socket.emit('enter', user, classID, section);
 
-    }
+  }
 
 }
 

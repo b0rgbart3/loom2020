@@ -19,7 +19,7 @@ import { ChoiceList } from '../../models/choiceList.model';
 import { DragulaService } from 'ng2-dragula';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'section-edit',
     templateUrl: 'section-edit.component.html',
     styleUrls: ['section-edit.component.css']

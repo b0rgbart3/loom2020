@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +24,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 
 import { MessageService } from '../services/message.service';
 import { ConnectionComponent } from './connection.component';
-import { NavBarComponent } from '../navbar/nav-bar.component';
+
 import { BioPopComponent } from '../classes/class/biopop.component';
 import { PermissionComponent } from '../users/permission.component';
 import { SuspendedComponent } from '../users/suspended/suspended.component';
@@ -66,7 +66,7 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         VgControlsModule,
         VgOverlayPlayModule,
         VgBufferingModule,
-        CustomMaterialModule
+        CustomMaterialModule,
 
     ],
     declarations: [
@@ -76,10 +76,10 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         ClassListComponent,
         ClassThumbComponent,
       //   ImageUploaderComponent,
+
         ClickOutsideDirective,
         PageNotFoundComponent,
         ConnectionComponent,
-        NavBarComponent,
         BioPopComponent,
         PermissionComponent,
         SuspendedComponent,
@@ -121,7 +121,6 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         VgBufferingModule,
         CustomMaterialModule,
 
-
         UserThumbComponent,
         Error404Component,
         WelcomeComponent,
@@ -130,7 +129,6 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         // ImageUploaderComponent,
         ClickOutsideDirective,
         ConnectionComponent,
-        NavBarComponent,
         BioPopComponent,
         PermissionComponent,
         SuspendedComponent,
@@ -148,7 +146,10 @@ import { AllAnnouncementsResolver } from '../resolvers/allannouncements.resolver
         DisplayMaterialsComponent,
         MakeAnnouncementComponent,
 
-    ]
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ],
 
 })
 

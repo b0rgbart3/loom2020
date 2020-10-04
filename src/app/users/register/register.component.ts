@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.model';
-import { NgForm, FormControl, FormBuilder,
-  FormGroup, FormArray, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Globals } from '../../globals2';
 import { UserService } from '../../services/user.service';
 import { ClassService } from '../../services/class.service';
@@ -41,7 +40,7 @@ export class RegisterComponent implements OnInit {
         private classService: ClassService,
         private userService: UserService,
         private router: Router,
-        private enrollmentService: EnrollmentsService ): void {
+        private enrollmentService: EnrollmentsService ) {
     }
 
     ngOnInit(): void {

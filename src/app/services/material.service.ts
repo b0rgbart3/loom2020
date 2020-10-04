@@ -47,7 +47,7 @@ export class MaterialService {
 
     }
 
-    getDynamicMaterials( id, type ): Observable<any> {
+    getDynamicMaterials( id, type ): Observable<Material[]> {
       if (id === 0) {
         // get all the objects for this type
       //  console.log('\nIn material service / getDM: ' + type + '\n');
@@ -67,7 +67,7 @@ export class MaterialService {
         }).catch(this.handleError);
       } else {
         // pass back a single object of this type
-        return this.http.get <Material>
+        return this.http.get <Material[]>
               (this.globals.materials + '?id=' + id + '&type=' + type).do(data => {
           // keeping a local copy of the data object
           // -- though I don't think we do anything with it
@@ -127,13 +127,13 @@ export class MaterialService {
     return batch;
   }
 
-  hideRemovals() {
+  hideRemovals(): void {
     // For now I'm just going to remove the class objects that are 'marked for removal'
     // from our main array -- and store them in a separate array
     this.removed = [];
     if (this.materials && this.materials.length > 0) {
       for (let i = 0; i < this.materials.length; i++) {
-        if (this.materials[i].remove_this) {
+        if (this.materials[i].removeThis) {
           this.removed.push(this.materials[i]);
           this.materials.splice(i, 1);
         }
@@ -177,7 +177,7 @@ export class MaterialService {
   }
 
   remove( object: Material): Observable<any> {
-    object.remove_this = true;
+    object.removeThis = true;
     const myHeaders = new HttpHeaders();
     myHeaders.append('Content-Type', 'application/json');
 

@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private globals: Globals,
     private formBuilder: FormBuilder,
     private notes: LoomNotificationsService
-  ): void { }
+  ) { }
 
   ngOnInit(): void {
 

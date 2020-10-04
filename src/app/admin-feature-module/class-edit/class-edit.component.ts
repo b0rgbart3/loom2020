@@ -13,7 +13,7 @@ import {Location} from '@angular/common';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'class-edit.component.html',
     styleUrls: ['class-edit.component.css']
 })
@@ -165,10 +165,10 @@ export class ClassEditComponent implements OnInit {
 
             } else {
                 console.log('calling createClass');
-                this.classService.createClass( combinedClassObject ).subscribe(
-                    (val) => { }, (response) => { console.log('continued response');  },
-                      () => {console.log('save completed');
-                             this.router.navigate(['/admin/classes']); });
+                // this.classService.createClass( combinedClassObject ).subscribe(
+                //     (val) => { }, (response) => { console.log('continued response');  },
+                //       () => {console.log('save completed');
+                //              this.router.navigate(['/admin/classes']); });
             }
 
         }

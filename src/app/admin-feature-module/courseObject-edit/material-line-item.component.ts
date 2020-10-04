@@ -7,7 +7,7 @@ import { Section } from '../../models/section.model';
 import { Globals } from '../../globals2';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     selector: 'material-line-item',
     templateUrl: 'material-line-item.component.html',
     styleUrls: ['material-line-item.component.css']
@@ -24,7 +24,7 @@ export class MaterialLineItemComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.materialService.getMaterials( this.id ).subscribe(
+        this.materialService.getMaterials( ).subscribe(
             material => { this.material = material[0];
            //  console.log('loaded material: ' + JSON.stringify(material));
          }

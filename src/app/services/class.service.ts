@@ -80,24 +80,24 @@ export class ClassService {
     return this.http.delete(this.globals.classes + '?id=' + classId);
   }
 
-  createClass(classObject): Observable<ClassModel> {
+  // createClass(classObject): Observable<ClassModel> {
 
-    // console.log('In createClass method of the Class Service: ' + JSON.stringify(classObject));
-    classObject.id = this.gethighestID().toString();
-    // console.log('New id =' + classObject.id);
-    const myHeaders = new HttpHeaders();
-    myHeaders.append('Content-Type', 'application/json');
+  //   // console.log('In createClass method of the Class Service: ' + JSON.stringify(classObject));
+  //   classObject.id = this.gethighestID().toString();
+  //   // console.log('New id =' + classObject.id);
+  //   const myHeaders = new HttpHeaders();
+  //   myHeaders.append('Content-Type', 'application/json');
 
-    const url = this.globals.classes;
-    const putString = url + '?id=' + classObject.id;
-    //  console.log('Put string: ' + putString);
-    return this.http.put(putString, classObject, { headers: myHeaders }).map(
-      () => classObject);
+  //   const url = this.globals.classes;
+  //   const putString = url + '?id=' + classObject.id;
+  //   //  console.log('Put string: ' + putString);
+  //   return this.http.put(putString, classObject, { headers: myHeaders }).map(
+  //     () => classObject);
 
-  }
+  // }
 
   removeClass(classObject: ClassModel): Observable<any> {
-    classObject.remove_this = true;
+    classObject.removeThis = true;
     const myHeaders = new HttpHeaders();
     myHeaders.append('Content-Type', 'application/json');
 

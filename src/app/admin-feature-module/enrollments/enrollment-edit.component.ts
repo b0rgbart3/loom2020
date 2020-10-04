@@ -11,7 +11,7 @@ import { EnrollmentsService } from '../../services/enrollments.service';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'enrollment-edit.component.html',
     styleUrls: ['enrollment-edit.component.css']
 })
@@ -35,9 +35,9 @@ export class EnrollmentEditComponent implements OnInit {
         this.users = this.activatedRoute.snapshot.data.users;
 
         this.enrollments.forEach( enrollment => {
-            enrollment.this_user =
+            enrollment.thisUser =
             this.userService.getUserFromMemoryById('' + enrollment.userId);
-            enrollment.this_class =
+            enrollment.thisClass =
               this.classService.getClassFromMemory(enrollment.classId);
         });
         // for (let i = 0; i < this.enrollments.length; i++) {

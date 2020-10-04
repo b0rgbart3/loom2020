@@ -5,7 +5,7 @@ export class User {
     id?: string;
 
     constructor(
-        public id: string,
+        public userId: string,
         public username: string,
         public firstname: string,
         public middlename: string,

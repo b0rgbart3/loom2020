@@ -16,7 +16,7 @@ export class AudioComponent implements OnInit {
     imageURL: string;
 
     @Input() audioObject: Material;
-    constructor( private globals: Globals  ): void {
+    constructor( private globals: Globals  ) {
 
     }
 

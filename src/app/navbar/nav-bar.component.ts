@@ -11,10 +11,11 @@ import { Globals } from '../globals2';
 import { Observable } from 'rxjs';
 import { Message } from '../models/message.model';
 import { Userthumbnail } from '../models/userthumbnail.model';
+import { NgModule } from '@angular/core';
 
 
 @Component({
-  selector: 'comp-navbar',
+  selector: 'nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
@@ -312,14 +313,14 @@ generateAvatarPath( ): void {
     if (this.currentUser) {
       if (this.currentUser.facebookRegistration) {
        // console.log('This was a fb reg.');
-        this.avatarimage = this.currentUser.avatar_URL;
+        this.avatarimage = this.currentUser.avatarURL;
         console.log('The avatar url is: ' + this.avatarimage);
         this.avatarExists = true;
 
       } else {
        // console.log('This was not a fb reg.');
-       if (this.currentUser.avatar_filename) {
-        this.avatarimage = this.globals.avatars + '/' + this.currentUser.id + '/' + this.currentUser.avatar_filename;
+       if (this.currentUser.avatarFilename) {
+        this.avatarimage = this.globals.avatars + '/' + this.currentUser.id + '/' + this.currentUser.avatarFilename;
 
         if (this.imageExists(this.avatarimage) ) {
       //    console.log('image exists.');

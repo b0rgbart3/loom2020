@@ -17,7 +17,7 @@ export class ConnectionComponent implements OnInit {
     errorMessage: string;
     dataConnection: boolean;
 
-    constructor( private userService: UserService ): void {
+    constructor( private userService: UserService ) {
 
     }
     ngOnInit(): void{

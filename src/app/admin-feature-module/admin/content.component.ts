@@ -14,7 +14,7 @@ import { MaterialService } from '../../services/material.service';
 import { MaterialCollection } from '../../models/materialcollection.model';
 import { CourseService } from '../../services/course.service';
 import { SeriesService } from '../../services/series.service';
-
+import { Observable } from 'rxjs';
 
 @Component({
   //  moduleId: module.id,
@@ -90,24 +90,26 @@ export class ContentComponent implements OnInit {
       }
 
       recoverClass(classObject): void {
-        this.classService.recoverClass(classObject).subscribe(
-            data => {
+        this.classService.recoverClass(classObject);
+        // .subscribe(
+        //     data => {
 
-               console.log('back from recovering class'); }, error => {
-                console.log('error recovering class');
-            }, () => { console.log('finished recovering class');
-                }
-        );
+        //        console.log('back from recovering class'); }, error => {
+        //         console.log('error recovering class');
+        //     }, () => { console.log('finished recovering class');
+        //         }
+        // );
       }
       recoverCourse(courseObject): void {
-          this.courseService.recoverCourse(courseObject).subscribe(
-              data => {
-                // this.courseArray.push(data);
-                 console.log('back from recovering course'); }, error => {
-                  console.log('error recovering course');
-              }, () => { console.log('finished recovering course');
-                  }
-          );
+          this.courseService.recoverCourse(courseObject);
+          // subscribe(
+          //     data => {
+          //       // this.courseArray.push(data);
+          //        console.log('back from recovering course'); }, error => {
+          //         console.log('error recovering course');
+          //     }, () => { console.log('finished recovering course');
+          //         }
+          // );
       }
       recoverSeries(seriesObject): void {
         this.seriesService.recoverSeries(seriesObject).subscribe(

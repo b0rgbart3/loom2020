@@ -35,7 +35,7 @@ export class ClassListComponent implements OnInit {
   }
   private getIndexOfClass = (classId: string) => {
     return this.classes.findIndex( (classObject ) => {
-      return classObject._id === classId;
+      return classObject.classId === classId;
     });
   }
 
@@ -45,8 +45,8 @@ export class ClassListComponent implements OnInit {
 
   createNewClass(): void {
     const classObject: ClassModel = {
-      id: '0', title: '', course: '', start: new Date(), end: new Date(),
-       courseObject: null, courseImageURL: '', cost: '', costBlurb: '', remove_this: false
+      classId: '0', title: '', course: '', start: new Date(), end: new Date(),
+       courseObject: null, courseImageURL: '', cost: '', costBlurb: '', removeThis: false
     };
 
     // By default, a newly-created course will have the selected state.
@@ -69,7 +69,7 @@ export class ClassListComponent implements OnInit {
   }
 
   updateClass= (classObject: ClassModel) => {
-    const idx = this.getIndexOfClass(classObject._id);
+    const idx = this.getIndexOfClass(classObject.classId);
     if (idx !== -1) {
       this.classes[idx] = classObject;
       this.selectClass(classObject);

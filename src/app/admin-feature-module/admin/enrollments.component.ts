@@ -11,8 +11,8 @@ import { EnrollmentsService } from '../../services/enrollments.service';
 
 
 @Component({
-    selector: 'enrollments',
-    moduleId: module.id,
+    selector: 'enrollments-comp',
+   // moduleId: module.id,
     templateUrl: 'enrollments.component.html',
     styleUrls: ['enrollments.component.css']
 })
@@ -25,84 +25,87 @@ export class EnrollmentsComponent implements OnInit {
     @Input() classes: ClassModel[];
 
 
-    constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+    constructor(
+        private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
         private globals: Globals, private userService: UserService, private enrollmentsService: EnrollmentsService,
-    private classService: ClassService ) { }
+        private classService: ClassService) { }
 
-        // The form control names match the Enrollment Data Model.  Nice!
+    // The form control names match the Enrollment Data Model.  Nice!
 
     ngOnInit(): void {
         this.feedback = '';
         this.enrollmentForm = this.fb.group({
-            userId: [ '', Validators.required ],
-            classId: [ '', Validators.required ],
-            });
+            userId: ['', Validators.required],
+            classId: ['', Validators.required],
+        });
 
     }
 
-    unique( object ) {
-// We don't want to have a duplicate in the DB
+    unique(object): boolean {
+        // We don't want to have a duplicate in the DB
         let unique = true;
-        for (let i = 0; i < this.enrollments.length; i++) {
-            if (object.userId === this.enrollments[i].userId) {
-                if ( object.classId === this.enrollments[i].classId) {
-                        unique = false;
+        this.enrollments.forEach( enr => {
+            if (object.userId === enr.userId) {
+                if (object.classId === enr.classId) {
+                    unique = false;
 
                 }
             }
-        }
+        });
         return unique;
     }
 
     trash(index): void {
         console.log('about to delete: ' + JSON.stringify(this.enrollments[index]));
-        const result = confirm('Are you sure you want to un-enroll ' + this.enrollments[index].this_user.username + ' from ' +
-    this.classService.getClassFromMemory(this.enrollments[index].classId).title + '?');
-    if (result) {
-        this.enrollmentsService.remove(this.enrollments[index].id).subscribe(
-        data =>  {},
-       error => {
-         if (error.status === 200) {
-           console.log('Got BOGUS Error message.');
-           this.enrollments.splice(index, 1);
-         } else {
-       console.log('Error: ' + JSON.stringify( error)); }
-     }
-      );
-    }
+        const result = confirm('Are you sure you want to un-enroll ' + this.enrollments[index].thisUser.username + ' from ' +
+            this.classService.getClassFromMemory(this.enrollments[index].classId).title + '?');
+        if (result) {
+            this.enrollmentsService.remove(this.enrollments[index].id).subscribe(
+                data => { },
+                error => {
+                    if (error.status === 200) {
+                        console.log('Got BOGUS Error message.');
+                        this.enrollments.splice(index, 1);
+                    } else {
+                        console.log('Error: ' + JSON.stringify(error));
+                    }
+                }
+            );
+        }
     }
 
     postEnrollment(): void {
-        if (this.enrollmentForm.dirty &&  this.enrollmentForm.valid) {
-        // This is Deborah Korata's way of merging our data model with the form model
-     const comboObject = Object.assign( {}, {}, this.enrollmentForm.value);
-    const chosenUser = this.userService.getUserFromMemoryById(comboObject.userId);
-    const chosenClass = this.classService.getClassFromMemory(comboObject.classId);
+        if (this.enrollmentForm.dirty && this.enrollmentForm.valid) {
+            // This is Deborah Korata's way of merging our data model with the form model
+            const comboObject = Object.assign({}, {}, this.enrollmentForm.value);
+            const chosenUser = this.userService.getUserFromMemoryById(comboObject.userId);
+            const chosenClass = this.classService.getClassFromMemory(comboObject.classId);
 
-    if (!this.unique(comboObject)) {
-        console.log('NOT unique: ' + JSON.stringify(comboObject));
-        this.enrollmentForm.reset();
-        this.feedback = chosenUser.username + ' is already enrolled in ' + chosenClass.title;
-        console.log(this.feedback);
-    } else {
-        this.feedback = '';
-     this.enrollmentsService.postEnrollment( comboObject ).subscribe(
-       (val) => {
+            if (!this.unique(comboObject)) {
+                console.log('NOT unique: ' + JSON.stringify(comboObject));
+                this.enrollmentForm.reset();
+                this.feedback = chosenUser.username + ' is already enrolled in ' + chosenClass.title;
+                console.log(this.feedback);
+            } else {
+                this.feedback = '';
+                this.enrollmentsService.postEnrollment(comboObject).subscribe(
+                    (val) => {
 
-         },
-         response => {
-         },
-         () => {
-this.enrollmentForm.reset();
+                    },
+                    response => {
+                    },
+                    () => {
+                        this.enrollmentForm.reset();
 
-comboObject.this_user = chosenUser;
-comboObject.this_class = chosenClass;
-// this.enrollments.push( comboObject );
+                        comboObject.this_user = chosenUser;
+                        comboObject.this_class = chosenClass;
+                        // this.enrollments.push( comboObject );
 
-// console.log('Enrollments: ' + JSON.stringify(this.enrollments));
-//  this.loadInEnrollments();
-         }
-   );
+                        // console.log('Enrollments: ' + JSON.stringify(this.enrollments));
+                        //  this.loadInEnrollments();
+                    }
+                );
+            }
+        }
     }
-}}
 }

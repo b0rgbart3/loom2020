@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
@@ -23,8 +23,8 @@ export class AssignmentsResolver implements Resolve <Assignment[]> {
          this.assignments = data;
          if (this.assignments) {
         //     console.log('found instructor objects');
-         this.assignments.map( assignment => { assignment.this_user = this.userService.getUserFromMemoryById(assignment.userId); } );
-         this.assignments.map( assignment => { assignment.this_class = this.classService.getClassFromMemory(assignment.classId); } );
+         this.assignments.map( assignment => { assignment.thisUser = this.userService.getUserFromMemoryById(assignment.userId); } );
+         this.assignments.map( assignment => { assignment.thisClass = this.classService.getClassFromMemory(assignment.classId); } );
          } else {
             // console.log('nothing in the assignments variable.');
          }

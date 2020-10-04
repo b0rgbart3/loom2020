@@ -2,11 +2,10 @@ import { Component, OnInit, SecurityContext } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CourseService } from '../../services/course.service';
-import { NgForm, FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Section } from '../../models/section.model';
 import { FileUploader } from 'ng2-file-upload';
 import { Material } from '../../models/material.model';
-import { Book } from '../../models/book.model';
 import { MaterialService } from '../../services/material.service';
 import { Globals } from '../../globals2';
 import { MaterialCollection } from '../../models/materialcollection.model';
@@ -16,7 +15,7 @@ import _ from 'lodash';
 import { Location } from '@angular/common';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'course-edit.component.html',
     styleUrls: ['course-edit.component.css']
 })
@@ -482,32 +481,32 @@ export class CourseEditComponent implements OnInit {
     getPossibleQuotes(): void {
 
         this.materialService.getDynamicMaterials(0, 'quote').subscribe(
-            quotes => { this.quoteOptions = this.sortObjs(quotes); },
+            quotes => { this.quoteOptions = this.sortObjs(quotes) as Material[]; },
             error => this.errorMessage = error);
     }
 
     getPossibleImages(): void {
         this.materialService.getDynamicMaterials(0, 'image').subscribe(
-            images => { this.imageOptions = this.sortObjs(images); },
+            images => { this.imageOptions = this.sortObjs(images) as Material[]; },
             error => this.errorMessage = error);
     }
     getPossibleVideos(): void {
 
         this.materialService.getDynamicMaterials(0, 'video').subscribe(
-            videos => { this.videoOptions = this.sortObjs(videos); },
+            videos => { this.videoOptions = this.sortObjs(videos) as Material[]; },
             error => this.errorMessage = error );
     }
     getPossibleAudios(): void {
 
         this.materialService.getDynamicMaterials(0, 'audio').subscribe(
-            audios => { this.audioOptions = this.sortObjs(audios); },
+            audios => { this.audioOptions = this.sortObjs(audios) as Material[]; },
             error => this.errorMessage = error );
     }
     getPossibleBooks(): void {
 
         this.materialService.getDynamicMaterials(0, 'book').subscribe(
             books => {
-                this.bookOptions = this.sortObjs(books);
+                this.bookOptions = this.sortObjs(books) as Material[];
             },
             error => this.errorMessage = error );
     }
@@ -515,7 +514,7 @@ export class CourseEditComponent implements OnInit {
 
         this.materialService.getDynamicMaterials(0, 'block').subscribe(
             blocks => {
-                this.blockOptions = this.sortObjs(blocks);
+                this.blockOptions = this.sortObjs(blocks) as Material[];
             },
             error => this.errorMessage = error );
     }
@@ -523,7 +522,7 @@ export class CourseEditComponent implements OnInit {
 
         this.materialService.getDynamicMaterials(0, 'doc').subscribe(
             docs => {
-                this.docOptions = this.sortObjs(docs);
+                this.docOptions = this.sortObjs(docs) as Material[];
                 console.log('possible docs: ');
                 this.docOptions.map(doc => console.log(doc.title));
             },
@@ -555,7 +554,7 @@ export class CourseEditComponent implements OnInit {
     }
 
 
-    addQuote(i) {
+    addQuote(i): void {
         if (this.quoteFormArray[i]) {
             this.quoteFormArray[i].push(this.buildMaterialsSubSection(''));
         } else {
@@ -564,7 +563,7 @@ export class CourseEditComponent implements OnInit {
         }
     }
 
-    addImage(i) {
+    addImage(i): void {
         if (this.imageFormArray[i]) {
             this.imageFormArray[i].push(this.buildMaterialsSubSection(''));
         } else {
@@ -573,7 +572,7 @@ export class CourseEditComponent implements OnInit {
         }
     }
 
-    addVideo(i) {
+    addVideo(i): void {
         if (this.videoFormArray[i]) {
             this.videoFormArray[i].push(this.buildMaterialsSubSection(''));
         } else {
@@ -581,7 +580,7 @@ export class CourseEditComponent implements OnInit {
             this.videoFormArray[i].push(this.buildMaterialsSubSection(''));
         }
     }
-    addAudio(i) {
+    addAudio(i): void {
         if (this.audioFormArray[i]) {
             this.audioFormArray[i].push(this.buildMaterialsSubSection(''));
         } else {
@@ -589,7 +588,7 @@ export class CourseEditComponent implements OnInit {
             this.audioFormArray[i].push(this.buildMaterialsSubSection(''));
         }
     }
-    addBlock(i) {
+    addBlock(i): void {
         if (this.blockFormArray[i]) {
             this.blockFormArray[i].push(this.buildMaterialsSubSection(''));
         } else {
@@ -597,7 +596,7 @@ export class CourseEditComponent implements OnInit {
             this.blockFormArray[i].push(this.buildMaterialsSubSection(''));
         }
     }
-    addBook(i) {
+    addBook(i): void {
         // console.log('Adding Book to section: ' + i);
 
         if (this.bookFormArray[i]) {
@@ -610,7 +609,7 @@ export class CourseEditComponent implements OnInit {
         }
         //  console.log('Done building bookFormArray');
     }
-    addDoc(i) {
+    addDoc(i): void {
         //   console.log('Adding PDF Document to section: ' + i);
 
         if (this.docFormArray[i]) {
@@ -624,7 +623,7 @@ export class CourseEditComponent implements OnInit {
         //  console.log('Done building bookFormArray');
     }
 
-    killSection(i) {
+    killSection(i): void {
         const k = confirm('Are you sure you want to delete this whole section, and all the related reference materials?');
         if (k) {
             this.sections.removeAt(i);
@@ -660,7 +659,7 @@ export class CourseEditComponent implements OnInit {
     //     this.audioFormArray[i].removeAt(k);
     // }
 
-    addCourseImage() {
+    addCourseImage(): void {
 
         console.log('adding course image');
         const urlWithQuery = this.globals.postcourseimages + '?id=' + this.id;

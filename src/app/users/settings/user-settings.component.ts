@@ -49,7 +49,7 @@ export class UserSettingsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     private globals: Globals,
-    private alocation: Location): void {
+    private alocation: Location) {
 
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.width = 200;
@@ -97,7 +97,7 @@ export class UserSettingsComponent implements OnInit {
       this.router.navigate(['/']);
     }
     console.log('This user id: ' + this.user.id);
-    const urlWithQuery = this.globals.postavatars + '?id=' + this.user.id;
+    const urlWithQuery = this.globals.postavatars + '?id=' + this.user.userId;
     console.log('after url query defined.');
     //  this.imageUploader = new FileUploader({url: urlWithQuery});
 
@@ -204,10 +204,10 @@ export class UserSettingsComponent implements OnInit {
      // this.user = this.userService.getUserFromMemoryById(idFromURL);
 
       if (this.user) {
-        this.image = this.user.avatar_filename;
+        this.image = this.user.avatarFilename;
         if (this.image) {
           console.log('including an image with this avatar');
-          this.imageUrl = this.globals.avatars + '/' + this.user.id + '/' + this.user.avatar_filename;
+          this.imageUrl = this.globals.avatars + '/' + this.user.id + '/' + this.user.avatarFilename;
         } else { this.imageUrl = null; }
       }
     } else {

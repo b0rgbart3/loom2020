@@ -129,7 +129,7 @@
     "no-input-rename": true,
     "no-inputs-metadata-property": true,
     "no-output-native": true,
-    "no-output-on-prefix": false,
+    "no-output-on-prefix": true,
     "no-output-rename": true,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,
@@ -139,7 +139,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "",
       "camelCase"
     ],
     "component-selector": [

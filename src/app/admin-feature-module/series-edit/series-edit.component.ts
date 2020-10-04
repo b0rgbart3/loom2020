@@ -9,7 +9,7 @@ import _ from 'lodash';
 import {Location} from '@angular/common';
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'series-edit.component.html',
     styleUrls: ['series-edit.component.css']
 })

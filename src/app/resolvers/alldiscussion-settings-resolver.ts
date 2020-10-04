@@ -1,10 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { DiscussionSettings } from '../models/discussionsettings.model';
 import { DiscussionService } from '../services/discussion.service';
 import { ClassService } from '../services/class.service';

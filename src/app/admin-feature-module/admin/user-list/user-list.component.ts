@@ -27,14 +27,14 @@ export class UserListComponent implements OnInit {
   sortedThumbnails: Userthumbnail[];
   sortParams: string[];
 
-  constructor(private userService: UserService, private fb: FormBuilder ) { }
+  constructor(private userService: UserService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.order = 'username';
     this.reverse = false;
 
-      this.thumbnails = this.users.map( user =>
-      this.createThumbnail( user) );
+    this.thumbnails = this.users.map(user =>
+      this.createThumbnail(user));
     this.sortedThumbnails = this.thumbnails;
 
     this.sortParams = ['', 'username', 'firstname', 'lastname', 'email', 'created_date'];
@@ -42,48 +42,50 @@ export class UserListComponent implements OnInit {
     //   suspend: '',
     // });
 
- }
-
-// let the user choose which parameter to sort the list by
-// note the reverse order gets toggled - if the user clicks
-// on the same parameter item again
- setOrder(value: string): void {
-  if (this.order === value) {
-    this.reverse = !this.reverse;
-  } else {
-  this.order = value;
-  this.reverse = true;
   }
 
-/* OK so this line of code is VERY sophisticated and is
-   doing a lot - so I feel the need to explain it while I
-   still understand it.
+  // let the user choose which parameter to sort the list by
+  // note the reverse order gets toggled - if the user clicks
+  // on the same parameter item again
+  setOrder(value: string): void {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    } else {
+      this.order = value;
+      this.reverse = true;
+    }
 
-   First, It's using a ternary operator to call one of two functions
-   based on the boolean value of the reverse property.
+    /* OK so this line of code is VERY sophisticated and is
+       doing a lot - so I feel the need to explain it while I
+       still understand it.
 
-   Then, it's passing a STRING to the sort function, to tell it
-   which property on the user object (which is nested in the
-   thumbnail object) of our array to sort by.
+       First, It's using a ternary operator to call one of two functions
+       based on the boolean value of the reverse property.
 
-   Pretty fucking amazing!
-*/
+       Then, it's passing a STRING to the sort function, to tell it
+       which property on the user object (which is nested in the
+       thumbnail object) of our array to sort by.
 
-  this.reverse ? this.thumbnailSort(this.order) :
-    this.thumbnailSortReverse(this.order);
+       Pretty fucking amazing!
+    */
 
-}
+    this.reverse ? this.thumbnailSort(this.order) :
+      this.thumbnailSortReverse(this.order);
 
- createThumbnail(user) {
-  const thumbnailObj = { user: user, userId: user.id, online: false,
-      size: 50,  showUsername: false, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle' };
-  return thumbnailObj;
-}
+  }
 
-thumbnailSort(criteria: string) {
-  console.log('sorting thumbnails with criteria of: ' + criteria);
+  createThumbnail(user): Userthumbnail {
+    const thumbnailObj = {
+      user, userId: user.id, online: false,
+      size: 50, showUsername: false, showInfo: false, textColor: '#ffffff', border: false, shape: 'circle'
+    };
+    return thumbnailObj;
+  }
+
+  thumbnailSort(criteria: string): void {
+    console.log('sorting thumbnails with criteria of: ' + criteria);
     const copy = this.thumbnails;
-    copy.sort( function(a, b) {
+    copy.sort((a, b) => {
       const textA = a.user[criteria].toString().toLocaleLowerCase();
       const textB = b.user[criteria].toString().toLocaleLowerCase();
       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
@@ -94,7 +96,7 @@ thumbnailSort(criteria: string) {
 
   thumbnailSortReverse(criteria: string): void {
     const copy = this.thumbnails;
-    copy.sort( function(a, b) {
+    copy.sort( (a, b) => {
       console.log('User A: ' + a.user[criteria]);
       const textA = a.user[criteria].toString().toLocaleLowerCase();
       const textB = b.user[criteria].toString().toLocaleLowerCase();
@@ -106,14 +108,15 @@ thumbnailSort(criteria: string) {
   suspend(user): void {
     if (!user.suspended) {
       console.log('suspending');
-    this.userService.suspendUser(user); } else {
+      this.userService.suspendUser(user);
+    } else {
       console.log('unsuspending');
       this.userService.unsuspendUser(user);
     }
   }
 
   toggleInstructorStatus(user): void {
-   this.userService.toggleInstructorStatus(user);
+    this.userService.toggleInstructorStatus(user);
   }
 
 }

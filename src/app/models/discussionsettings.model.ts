@@ -2,7 +2,7 @@ export class DiscussionSettings {
     id?: string;
 
     constructor(
-        public discuessionSettingsId: string,
+        public discussionSettingsId: string,
         public userId: string,
         public classId: string,
         public section: string,

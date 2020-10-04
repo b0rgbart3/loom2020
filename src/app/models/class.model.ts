@@ -8,7 +8,7 @@ export class ClassModel {
       public course: string,
       public start: Date,
       public end: Date,
-      public coideId: string,
+      public classId: string,
       public cost: string,
       // public instructors: Instructor[],
       // public students: Student[],

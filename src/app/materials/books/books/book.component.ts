@@ -17,7 +17,7 @@ export class BookComponent implements OnInit {
     @Input() book: Material;
     imageURL: string;
     big: boolean;
-constructor( private globals: Globals, private router: Router): void {}
+constructor( private globals: Globals, private router: Router) {}
 
 ngOnInit(): void {
  // console.log('In book component: book = ' + JSON.stringify(this.book));

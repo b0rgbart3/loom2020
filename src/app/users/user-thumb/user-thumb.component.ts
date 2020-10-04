@@ -24,7 +24,7 @@ export class UserThumbComponent implements OnInit {
 
   avatarImageURL: string;
 
-  constructor ( private userService: UserService, private globals: Globals) { }
+  constructor( private userService: UserService, private globals: Globals) { }
 
   ngOnInit(): void {
 
@@ -38,20 +38,20 @@ export class UserThumbComponent implements OnInit {
         }
 
       this.avatarImageURL = this.globals.avatars + '/' +
-          this.thumbnail.userId + '/' + this.thumbnail.user.avatar_filename;
+          this.thumbnail.userId + '/' + this.thumbnail.user.avatarFilename;
 
       if (this.thumbnail.user && this.thumbnail.user.facebookRegistration) {
         console.log('fb user: ' + JSON.stringify( this.thumbnail.user ) );
         // this.thumbnail.user.avatar_URL = this.thumbnail.user.avatar_URL;
-        this.avatarImageURL = this.thumbnail.user.avatar_URL;
+        this.avatarImageURL = this.thumbnail.user.avatarURL;
       }  else {
-      if (this.thumbnail.user && this.thumbnail.user.avatar_filename === '' ) {
-          this.thumbnail.user.avatar_URL = this.globals.avatars + '/placeholder.png';
-          this.avatarImageURL = this.thumbnail.user.avatar_URL;
+      if (this.thumbnail.user && this.thumbnail.user.avatarFilename === '' ) {
+          this.thumbnail.user.avatarURL = this.globals.avatars + '/placeholder.png';
+          this.avatarImageURL = this.thumbnail.user.avatarURL;
       }
-      if (this.thumbnail.user.avatar_filename === undefined) {
-        this.thumbnail.user.avatar_URL = this.globals.avatars + '/placeholder.png';
-        this.avatarImageURL = this.thumbnail.user.avatar_URL;
+      if (this.thumbnail.user.avatarFilename === undefined) {
+        this.thumbnail.user.avatarURL = this.globals.avatars + '/placeholder.png';
+        this.avatarImageURL = this.thumbnail.user.avatarURL;
       }
     }
 

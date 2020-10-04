@@ -37,7 +37,7 @@ export class UserService {
   redirectMsg: string;
   redirectUrl: string;
 
-  constructor(private http: HttpClient, private globals: Globals): void {
+  constructor(private http: HttpClient, private globals: Globals) {
     const thisUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = thisUser && thisUser.token;
     this.username = thisUser && thisUser.username;
@@ -174,6 +174,16 @@ export class UserService {
       (data: any) => console.log('suspended user'), (err: any) => console.log('error suspending user.'));
   }
 
+
+  toggleInstructorStatus( user: User): void {
+    const myHeaders = new HttpHeaders();
+    myHeaders.append('Content-Type', 'application/json');
+
+    user.instructor = !user.instructor;
+    this.updateUser(user).subscribe( data => {}, error => {
+      console.log('error making instructor');
+    });
+  }
   // this.logout();
   // const myHeaders = new HttpHeaders();
   // myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');

@@ -11,7 +11,7 @@ import { EnrollmentsService } from '../../services/enrollments.service';
 
 
 @Component({
-    moduleId: module.id,
+   // moduleId: module.id,
     templateUrl: 'instructors.component.html',
     styleUrls: ['instructors.component.css']
 })

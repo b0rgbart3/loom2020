@@ -59,7 +59,7 @@ export class MaterialEditComponent implements OnInit {
         private materialService: MaterialService,
         private router: Router,
         private globals: Globals,
-        private alocation: Location  ): void {    }
+        private alocation: Location  ) {    }
 
     isDirty(): boolean {
 // console.log('checking dirty status');

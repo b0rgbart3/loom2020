@@ -1,12 +1,12 @@
 import { AppComponent } from './app.component';
 import { HomeComponent } from '../app/home/home.component';
-import { NavBarComponent } from '../app/navbar/nav-bar.component';
+// import { NavBarComponent } from '../app/navbar/nav-bar.component';
 
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,9 +14,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared/shared.module';
-import { AdminFeatureModule } from './admin-feature-module/admin-feature.module';
+// import { AdminFeatureModule } from './admin-feature-module/admin-feature.module';
 import { DragulaModule } from 'ng2-dragula/dist';
-
+import { NavBarComponent } from './navbar/nav-bar.component';
 
 import { AuthGuard } from './services/auth-guard.service';
 import { ClassService } from '../app/services/class.service';
@@ -37,20 +37,16 @@ import { UsersResolver } from './resolvers/users-resolver';
   declarations: [
     AppComponent,
     HomeComponent,
-    NavBarComponent
   ],
   imports: [
-    SharedModule,
-    AdminFeatureModule,
     CommonModule,
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
-    MatMenuModule,
+  //  MatMenuModule,
     MatIconModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    DragulaModule.forRoot()
+    DragulaModule.forRoot(),
   ],
   providers: [
     AuthGuard,
@@ -66,6 +62,11 @@ import { UsersResolver } from './resolvers/users-resolver';
     UserResolver,
     UsersResolver
  ],
+ exports: [
+ ],
+ schemas: [
+  CUSTOM_ELEMENTS_SCHEMA
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
